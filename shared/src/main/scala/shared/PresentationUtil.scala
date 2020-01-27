@@ -15,6 +15,7 @@ object PresentationUtil {
   val dataBackgroundSize  = VdomAttr("data-background-size")
   val dataTrim            = VdomAttr("data-trim") := ""
   val dataNoEscape        = VdomAttr("data-noescape") := ""
+  val dataImageBackground = VdomAttr("data-background-image")
 
   def chapter(slides: TagOf[HTMLElement]*): TagOf[HTMLElement] = <.section(slides: _*)
 
@@ -41,14 +42,31 @@ object PresentationUtil {
     content
   }
 
-  private val ChapterSlideProps = Seq(
-    (dataBackgroundColor := "#363633"),
+  private val AUHeadlineSlideProps = Seq(
+    (dataBackgroundColor := "#002546"),
     (dataBackgroundSize  := "30%")
   )
 
+  def auHeadlineSlide(content: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(
+      <.section(
+        (AUHeadlineSlideProps ++: content): _*
+      )
+  )
+
+  private val ChapterSlideProps = Seq(
+    (dataBackgroundColor := "#002546"),
+    (dataBackgroundSize  := "30%")
+  )
   def chapterSlide(content: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(
     <.section(
       (ChapterSlideProps ++: content): _*
+    )
+  )
+
+  def fullscreenImageSlide(url: String): TagOf[HTMLElement] = cleanSlide(
+    <.section(
+      dataBackgroundSize := "contain",
+      dataImageBackground := url, <.span("")
     )
   )
 
@@ -64,6 +82,16 @@ object PresentationUtil {
     )
   )
 
+  def headerSlideWithColumns(headerStr: String)(column1: TagOf[HTMLElement]*)(column2: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(
+    <.section(
+      header(headerStr, "slide-header"),
+      <.div(^.cls := "container",
+        <.div(^.cls := "col", column1.toTagMod),
+        <.div(^.cls := "col", column2.toTagMod)
+      ),
+    ),
+  )
+
   private def rawCode(language: String, codeStr: String): TagOf[HTMLElement] =
     <.code(
       ^.cls := language,
@@ -76,6 +104,9 @@ object PresentationUtil {
   def scalaC(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Scala", codeStr))
   def haskell(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Haskell", codeStr))
   def lisp(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Lisp", codeStr))
+  def cSharp(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("C#", codeStr))
+  def xml(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Xml", codeStr))
+  def sql(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Sql", codeStr))
 
   private def rawCodeFragment(language: String, codeStr: String): TagOf[HTMLElement] =
     <.pre(
@@ -86,15 +117,28 @@ object PresentationUtil {
   def scalaFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("Scala", codeStr)
   def haskellFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("Haskell", codeStr)
   def lispFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("Lisp", codeStr)
+  def cSharpFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("C#", codeStr)
+  def sqlFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("Sql", codeStr)
+
+  private val dataFragmentIndex = VdomAttr("data-fragment-index")
+
+  def colorRedSpan(content: String, index: Option[Int] = None): TagOf[HTMLElement] = {
+    index match {
+      case Some(a) => <.span(^.cls := "fragment highlight-red", dataFragmentIndex := a, content)
+      case None => <.span(^.cls := "fragment highlight-red", content)
+    }
+  }
 
   object Enumeration {
    
     object Item {
 
       def stable(content: TagOf[HTMLElement]): TagOf[HTMLElement] = <.li(content)
+      def stable(content: TagOf[HTMLElement]*): TagOf[HTMLElement] = <.li(content: _*)
       def stable(content: String): TagOf[HTMLElement] = <.li(<.p(content))
       def fadeIn(content: TagOf[HTMLElement]): TagOf[HTMLElement] = <.li(^.cls := "fragment fade-in", content)
       def fadeIn(content: String): TagOf[HTMLElement] = <.li(^.cls := "fragment fade-in", <.p(content))
+      def colorRedIn(content: String): TagOf[HTMLElement] = <.li(^.cls := "fragment highlight-red", <.p(content))
     }
 
     def apply(head: TagOf[HTMLElement], tail: TagOf[HTMLElement]*): TagOf[HTMLElement] = {

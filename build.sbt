@@ -12,13 +12,16 @@ lazy val common = Seq(
     "org.webjars.bower" % "react" % "15.2.1" / "react-dom.js"         minified "react-dom.min.js" dependsOn "react-with-addons.js" commonJSName "ReactDOM"
   ),
 
-  scalaJSUseMainModuleInitializer := true
+  scalaJSUseMainModuleInitializer := true,
+  
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings"),
 )
+
 
 lazy val root = project
   .in(file("."))
   .aggregate(
-    myTalk,
+    dabIntro,
     shared
   )
 
@@ -27,8 +30,8 @@ lazy val shared = project
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
 
-lazy val myTalk = project
-  .in(file("my-talk"))
+lazy val dabIntro = project
+  .in(file("dab/1.1-intro"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
