@@ -241,8 +241,8 @@ object Intro {
         Enumeration(
           Item.stable("Relation (Two-dimensional table)"),
           Enumeration(
-            Item.stable("Row represent a movie"),
-            Item.stable("Column represent a property"),
+            Item.stable("Row represent an entity (object)"),
+            Item.stable("Column represent an attribute (property)"),
           ),
           Item.stable("Attributes"),
           Enumeration(
@@ -304,7 +304,7 @@ object Intro {
           Item.stable("Data-Definition sub-language"),
           Enumeration(
             Item.stable("Declaring database structures"),
-            Item.stable("Declaring database contraints"),
+            Item.stable("Declaring database constraints"),
           ),
           Item.stable("Data-Manipulation sub-language"),
           Enumeration(
@@ -324,8 +324,7 @@ object Intro {
 
         sql("""SELECT title
         |FROM Movies
-        |ORDER BY year
-        |)""".stripMargin)
+        |ORDER BY year""".stripMargin)
       ),
 
     headerSlide(
