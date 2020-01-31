@@ -25,6 +25,16 @@
     ],
     "description": "Enumaration"
   },
+  "OrderedList": {
+    "scope": "scala",
+    "prefix": "ol",
+    "body": [
+      "OrderedList(",
+      "  Item.stable(\"\"),",
+      "),",
+    ],
+    "description": "Creates a ordered list with one element"
+  },
   "Slide with columns": {
     "scope": "scala",
     "prefix": "swc",

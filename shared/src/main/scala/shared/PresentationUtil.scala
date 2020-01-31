@@ -147,4 +147,19 @@ object PresentationUtil {
       )
     }
   }
+
+  object OrderedList extends Enumeration {
+    def apply(head: TagOf[HTMLElement], tail: TagOf[HTMLElement]*): TagOf[HTMLElement] = {
+      <.ol(
+        (head +: tail): _*
+      )
+    }
+
+    def withType(cls: String, head: TagOf[HTMLElement], tail: TagOf[HTMLElement]*): TagOf[HTMLElement] = {
+      <.ol(
+        ((^.`cls` := cls) +: head +: tail): _*
+      )
+    }
+
+  }
 }

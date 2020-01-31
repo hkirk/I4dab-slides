@@ -23,6 +23,7 @@ lazy val root = project
   .aggregate(
     dabIntro,
     dabModeling,
+    dabModelingPrinciples,
     shared
   )
 
@@ -39,6 +40,12 @@ lazy val dabIntro = project
 
 lazy val dabModeling = project
   .in(file("dab/1.2-modeling"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
+
+lazy val dabModelingPrinciples = project
+  .in(file("dab/2.1-modeling"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
