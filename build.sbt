@@ -49,3 +49,9 @@ lazy val dabModelingPrinciples = project
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
+
+lazy val dabDdl = project
+  .in(file("dab/2.2-ddl"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
