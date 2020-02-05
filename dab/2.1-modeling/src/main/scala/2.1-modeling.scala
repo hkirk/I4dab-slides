@@ -46,7 +46,7 @@ object Modeling {
       <.h2("Modeling"),
       <.br,
       <.h4("Design principles"),
-      <.img(VdomAttr("data-src") := "./img/database-meme.png", ^.cls := "headerMeme"),
+      <.img(VdomAttr("data-src") := "./img/database-meme.gif", ^.cls := "headerMeme"),
     ),
 
     // TODO agenda
@@ -110,12 +110,21 @@ object Modeling {
       )
     ),
 
+    headerSlide("First take on entities",
+      <.img(VdomAttr("data-src") := "./img/entities1.png", VdomStyle("max-height") := "700px"),
+    ),
+
     headerSlide("2. Generalization Hierarchies",
       Enumeration(
         Item.stable("Put identifier and generic descriptors in supertype"),
         Item.stable("Subtype should have same identifier"),
       ),
     ),
+
+    headerSlide("Second take on entities",
+      <.img(VdomAttr("data-src") := "./img/entities2.png", VdomStyle("max-height") := "700px"),
+    ),
+
 
     headerSlide("3. Relationship",
       Enumeration(
@@ -130,6 +139,10 @@ object Modeling {
         Item.stable("Make sure not to introduces redundant relationship"),
         Item.stable("More relationship can exists between entities"),
       ),
+    ),
+
+    headerSlide("Relationship example",
+      <.img(VdomAttr("data-src") := "./img/relations.png", VdomStyle("max-height") := "700px"),
     ),
 
     headerSlide("4. Exemplify",
@@ -148,8 +161,9 @@ object Modeling {
       ),
     ),
 
-    headerSlide("5. Schema validation",
-      OrderedList(
+    
+    headerSlideWithColumns("5. Schema validation")
+      (OrderedList(
         Item.stable("Identifying conflicts in schema"),
         OrderedList.withType("alphaList",
           Item.stable("Synonyms / homonyms"),
@@ -165,7 +179,9 @@ object Modeling {
           Item.stable("Understandability"),
         ),
       ),
-    ),
+      )(
+        <.img(VdomAttr("data-src") := "./img/bad_database.jpg", VdomStyle("max-height") := "600px"),
+      ),
 
   )
 
@@ -214,7 +230,7 @@ object Modeling {
 
   val chapterEnd = chapter(
     headerSlide("Exercises",
-      <.img(VdomAttr("data-src") := "./img/exercises.jpg", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/database_design.jpg", VdomStyle("max-height") := "600px"),
     ),
 
     auHeadlineSlide(
