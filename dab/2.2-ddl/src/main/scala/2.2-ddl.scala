@@ -136,7 +136,7 @@ object Modeling {
           sql("exec sp_columns Persons")),
       ),
       <.hr,
-      <.img(VdomAttr("data-src") := "./img/describeTable.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/describeTable.png", VdomStyle("max-height") := "400px"),
     ),
   )
 
@@ -259,7 +259,7 @@ object Modeling {
         ),
         Item.stable(<.span("Constraint conflict"), <.br,
             sql("""INSERT INTO Assignments VALUES
-                  |(1, 'I4dab', 'EfCore ...', 45)""".stripMargin), <.br,
+                  |(1, 'I4dab', 'EfCore ...', 45)""".stripMargin),
             <.span("""The INSERT statement conflicted with the FORIGN KEY constraint 'FK__assignment__student_12314a'.
                      |....""".stripMargin)
         ),
