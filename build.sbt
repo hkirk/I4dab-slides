@@ -24,6 +24,8 @@ lazy val root = project
     dabIntro,
     dabModeling,
     dabModelingPrinciples,
+    dabDdl,
+    sqlvsnosql,
     shared
   )
 
@@ -52,6 +54,12 @@ lazy val dabModelingPrinciples = project
 
 lazy val dabDdl = project
   .in(file("dab/2.2-ddl"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
+
+lazy val sqlvsnosql = project
+  .in(file("dab/SqlVsNoSql"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
