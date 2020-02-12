@@ -74,12 +74,10 @@ object Modeling {
           Item.stable("string ConnectionString = @\"Server=127.0.0.1,1433;Database=MyEfCoreApp;User Id=SA;Password=1234********\""),
           Item.stable("Used later in course"),
         ),
-        Enumeration(
-          Item.stable("Azure studio"),
-        ),
+        Item.stable("Azure studio"),
       ),
     )(
-        <.img(VdomAttr("data-src") := "./img/connectionAzure.jpg", VdomStyle("max-height") := "600px"),
+        <.img(VdomAttr("data-src") := "./img/connectionAzure.png", VdomStyle("max-height") := "600px"),
     ),
   )
 
@@ -205,7 +203,8 @@ object Modeling {
                               | (Id INT PRIMARY KEY
                               |  Name VARCHAR(20),
                               |  Body TEXT,
-                              |  StudentId INT FOREIGN KEY REFERENCES Student(id)
+                              |  StudentId INT FOREIGN KEY
+                              |     REFERENCES Student(id)
                               |)""".stripMargin)),
         ),
         Item.stable("Note: Inline foregn key above, also possible to declare constraints after attributes")
@@ -255,7 +254,7 @@ object Modeling {
                     |""".stripMargin)),
           Item.stable(<.span("Insert some values"), <.br,
               sql("""INSERT INTO Orders (Id, OrderNumber)
-                    |VALUES (1,12345, 2, 23456)""".stripMargin)),
+                    |VALUES (1,12345), (2, 23456)""".stripMargin)),
         ),
         Item.stable(<.span("Constraint conflict"), <.br,
             sql("""INSERT INTO Assignments VALUES
