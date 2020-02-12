@@ -27,6 +27,7 @@ lazy val root = project
     dabDdl,
     sqlvsnosql,
     dabSqlConnection,
+    dabDmlAdvanced,
     shared
   )
 
@@ -76,3 +77,9 @@ lazy val dabdml = project
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
+
+lazy val dabDmlAdvanced = project
+.in(file("dab/4.1-dml-advanced"))
+.enablePlugins(ScalaJSPlugin)
+.settings(common)
+.dependsOn(shared)
