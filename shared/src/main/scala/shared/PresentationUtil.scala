@@ -6,7 +6,9 @@ import japgolly.scalajs.react.vdom.TagOf
 import org.scalajs.dom
 import dom.raw.HTMLElement
 
-object PresentationUtil {  
+object PresentationUtil {
+
+  type TagOfHTMLElement = TagOf[HTMLElement];
 
   val font = HtmlTag("font")
 
@@ -82,6 +84,13 @@ object PresentationUtil {
     )
   )
 
+  def headerSlideLeftAligned(headerStr: String, content: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(
+    <.section(
+      header(headerStr, "slide-header"), <.p(^.textAlign := "left", content.toTagMod), 
+    )
+  )
+  
+
   def headerSlideWithColumns(headerStr: String)(column1: TagOf[HTMLElement]*)(column2: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(
     <.section(
       header(headerStr, "slide-header"),
@@ -91,6 +100,10 @@ object PresentationUtil {
       ),
     ),
   )
+
+  def getOneThroughX(letter: String, x: String): TagOfHTMLElement = <.span(<.span(letter), <.sub("1"), <.span(", "), <.span(letter), <.sub("2"), <.span(", ...,"), <.span(letter), <.sub(x))
+  def getOneThroughN(letter: String): TagOfHTMLElement = getOneThroughX(letter, "n")
+
 
   private def rawCode(language: String, codeStr: String): TagOf[HTMLElement] =
     <.code(
@@ -120,6 +133,15 @@ object PresentationUtil {
   def cSharpFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("C#", codeStr)
   def sqlFragment(codeStr: String): TagOf[HTMLElement] = rawCodeFragment("Sql", codeStr)
 
+  def rawFragment(reveal: String, content: TagOfHTMLElement*): TagOfHTMLElement =
+  <.div(
+    ^.cls := "fragment " + reveal,
+    content.toTagMod,
+  )
+
+  def fadeInFragment(content: TagOfHTMLElement*): TagOfHTMLElement = rawFragment("fade-in", content: _*)
+    
+
   private val dataFragmentIndex = VdomAttr("data-fragment-index")
 
   def colorRedSpan(content: String, index: Option[Int] = None): TagOf[HTMLElement] = {
@@ -134,7 +156,7 @@ object PresentationUtil {
     object Item {
 
       def stable(content: TagOf[HTMLElement]): TagOf[HTMLElement] = <.li(content)
-      def stable(content: TagOf[HTMLElement]*): TagOf[HTMLElement] = <.li(content: _*)
+      def stable(content: TagOfHTMLElement*): TagOfHTMLElement = <.li(content: _*)
       def stable(content: String): TagOf[HTMLElement] = <.li(<.p(content))
       def fadeIn(content: TagOf[HTMLElement]): TagOf[HTMLElement] = <.li(^.cls := "fragment fade-in", content)
       def fadeIn(content: String): TagOf[HTMLElement] = <.li(^.cls := "fragment fade-in", <.p(content))
