@@ -82,7 +82,7 @@ object Modeling {
           Item.stable(
             <.span("Limits the rows returned in a query result set to a specified number of rows or percentage of rows in SQL Server 2017. When you use TOP with the ORDER BY clause, the result set is limited to the first N number of ordered rows. Otherwise, "),
             <.b("TOP returns the first N number of rows in an undefined order"),
-            <.span(". Use this clause to specify the number of rows returned from a SELECT statement."),
+            <.span(". Use this clause to specify the number of rows returned from a SELECT statement. "),
             <.b("Or, use TOP to specify the rows affected by an INSERT, UPDATE, MERGE, or DELETE statement (random rows)"),
             <.span(".")
           ),
@@ -99,8 +99,8 @@ object Modeling {
         <.span("[ ,...n ] ]"), <.br,
         <.span("  [ <FOR Clause>]"), <.br,
         <.span("  [ OPTION ( <query_hint> [ ,...n ] ) ]"), <.br,
-        <.span("<query_expression> ::="), <.br,
-        <.span("  { <query_specification> | ( <query_expression> ) }"), <.br,
+        <.b("<query_expression>"), <.span(" ::="), <.br,
+        <.span("  { "), <.b("<query_specification>"), <.span(" | ( <query_expression> ) }"), <.br,
         <.span("  [  { UNION [ ALL ] | EXCEPT | INTERSECT }"), <.br,
         <.span("      <query_specification> | ( <query_expression> ) [...n ] ]"), <.br,
       ),
@@ -108,7 +108,7 @@ object Modeling {
 
     headerSlide("<query_specification>",
       <.p(^.textAlign := "left", ^.whiteSpace := "pre-wrap",
-        <.span("<query_specification> ::= "), <.b("SELECT"), <.span(" [ ALL | DISTINCT ]"), <.br,
+        <.b("<query_specification>"), <.span(" ::= "), <.b("SELECT"), <.span(" [ ALL | DISTINCT ]"), <.br,
         <.span("  [TOP ( expression ) [PERCENT] [ WITH TIES ] ]"), <.br,
         <.span("  < select_list >"), <.br,
         <.span("  [ INTO new_table ]"), <.br,
