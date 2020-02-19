@@ -197,9 +197,147 @@ object Modeling {
       <.img(VdomAttr("data-src") := "./img/normalforms.png", VdomStyle("height") := "600px"),
     ),
 
-    headerSlideLeftAligned("Boyce-Codd Normal Form (BCNF)",
-      // TODO
-    )
+    headerSlideLeftAligned("Boyce-Codd Normal Form (BCNF)", // TODO notes Movies1 is not in BCNF because FD exists
+                                                            // Title, year -> length, genre, studioName - which is not a key
+      <.span("Definition:"),
+      <.div(^.textAlign := "center", <.span("A relation R is in BCNF iff. whenever there is a nontrival FD "), getOneThroughN("a"), <.span(" → "), getOneThroughN("b"), <.span(" for R it is the case that { "), getOneThroughN("a"), <.span(" } is a superkey")),
+      <.div(^.textAlign := "center", <.span("Or left side of every nontrivial FD must contain a key")),
+      fadeInFragment(
+        <.span("Example"), <.br,
+        <.span("Movies1 is not in BCN"), <.br,
+      ),
+      fadeInFragment(
+        <.span("Movies 2, Stars is in BCNF"), <.br,
+      ),
+      <.b("Note"), <.span(": Sometimes decomposition into BCNF can end in situation where checking FD on the relations is not possible"),
+    ),
+
+    headerSlideLeftAligned("3NF",
+      <.span("A relation R is in the third normal form (3NF) if:"),
+      <.div(^.textAlign := "center", <.span("Whenever "), getOneThroughN("a"), <.span(" → "), getOneThroughN("b"), <.span(" is a nontrivial FD, either")),
+      <.div(^.textAlign := "center", <.span("{"), getOneThroughN("a"), <.span("} is a super key or")),
+      <.div(^.textAlign := "center", <.span(""), getOneThroughN("b"), <.span(" not in A’s are member of some key*.")),
+      <.span("“For each nontrival FD, either the left side is a superkey, or the right side consists of prime attributes only.” - Database Systems the Complete book 2nd edition."), <.br,
+      <.b("Note"), <.span(": Weaker than BCNF"), <.br, <.br,
+      <.span(VdomStyle("fontSize") := "22px", "* an attribute that is a member of some key is called a prime."),
+      /* Todod notes
+      3NF
+      • 2NF
+      • Intet felt må være transitivt afhængigt af primærnøglen 
+
+    Hvis en tabel har felter, der er indbyrdes afhængige, og ikke er en del af primærnøglen, så skal én eller flere af disse felter flyttes over i en ny tabel sammen med en kopi af det tilbageblevne felt (som derved bliver fremmednøgle).
+    */
+    ),
+
+    headerSlideLeftAligned("1NF & 2NF",
+      Enumeration(
+        Item.stable(
+          <.b("1NF"), <.br,
+          <.span("A relation is in 1NF iff. each have only atomic values - each column have only one value for each row"), <.br,
+          <.span("Upheld these days for “all” SQL servers."), <.br,
+          <.span("Reason this exists is because SQL builds on Relational Algebra"), <.br,
+        ),
+        Item.stable(
+          <.b("2NF"), <.br,
+          <.span("A relation is in 2NF iff. its in 1NF and every non-key attribute is fully dependent on a primary key. An attribute is fully dependent on a primary key if its on the right side of an FD for which the left side is either the primary key or something that can be derived from the primary key."),
+        ),
+      ),
+    ),
+      
+  )
+
+  val chapter5 = chapter(
+
+    headerSlideLeftAligned("Examples (1/4)", 
+      <.img(VdomAttr("data-src") := "./img/initial_data.png", VdomStyle("height") := "150px"),
+      fadeInFragment(
+        <.b("1NF - take 1"), <.br,
+        <.img(VdomAttr("data-src") := "./img/1nf.png", VdomStyle("height") := "150px")
+      ),
+      fadeInFragment(
+        <.b("1NF - take 2"), <.br,
+        <.span(VdomStyle("fontSize") := "32px", 
+          <.span("Book("), <.u("title"), <.span(", "), <.u("format"), <.span(", author, authorNationality, price, pages, thickness, genreId, genreName, publisherId)"), <.br,
+          <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
+          <.span("Publisher("), <.u("publisherId"), <.span(", name, Country)"), <.br,
+          <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+        ),
+      ),
+    ),
+    
+    headerSlideLeftAligned("Examples (2/4)", // TODO All attributer der ikke er del af en nøgle,  afhænger af title. Men kun Price afhænger af Format
+      <.b("2NF"), <.br,
+      <.span(VdomStyle("fontSize") := "32px", 
+        <.span("Book("), <.u("title"), <.span(", author, authorNationality, pages, thickness, genreId, genreName, publisherId)"), <.br,
+        <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
+        <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
+        <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
+        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+      ),
+    ),
+
+    headerSlideLeftAligned("Examples (3/4)", // TODO 2NF + no transitive depencies
+                                              // Eg GenreId and GenreName both depend on primary key Title
+      <.b("3NF"), <.br,
+      <.span(VdomStyle("fontSize") := "32px", 
+        <.span("Book("), <.u("title"), <.span(", author, authorNationality, pages, thickness, genreId, publisherId)"), <.br,
+        <.span("Genre("), <.u("genreId"), <.span(", genreName)"), <.br,
+        <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
+        <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
+        <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
+        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+      ),
+    ),
+
+    headerSlideLeftAligned("Examples (4/4)", 
+      <.b("BCNF"), <.br, // TODO Non-triviel depency between Author and AuthorNationality
+      <.span(VdomStyle("fontSize") := "32px", 
+        <.span("Book("), <.u("title"), <.span(", author, pages, thickness, genreId, publisherId)"), <.br,
+        <.span("Author("), <.u("author"), <.span(", nationality)"), <.br,
+        <.span("Genre("), <.u("genreId"), <.span(", genreName)"), <.br,
+        <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
+        <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
+        <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
+        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+      ),
+    ),
+  )
+
+  val chapter6 = chapter(
+    headerSlideLeftAligned("4NF",
+    /* TODO
+    That is, if a relation is in 4NF, then every nontrivial MVD is really an FD with a superkey on the left
+
+    Both in BCNF and therefore also in 3NF some redundancies are possible.
+
+    https://en.wikipedia.org/wiki/Fourth_normal_form
+    */
+      <.span("BCNF applied to MVD instead of FD"), <.br,
+      <.span("A relation R is in 4NF if whenever"),
+      <.div(^.textAlign := "center", getOneThroughN("a"), <.span(" ↠ "), getOneThroughN("b")),
+      <.div(^.textAlign := "center", <.span("Is a nontrival MVD, {"), getOneThroughN("a"), <.span("} is a super")),
+      <.span("A multivalued dependency (MVD)"),
+      <.div(^.textAlign := "center", getOneThroughN("a"), <.span(" ↠ "), getOneThroughN("b")),
+      <.span("holds for a relation R if when we restrict ourselves to tubles of R that have particular values for each attribute in ("), getOneThroughN("a"), <.span(") then there is a set of values we find among the ("), getOneThroughN("b"), <.span(") is independent of the set of values we find among the attributes of R that is not in those sets."),
+    ),
+
+    headerSlide("In practice",
+      OrderedList(
+        Item.stable("Analyse the potential for performance benefits before normalizing"),
+        OrderedList(
+          Item.stable("Storage usage"),
+          Item.stable("Update time"),
+          Item.stable("Query time"),
+        )
+        Item.stable("BCNF or 3NF is normally the table forms to strive for*"),
+        Item.stable("If performance is compromised by normalization, try denormalizing"),
+      )
+      <.span(VdomStyle("fontSize") := "22px", "* “The practical need for fourth normal form” by Margaret S. Wu states in astudy of forty organizational databases, over 20% contained one or more tables that violated 4NF while meeting all lower normal forms "),
+    ),
+
+    headerSlide("Database lifecycle"
+      <.img(VdomAttr("data-src") := "./img/normalize-life-cycle.png", VdomStyle("height") := "600px"),
+    ),
   )
 
   val chapterEnd = chapter(
@@ -238,7 +376,7 @@ object Modeling {
           chapter2,
           chapter3,
           chapter4,
-          // chapter5,
+          chapter5,
           // chapter6,
           // chapter7,
 
