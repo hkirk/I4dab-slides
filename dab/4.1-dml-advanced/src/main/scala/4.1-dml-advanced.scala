@@ -20,12 +20,14 @@ object Modeling {
 
     headerSlide("Agenda",
       Enumeration(
-        Item.stable("")
+        Item.stable("Queries"),
+        Item.stable("Sub-queries"),
+        Item.stable("Transactions"),
       ),      
     ),
   )
 
-  val caseMoviesTable = <.table(
+  val caseMoviesTable = <.table(VdomStyle("fontSize") := "24px",
     <.thead(
       <.tr(
         <.th("title"),
@@ -86,13 +88,36 @@ object Modeling {
       ),
     ),
 
+    headerSlide("Indexes",
+      Enumeration(
+        Item.stable("Dont require uniqueness"),
+        Item.stable("Used to quickly find rows"),
+        Item.stable("Defines a data structure saved on disk, along with data"),
+      ),
+      sql("""CREATE TABLE dbo.Employee (
+            |  EmployeeId INT PRIMARY KEY,
+            |  LastName VARCHAR(50), FirstName VARCHAR(50),
+            |  DepartmentId INT, StartDate DATETIME)""".stripMargin),
+      <.span(VdomStyle("fontSize") := "30px", "Remember: primary key requeres value(s) to be not-null and key should uniquely point to row"), <.br,
+    ),
+
+    headerSlide("B-Tree",
+      <.img(VdomAttr("data-src") := "./img/btree-index.png", VdomStyle("maxHeight") := "400px"),
+    ),
+  )
+
+
+
+  val chapter3 = chapter(
     headerSlide("TOP",
       sql("""
             |SELECT TOP 10 * FROM movies
             |  ORDER BY rating""".stripMargin),
       sql("""
             |SELECT TOP 10 PERCENT FROM movies""".stripMargin),
+    ),
 
+    headerSlide("Pagination", 
       Enumeration(
         Item.stable("Pagination in SQL Server is a bit complicated – will try later"),
         Item.stable("MySQL:"),
@@ -101,7 +126,7 @@ object Modeling {
       sql("""SELECT * FROM movies ORDER BY rating LIMIT 10""".stripMargin),
       sql("""SELECT * FROM movies ORDER BY rating
             |  LIMIT 10 OFFSET 11""".stripMargin),
-      
+
     ),
 
     headerSlide("Search condition",
@@ -113,10 +138,10 @@ object Modeling {
       Enumeration(
         Item.stable("LIKE"),
       ),
-      sql("""SELECT * FROM movies WHERE title LIKE (‘Star%’)""".stripMargin),
-      // TODO '%'' Zero, one or multiple chars
-      // TODO '_' char
-
+      sql("""SELECT * FROM movies WHERE title LIKE (‘Star{%|_}’)""".stripMargin),
+    ),
+    
+    headerSlide("Search condition (2/2)", 
       Enumeration(
         Item.stable("IN"),
       ),
@@ -128,7 +153,6 @@ object Modeling {
       ),
       sql("""SELECT * FROM movies WHERE year
             |  BETWEEN 1920 AND 1940""".stripMargin),
-
     ),
 
 
@@ -166,7 +190,7 @@ object Modeling {
 
   )
 
-  val chapter3 = chapter(
+  val chapter4 = chapter(
     headerSlide("Sub queries",
       sql("""
             |SELECT m.title, m.avgRating,
@@ -192,20 +216,33 @@ object Modeling {
             |ORDER BY rowNum
             |""".stripMargin),
     ),
+  )
 
+  val chapter5 = chapter(
     headerSlide("Transactions",
-      Enumeration(
-        Item.stable("Treat multiple statements as single unit of work"),
-        Item.stable("If transaction is successful"),
+      <.div(VdomStyle("fontSize") := "38px", 
         Enumeration(
-          Item.stable("all changes are committed,"),
-          Item.stable("else all changes are canceled")
+          Item.stable("Treat multiple statements as single unit of work"),
+          Item.stable("If transaction is successful"),
+          Enumeration(
+            Item.stable("all changes are committed,"),
+            Item.stable("else all changes are canceled")
+          ),
+          Item.stable("Autocommit – each statement is a transaction"),
+          Item.stable("Explicit – started with BEGIN, ended explicitly"),
+          Item.stable("Implicit – started when previous transaction completes and explicitly ended."), // TODO ?????
         ),
-        Item.stable("Autocommit – each statement is a transaction"),
-        Item.stable("Explicit – started with BEGIN, ended explicitly"),
-        Item.stable("Implicit – started when previous transaction completes and explicitly ended."), // TODO ?????
       ),
     ),
+
+    // headerSlide("ACID",
+    //   Enumeration(
+    //     Item.stable("Atomicity"),
+    //     Item.stable("Consistency"),
+    //     Item.stable("Isolation"),
+    //     Item.stable("Durability"),
+    //   ),
+    // ),
 
     headerSlide("Transaction example",
       sql("""
@@ -241,21 +278,28 @@ object Modeling {
          Item.stable("Can have names and descriptions"),
          Item.stable("Can be nested"),
        ),
+       cSharp("""try {
+                |  conn.Open();
+                |  SqlTransaction tran = conn.BeginTransaction();
+                |  ...
+                |} catch (Exception e) {
+                |  tran.Rollback();
+                |}""".stripMargin)
     ),
   )
 
   val chapterEnd = chapter(
     headerSlide("Exercises",
-      <.img(VdomAttr("data-src") := "./img/make-homework-fun.jpg", VdomStyle("height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/make-homework-fun.jpg", VdomStyle("maxHeight") := "600px"),
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
       "References",
-      <.span("Frontpage meme: https://rtask.thinkr.fr/the-ten-commandments-for-a-well-formatted-database/"),
+      <.span("B-tree: https://www.eandbsoftware.org/how-a-database-index-can-help-performance/"),
       <.br,
       <.span("Exercise gif: https://parentsneed.com/7-ways-to-help-make-homework-fun/"),
       <.br, 
@@ -275,8 +319,8 @@ object Modeling {
           chapter1,
           chapter2,
           chapter3,
-          // chapter4,
-          // chapter5,
+          chapter4,
+          chapter5,
           // chapter6,
           // chapter7,
           // chapter8,
