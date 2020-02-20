@@ -125,7 +125,7 @@ object Modeling {
           <.img(VdomAttr("data-src") := "./img/inner_join_template.png", VdomStyle("height") := "200px"),
         ),
         <.div(^.cls := "col",
-          <.img(VdomAttr("data-src") := "./img/inner_join.png", VdomStyle("height") := "400px"),
+          <.img(VdomAttr("data-src") := "./img/inner_join.png", VdomStyle("maxHeight") := "400px"),
         ),
       ),
     ),
@@ -142,7 +142,7 @@ object Modeling {
           <.img(VdomAttr("data-src") := "./img/left_join_template.png", VdomStyle("height") := "200px"),
         ),
         <.div(^.cls := "col",
-          <.img(VdomAttr("data-src") := "./img/left_join.png", VdomStyle("height") := "400px"),
+          <.img(VdomAttr("data-src") := "./img/left_join.png", VdomStyle("maxHeight") := "400px"),
         ),
       ),
     ),
@@ -159,7 +159,7 @@ object Modeling {
           <.img(VdomAttr("data-src") := "./img/right_join_template.png", VdomStyle("height") := "200px"),
         ),
         <.div(^.cls := "col",
-          <.img(VdomAttr("data-src") := "./img/right_join.png", VdomStyle("height") := "400px"),
+          <.img(VdomAttr("data-src") := "./img/right_join.png", VdomStyle("maxHeight") := "400px"),
         ),
       ),
     ),
@@ -176,7 +176,7 @@ object Modeling {
           <.img(VdomAttr("data-src") := "./img/full_join_template.png", VdomStyle("height") := "200px"),
         ),
         <.div(^.cls := "col",
-          <.img(VdomAttr("data-src") := "./img/full_join.png", VdomStyle("height") := "400px"),
+          <.img(VdomAttr("data-src") := "./img/full_join.png", VdomStyle("maxHeight") := "400px"),
         ),
       ),
     ),
@@ -190,10 +190,11 @@ object Modeling {
           Item.stable("{♠, ♥, ♦, ♣} ")
         ),
       ),
-      <.br,
-      <.img(VdomAttr("data-src") := "./img/Piatnikcards.jpg", VdomStyle("height") := "400px"),
-      <.br,
       <.span("*"), <.a(^.href:="https://en.wikipedia.org/wiki/Cartesian_product", "https://en.wikipedia.org/wiki/Cartesian_product"),
+    ),
+
+    headerSlide("Cross join", 
+      <.img(VdomAttr("data-src") := "./img/Piatnikcards.jpg", VdomStyle("maxHeight") := "500px"),
     ),
   )
 
@@ -214,11 +215,10 @@ object Modeling {
   val chapter5 = chapter(
     headerSlide("Views",
       <.span("Create a View"), <.br,
-      sql("""(SELECT … FROM .. WHERE)
-            |CREATE VIEW RecordSongs AS
-            |SELECT r.name, r.year, s.text, s.length
-            |FROM Records AS r LEFT JOIN song AS s 
-            |ON r.id = s.albumId""".stripMargin),
+      sql("""CREATE VIEW RecordSongs AS
+            |  SELECT r.name, r.year, s.text, s.length
+            |  FROM Records AS r LEFT JOIN song AS s 
+            |  ON r.id = s.albumId""".stripMargin),
       <.br,
       <.span("Using a view - like a table"), <.br,
       sql("SELECT * FROM RecordSongs"),
@@ -227,11 +227,11 @@ object Modeling {
 
   val chapterEnd = chapter(
     headerSlide("Exercises",
-      <.img(VdomAttr("data-src") := "./img/make-homework-fun.jpg", VdomStyle("height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/make-homework-fun.jpg", VdomStyle("maxHeight") := "600px"),
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
