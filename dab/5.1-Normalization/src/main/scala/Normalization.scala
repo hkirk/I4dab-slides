@@ -7,7 +7,7 @@ import org.scalajs.dom
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 
-object Modeling {
+object Normalization {
   import Enumeration._
   
   val chapter1 = chapter(
