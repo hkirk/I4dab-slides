@@ -30,6 +30,7 @@ lazy val root = project
     dabDmlAdvanced,
     dabViewsJoins,
     dabNormalization,
+    dabEfCoreIntro,
     shared
   )
 
@@ -94,6 +95,12 @@ lazy val dabViewsJoins = project
 
 lazy val dabNormalization = project
   .in(file("dab/5.1-Normalization"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
+
+lazy val dabEfCoreIntro = project
+  .in(file("dab/5.2-EfCoreIntro"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
