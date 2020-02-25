@@ -15,7 +15,7 @@ object EfCoreIntro {
       <.h2("Entity Framework Core"),
       <.br,
       <.h4("Introduction"),
-      <.img(VdomAttr("data-src") := "./img/jedi.jpeg", ^.cls := "headerMeme"),
+      <.img(VdomAttr("data-src") := "./img/learn_efcore.jpeg", ^.cls := "headerMeme"),
     ),
 
     headerSlide("Agenda",
@@ -64,7 +64,8 @@ object EfCoreIntro {
   )
 
   val chapter2 = chapter(
-    headerSlide("What is Object relational mapper",
+    headerSlideWithColumns("What is Object relational mapper")
+    (
       Enumeration(
         Item.stable(<.span("Object Relational Mapper = O/RM")),
         Enumeration(
@@ -73,7 +74,7 @@ object EfCoreIntro {
           Item.stable("mapper - bridge between"),
         ),
       ),
-
+    )(
       fadeInFragment(dbVsOo),
     ),
 
@@ -97,25 +98,31 @@ object EfCoreIntro {
   )
 
   val chapter3 = chapter(
-    headerSlide("Entity Framework Core",
+    headerSlideLeftAligned("Entity Framework Core",
       Enumeration(
         Item.stable("Is an O/RM"),
         Item.stable("Open source"),
         Item.stable("Cross platform"),
         Item.stable("Build to support NoSQL"),
       ),
-      <.div(
-        <.b("Note"), <.span(": EF6/7 is not build to support NoSQL but is extended to do so")
+      fadeInFragment(
+        <.div(
+          <.b("Note"), <.span(": EF6/7 is not build to support NoSQL but is extended to do so")
+        ),
       ),
     ),
   )
 
   val chapter4 = chapter(
     headerSlide("EF Core Guide",
-      <.span("From here its more or less a guide"),
+      <.span("From here its more or less a getting started tutorial"),<.br,
+      fadeInFragment(
+        <.img(VdomAttr("data-src") := "./img/party.jpeg", VdomStyle("height") := "400px"),
+      )
     ),
 
-    headerSlide("Creating project (CLI) (1/2)",
+    headerSlideWithColumns("Creating project (CLI) (1/2)")
+    (
       OrderedList(
         Item.stable(
           <.span("Creating a .Net 2.0 Core console Project for Sqlite"), <.br,
@@ -123,21 +130,32 @@ object EfCoreIntro {
           <.i(VdomStyle("fontSize") := "22px", "$ cd MyFirstEFCoreProject"), <.br,
           <.i(VdomStyle("fontSize") := "22px", "$ dotnet new console"), <.br,
         ),
-        Item.stable(
-          <.span("Install Entity Framework Core"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Sqlite"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Design"), <.br,
-          // TODO One more tools maybe
+        fadeInFragment(
+          Item.stable(
+            <.span("Install Entity Framework Core"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Sqlite"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Design"), <.br,
+            // TODO One more tools maybe
+          ),
         ),
-        Item.stable(
-          <.span("Adding a connection string (in .cs file)"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "In class AppDbContext inherit from DbContext and add the following code"), <.br,
-          cSharp("""protected override void OnConfiguring(
-                   |             DbContextOptionsBuilder optionsBuilder) {
-                   | optionsBuilder.UseSqlite("Data Source=door.db");
-                   |}""".stripMargin),
+        fadeInFragment(
+          Item.stable(
+            <.span("Adding a connection string (in .cs file)"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code"), <.br,
+            
+          ),
         ),
-      )
+      ),
+    )(
+      fadeInFragment(
+        cSharp("""// Class yuou make
+                 |public class Context : DbContext {
+                 |  protected override void OnConfiguring(
+                 |               DbContextOptionsBuilder ob) {
+                 |    // For SQLite file, this is 
+                 |    ob.UseSqlite("Data Source=door.db");
+                 |}}""".stripMargin),
+      ),
     ),
 
     headerSlide("Creating project (VS studio)",
@@ -155,11 +173,11 @@ object EfCoreIntro {
         ),
         Item.stable(
           <.span("Adding a connection string (in .cs file)"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "In class AppDbContext inherit from DbContext and add the following code"), <.br,
-          cSharp("""protected override void OnConfiguring(
-                   |            DbContextOptionsBuilder optionsBuilder) {
-                   | optionsBuilder.UseSqlite("Data Source=door.db");
-                   |}""".stripMargin),
+          <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code - see previous slideg")
+          // cSharp("""protected override void OnConfiguring(
+          //          |            DbContextOptionsBuilder optionsBuilder) {
+          //          | optionsBuilder.UseSqlite("Data Source=door.db");
+          //          |}""".stripMargin),
         ),
         Item.stable(
           <.span("Setup working directory"), <.br,
@@ -182,7 +200,8 @@ object EfCoreIntro {
       )
     ),
 
-    headerSlide("Creating model classes",
+    headerSlideWithColumns("Creating model classes")
+    (
       Enumeration(
         Item.stable("Create class Door"),
         Item.stable("Add property with public getter and setter"),
@@ -195,7 +214,7 @@ object EfCoreIntro {
                |    public string Location { get; set; }
                |    public string Type { get; set; }
                |}""".stripMargin),
-
+    )(
       Enumeration(
         Item.stable("Add DbSet to AppDbContext"),
       ),
