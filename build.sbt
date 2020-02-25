@@ -104,3 +104,9 @@ lazy val dabEfCoreIntro = project
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
+
+lazy val dabEfCoreModels = project
+  .in(file("dab/6.1-EfCoreModelsRelationships"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
