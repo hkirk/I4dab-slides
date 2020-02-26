@@ -9,7 +9,7 @@ import scala.scalajs.js.annotation.JSExport
 
 object Normalization {
   import Enumeration._
-  
+
   val chapter1 = chapter(
     auHeadlineSlide(
       <.h2("Normalization"),
@@ -116,41 +116,47 @@ object Normalization {
     headerSlide("Functional dependency",
       <.p(^.textAlign := "left",
         <.span("If two tuples of R agree on all attributes "), getOneThroughN("a"), <.span(", then they must also agree on another list of attributes "), getOneThroughN("b"), <.span("."), <.br,
-        <.span("Formally"), 
+        <.span("Formally"),
         <.div(^.textAlign := "center",
           getOneThroughN("a"), <.span(" → "), getOneThroughN("b"), <.br,
         ),
-        <.span("Reads: "),
-        <.div(^.textAlign := "center",
-          getOneThroughN("a"), <.span(" functional determines "), getOneThroughN("b"),
+        fadeInFragment(
+          <.span("Reads: "),
+          <.div(^.textAlign := "center",
+            getOneThroughN("a"), <.span(" functional determines "), getOneThroughN("b"),
+          )
         )
       )
     ),
 
-    headerSlide("FD examples", 
+    headerSlide("FD examples",
       <.p(^.textAlign := "left",
         <.span("Example:"),
         <.div(^.textAlign := "center",
-          <.span("Movies1(title, year, length, genre, studioName, starName)"), <.br, <.br,
+          <.b("Movies1"), <.span("(title, year, length, genre, studioName, starName)"), <.br, <.br,
         ),
         fadeInFragment(
-          <.b("Claim 1: "), 
+          <.b("Claim 1: "),
           <.div(^.textAlign := "center",
             <.span("title, year → length, genre, studioName")
           ),
         ),
-        fadeInFragment(
-          <.span("Expect that no movies with same title are made in the same year"), <.br, // TODO more precise
-        ),
+        // fadeInFragment(
+        //   <.span("Expect that no movies with same title are made in the same year"), <.br, // TODO more precise
+        // ),
         fadeInFragment(
           <.b("Claim 2: "),
           <.div(^.textAlign := "center",
             <.span("title, year → starName")
           ),
         ),
-        fadeInFragment(
-          <.span("False - more than one star for a particular movie"), <.br,  // TODO more precise
-        ),
+        // fadeInFragment(
+        //   <.span("False - more than one star for a particular movie"), <.br,  // TODO more precise
+        // ),
+      ),
+      notes(
+        "Claim1 = Expect that no movies with same title are made in the same year",
+        "Claim2 = False - more than one star for a particular movie"
       )
     ),
 
@@ -159,11 +165,20 @@ object Normalization {
       OrderedList(
         Item.stable("These attributes functional determine all other attributes in R"),
         Item.stable(<.span("No proper subset of { "), getOneThroughN("a"), <.span(" } functional determines all other attributes in R")),
-      ),
+      ), <.br,
       <.span("Example:"),
       <.div(^.textAlign := "center",
-        <.span("Attributes {title, year, starName} forms a key for Movies1")
+        <.span("Attributes: {title, year, starName} forms a key for Movies1")
       ),
+
+      notes(
+        "1) Two distinct tubles can’t agree on { a1 a2, …, an}.",
+        "2) Key must be minimal.",
+        "Ex: Determines all other attributes, key is minimal.",
+        "Title, year - not a key.",
+        "Year, starName - not a key.",
+        "title, starName"
+      )
     ),
 
     headerSlideLeftAligned("Multiple keys",// TODO include notes
@@ -183,10 +198,10 @@ object Normalization {
         Item.stable("Attributes in S and T may overlap")
       ),
       fadeInFragment(
-        <.span("Movies1(title, year, length, genre, studioName, starName) can be decomposed into"),
+        <.b("Movies1"), <.span("(title, year, length, genre, studioName, starName) can be decomposed into"),
         <.div(^.textAlign := "center",
-          <.span("Movies2(title, year, length, genre, studioName) and"), <.br,
-          <.span("Stars(title, year, starName)"),
+          <.b("Movies2"), <.span("(title, year, length, genre, studioName) and"), <.br,
+          <.b("Stars"), <.span("(title, year, starName)"),
         ),
       )
     ),
@@ -200,17 +215,39 @@ object Normalization {
     headerSlideLeftAligned("Boyce-Codd Normal Form (BCNF)", // TODO notes Movies1 is not in BCNF because FD exists
                                                             // Title, year -> length, genre, studioName - which is not a key
       <.span("Definition:"),
-      <.div(^.textAlign := "center", <.span("A relation R is in BCNF iff. whenever there is a nontrival FD "), getOneThroughN("a"), <.span(" → "), getOneThroughN("b"), <.span(" for R it is the case that { "), getOneThroughN("a"), <.span(" } is a superkey")),
-      <.div(^.textAlign := "center", <.span("Or left side of every nontrivial FD must contain a key")),
+      <.div(^.textAlign := "center",
+        <.span("A relation R is in BCNF iff. whenever there is a nontrival FD "), getOneThroughN("a"), <.span(" → "), getOneThroughN("b"), <.span(" for R"), <.br, <.span("it is the case that { "), getOneThroughN("a"), <.span(" } is a superkey")
+      ),
+      <.span("That is, the left side of every nontrivial FD must contain a superkey"), <.br,
       fadeInFragment(
         <.span("Example"), <.br,
-        <.span("Movies1 is not in BCN"), <.br,
+        <.b("Movies1"), <.span(" is not in BCN"), <.br,
       ),
       fadeInFragment(
-        <.span("Movies 2, Stars is in BCNF"), <.br,
+        <.b("Movies2"), <.span(", "), <.b("Stars"), <.span(" is in BCNF"), <.br,
       ),
       <.b("Note"), <.span(": Sometimes decomposition into BCNF can end in situation where checking FD on the relations is not possible"),
+
+      notes(
+        "Movies1 is not in BCNF because FD exists",
+        "Title, year -> length, genre, studioName - which is not a key"
+      )
     ),
+
+    headerSlideLeftAligned("1NF & 2NF",
+    Enumeration(
+      Item.stable(
+        <.b("1NF"), <.br,
+        <.span("A relation is in 1NF iff. each have only atomic values - each column have only one value for each row"), <.br,
+        <.span("Upheld these days for “all” SQL servers."), <.br,
+        <.span("Reason this exists is because SQL builds on Relational Algebra"), <.br,
+      ),
+      Item.stable(
+        <.b("2NF"), <.br,
+        <.span("A relation is in 2NF iff. its in 1NF and every non-key attribute is fully dependent on a primary key. An attribute is fully dependent on a primary key if its on the right side of an FD for which the left side is either the primary key or something that can be derived from the primary key."),
+      ),
+    ),
+  ),
 
     headerSlideLeftAligned("3NF",
       <.span("A relation R is in the third normal form (3NF) if:"),
@@ -220,35 +257,18 @@ object Normalization {
       <.span("“For each nontrival FD, either the left side is a superkey, or the right side consists of prime attributes only.” - Database Systems the Complete book 2nd edition."), <.br,
       <.b("Note"), <.span(": Weaker than BCNF"), <.br, <.br,
       <.span(VdomStyle("fontSize") := "22px", "* an attribute that is a member of some key is called a prime."),
-      /* Todod notes
-      3NF
-      • 2NF
-      • Intet felt må være transitivt afhængigt af primærnøglen 
-
-    Hvis en tabel har felter, der er indbyrdes afhængige, og ikke er en del af primærnøglen, så skal én eller flere af disse felter flyttes over i en ny tabel sammen med en kopi af det tilbageblevne felt (som derved bliver fremmednøgle).
-    */
-    ),
-
-    headerSlideLeftAligned("1NF & 2NF",
-      Enumeration(
-        Item.stable(
-          <.b("1NF"), <.br,
-          <.span("A relation is in 1NF iff. each have only atomic values - each column have only one value for each row"), <.br,
-          <.span("Upheld these days for “all” SQL servers."), <.br,
-          <.span("Reason this exists is because SQL builds on Relational Algebra"), <.br,
-        ),
-        Item.stable(
-          <.b("2NF"), <.br,
-          <.span("A relation is in 2NF iff. its in 1NF and every non-key attribute is fully dependent on a primary key. An attribute is fully dependent on a primary key if its on the right side of an FD for which the left side is either the primary key or something that can be derived from the primary key."),
-        ),
+      notes(
+        "3NF:",
+        "• 2NF;",
+        "• Intet felt må være transitivt afhængigt af primærnøglen:",
+        "Hvis en tabel har felter, der er indbyrdes afhængige, og ikke er en del af primærnøglen, så skal én eller flere af disse felter flyttes over i en ny tabel sammen med en kopi af det tilbageblevne felt (som derved bliver fremmednøgle)."
       ),
     ),
-      
   )
 
   val chapter5 = chapter(
 
-    headerSlideLeftAligned("Examples (1/4)", 
+    headerSlideLeftAligned("Examples (1/4)",
       <.img(VdomAttr("data-src") := "./img/initial_data.png", VdomStyle("height") := "150px"),
       fadeInFragment(
         <.b("1NF - take 1"), <.br,
@@ -256,62 +276,67 @@ object Normalization {
       ),
       fadeInFragment(
         <.b("1NF - take 2"), <.br,
-        <.span(VdomStyle("fontSize") := "32px", 
+        <.span(VdomStyle("fontSize") := "32px",
           <.span("Book("), <.u("title"), <.span(", "), <.u("format"), <.span(", author, authorNationality, price, pages, thickness, genreId, genreName, publisherId)"), <.br,
           <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
           <.span("Publisher("), <.u("publisherId"), <.span(", name, Country)"), <.br,
-          <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+          <.span("BookSubject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
         ),
       ),
     ),
-    
+
     headerSlideLeftAligned("Examples (2/4)", // TODO All attributer der ikke er del af en nøgle,  afhænger af title. Men kun Price afhænger af Format
       <.b("2NF"), <.br,
-      <.span(VdomStyle("fontSize") := "32px", 
+      <.span(VdomStyle("fontSize") := "32px",
         <.span("Book("), <.u("title"), <.span(", author, authorNationality, pages, thickness, genreId, genreName, publisherId)"), <.br,
         <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
         <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
         <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
-        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+        <.span("BookSubject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
       ),
+
+      notes(
+        "All attributer der ikke er del af en nøgle, afhænger af title. Men kun Price afhænger af Format"
+      )
     ),
 
     headerSlideLeftAligned("Examples (3/4)", // TODO 2NF + no transitive depencies
                                               // Eg GenreId and GenreName both depend on primary key Title
       <.b("3NF"), <.br,
-      <.span(VdomStyle("fontSize") := "32px", 
+      <.span(VdomStyle("fontSize") := "32px",
         <.span("Book("), <.u("title"), <.span(", author, authorNationality, pages, thickness, genreId, publisherId)"), <.br,
         <.span("Genre("), <.u("genreId"), <.span(", genreName)"), <.br,
         <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
         <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
         <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
-        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+        <.span("BookSubject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
       ),
+
+      notes(
+        "2NF + no transitive depencies",
+        "E.g. GenreId and GenreName both depend on primary key Title"
+      )
     ),
 
-    headerSlideLeftAligned("Examples (4/4)", 
+    headerSlideLeftAligned("Examples (4/4)",
       <.b("BCNF"), <.br, // TODO Non-triviel depency between Author and AuthorNationality
-      <.span(VdomStyle("fontSize") := "32px", 
+      <.span(VdomStyle("fontSize") := "32px",
         <.span("Book("), <.u("title"), <.span(", author, pages, thickness, genreId, publisherId)"), <.br,
         <.span("Author("), <.u("author"), <.span(", nationality)"), <.br,
         <.span("Genre("), <.u("genreId"), <.span(", genreName)"), <.br,
         <.span("Price("), <.u("title"), <.span(", "), <.u("format"), <.span(", price)"), <.br,
         <.span("Subject("), <.u("subjectId"), <.span(", subjectName)"), <.br,
         <.span("Publisher("), <.u("publisherId"), <.span(", name, country)"), <.br,
-        <.span("Subject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
+        <.span("BookSubject("), <.u("title"), <.span(", "), <.u("subjectId"), <.span(")")
       ),
+      notes(
+        "Non-triviel depency between Author and AuthorNationality"
+      )
     ),
   )
 
   val chapter6 = chapter(
     headerSlideLeftAligned("4NF",
-    /* TODO
-    That is, if a relation is in 4NF, then every nontrivial MVD is really an FD with a superkey on the left
-
-    Both in BCNF and therefore also in 3NF some redundancies are possible.
-
-    https://en.wikipedia.org/wiki/Fourth_normal_form
-    */
       <.span("BCNF applied to MVD instead of FD"), <.br,
       <.span("A relation R is in 4NF if whenever"),
       <.div(^.textAlign := "center", getOneThroughN("a"), <.span(" ↠ "), getOneThroughN("b")),
@@ -319,7 +344,12 @@ object Normalization {
       <.span("A multivalued dependency (MVD)"),
       <.div(^.textAlign := "center", getOneThroughN("a"), <.span(" ↠ "), getOneThroughN("b")),
       <.span("holds for a relation R if when we restrict ourselves to tubles of R that have particular values for each attribute in ("), getOneThroughN("a"), <.span(") then there is a set of values we find among the ("), getOneThroughN("b"), <.span(") is independent of the set of values we find among the attributes of R that is not in those sets."),
-    ),
+    notes(
+      "That is, if a relation is in 4NF, then every nontrivial MVD is really an FD with a superkey on the left",
+      "Both in BCNF and therefore also in 3NF some redundancies are possible.",
+      "https://en.wikipedia.org/wiki/Fourth_normal_form",
+    )
+  ),
 
     headerSlide("In practice",
       OrderedList(
@@ -328,14 +358,14 @@ object Normalization {
           Item.stable("Storage usage"),
           Item.stable("Update time"),
           Item.stable("Query time"),
-        )
+        ),
         Item.stable("BCNF or 3NF is normally the table forms to strive for*"),
         Item.stable("If performance is compromised by normalization, try denormalizing"),
-      )
+      ),
       <.span(VdomStyle("fontSize") := "22px", "* “The practical need for fourth normal form” by Margaret S. Wu states in astudy of forty organizational databases, over 20% contained one or more tables that violated 4NF while meeting all lower normal forms "),
     ),
 
-    headerSlide("Database lifecycle"
+    headerSlide("Database lifecycle",
       <.img(VdomAttr("data-src") := "./img/normalize-life-cycle.png", VdomStyle("height") := "600px"),
     ),
   )
@@ -346,7 +376,7 @@ object Normalization {
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
@@ -356,12 +386,12 @@ object Normalization {
       <.span("Join: https://www.cleanpng.com/png-join-microsoft-sql-server-table-oracle-database-6091970/"),
       <.br,
       <.span("Exercise gif: https://parentsneed.com/7-ways-to-help-make-homework-fun/"),
-      <.br, 
+      <.br,
     ),
 
 
 
-    
+
   )
 
 
@@ -377,7 +407,7 @@ object Normalization {
           chapter3,
           chapter4,
           chapter5,
-          // chapter6,
+          chapter6,
           // chapter7,
 
           // chapter8,

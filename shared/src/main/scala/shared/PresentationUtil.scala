@@ -101,6 +101,9 @@ object PresentationUtil {
     ),
   )
 
+  //TODO  def notes(notes: String*): TagOfHTMLElement = <.aside(^.cls := "notes", notes.flatMap(s => Array[TagMod](<.span(s), <.br)))
+  def notes(notes: String*): TagOfHTMLElement = <.aside(^.cls := "notes", notes.toTagMod)
+
   def getOneThroughX(letter: String, x: String): TagOfHTMLElement = <.span(<.span(letter), <.sub("1"), <.span(", "), <.span(letter), <.sub("2"), <.span(", ...,"), <.span(letter), <.sub(x))
   def getOneThroughN(letter: String): TagOfHTMLElement = getOneThroughX(letter, "n")
 

@@ -43,6 +43,8 @@
       showSlideNumber: 'print',
       transition: 'none',
       slideNumber: true,
+      showNotes: true,
+      showNotes: "separate-page",
 
       math: {
         config: 'TeX-AMS_HTML-full'
@@ -52,7 +54,9 @@
         { src: './../../reveal/lib/js/classList.js', condition: function () { return !document.body.classList; } },
         { src: './../../reveal/plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } },
         { src: './../../reveal/plugin/zoom-js/zoom.js', async: true },
-        { src: './../../reveal/plugin/math/mathjax.js', async: true }
+        { src: './../../reveal/plugin/math/mathjax.js', async: true },
+        { src: './../../reveal/plugin/notes/notes.js', async: true },
+
       ]
     });
   </script>
