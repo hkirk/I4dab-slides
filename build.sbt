@@ -32,6 +32,7 @@ lazy val root = project
     dabNormalization,
     dabEfCoreIntro,
     dabEfCoreMigrations,
+    dabEfCoreQueryManipulation,
     shared
   )
 
@@ -114,6 +115,12 @@ lazy val dabEfCoreModels = project
 
 lazy val dabEfCoreMigrations = project
   .in(file("dab/6.2-EfCoreMigrations"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
+
+lazy val dabEfCoreQueryManipulation = project
+  .in(file("dab/7.1-EfCoreQueryManipulation"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
