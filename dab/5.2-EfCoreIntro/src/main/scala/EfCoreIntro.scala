@@ -121,40 +121,46 @@ object EfCoreIntro {
       )
     ),
 
-    headerSlideWithColumns("Creating project (CLI) (1/2)")
+    headerSlideWithColumns("Creating project (`) (1/2)")
     (
-      OrderedList(
-        Item.stable(
-          <.span("Creating a .Net 2.0 Core console Project for Sqlite"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "$ mkdir MyFirstEFCoreProject"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "$ cd MyFirstEFCoreProject"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "$ dotnet new console"), <.br,
-        ),
-        fadeInFragment(
+      <.div(VdomStyle("lineHeight") := "40px",
+        <.span("First time: dotnet tool install --global dotnet-ef --version <3.1.1>"), <.br,
+        OrderedList(
           Item.stable(
-            <.span("Install Entity Framework Core"), <.br,
-            <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Sqlite"), <.br,
-            <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Design"), <.br,
-            // TODO One more tools maybe
+            <.span("Creating a .Net 2.0 Core console Project for Sqlite"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "$ mkdir MyFirstEFCoreProject"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "$ cd MyFirstEFCoreProject"), <.br,
+            <.i(VdomStyle("fontSize") := "22px", "$ dotnet new console"), <.br,
           ),
-        ),
-        fadeInFragment(
-          Item.stable(
-            <.span("Adding a connection string (in .cs file)"), <.br,
-            <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code"), <.br,
-            
+          fadeInFragment(
+            Item.stable(
+              <.span("Install Entity Framework Core"), <.br,
+              <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Sqlite"), <.br,
+              <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Design"), <.br,
+              // TODO One more tools maybe
+            ),
+          ),
+          fadeInFragment(
+            Item.stable(
+              <.span("Adding a connection string (in .cs file)"), <.br,
+              <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code"), <.br,
+              
+            ),
           ),
         ),
       ),
     )(
       fadeInFragment(
-        cSharp("""// Class yuou make
-                 |public class Context : DbContext {
-                 |  protected override void OnConfiguring(
-                 |               DbContextOptionsBuilder ob) {
-                 |    // For SQLite file, this is 
-                 |    ob.UseSqlite("Data Source=door.db");
-                 |}}""".stripMargin),
+        <.div(
+          cSharp("""// Class you make
+                  |public class Context : DbContext {
+                  | protected override void
+                  |      OnConfiguring(
+                  |        DbContextOptionsBuilder ob) {
+                  |  // For SQLite file, this is 
+                  |  ob.UseSqlite("Data Source=d.db");
+                  |}}""".stripMargin),
+        )
       ),
     ),
 
@@ -200,7 +206,7 @@ object EfCoreIntro {
       )
     ),
 
-    headerSlideWithColumns("Creating model classes")
+    headerSlideLeftAligned("Creating model classes")
     (
       Enumeration(
         Item.stable("Create class Door"),
@@ -210,15 +216,14 @@ object EfCoreIntro {
 
       cSharp("""public class Door
                |{
-               |    public int DoorId { get; set; }
-               |    public string Location { get; set; }
-               |    public string Type { get; set; }
+               |  public int DoorId {get;set;}
+               |  public string Location {get;set;}
+               |  public string Type {get;set;}
                |}""".stripMargin),
-    )(
       Enumeration(
         Item.stable("Add DbSet to AppDbContext"),
       ),
-
+        
       cSharp("public DbSet<Door> doors { get; set; }"),
     ),
 
