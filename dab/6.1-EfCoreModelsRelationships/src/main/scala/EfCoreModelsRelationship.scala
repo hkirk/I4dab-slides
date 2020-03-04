@@ -81,13 +81,14 @@ object EfCoreIntro {
           <.span(VdomStyle("fontSize") := "30px", "Primary key → In method OnModelCreating in DbContext")
         ),
       ),
-      cSharp("modelBuilder.Entity<Car>().HasKey(c => c.LicensePlate);"),
+      cSharp("""public class Context : DbContext {
+               |  public void protected override void 
+               |          OnModelCreating(ModelBuilder mb) {
+               |    mb.Entity<Car>().HasKey(c => c.LicensePlate);
+               |} }""".stripMargin),
     ),
 
-    // TODO show OnModelCreating
-    headerSlideWithColumns("Constraints")
-    (
-      <.b("Fluent API"), <.br,
+    headerSlide("Constraints - Fluent API",
       cSharp("""class MyContext : DbContext {
                |    ...
                |    DbSet<Client> clients {get; set;}
@@ -98,8 +99,11 @@ object EfCoreIntro {
                |            .IsRequired(); // Not null
                |          //.HasMaxLength(500)
                |    }}""".stripMargin),
-    )(
-      <.b("Annotation"), <.br,
+    ),
+
+
+    headerSlide("Constraints - Annotations",
+
       cSharp("""namespace MyApp.Models {
                |  public class Client {
                |      [Required]
@@ -124,7 +128,7 @@ object EfCoreIntro {
         Item.stable("Convention")
       ),
       cSharp("""public int Id {get; set;}
-               |public int <ClassName>Id {get; set;}""".stripMargin),
+               |public int <ClassName>Id { get; set;}""".stripMargin),
 
       fadeInFragment(
         Enumeration(
@@ -138,27 +142,28 @@ object EfCoreIntro {
         Enumeration(
           Item.stable("Fluent API")
         ),
-        cSharp("modelBuilder.Entity<Book>().HasKey(b => b.ID);"),
+        cSharp("""modelBuilder.Entity<Book>()
+                 |  .HasKey(b => b.ID);""".stripMargin),
       ),
       fadeInFragment(
         Enumeration(
           Item.stable("Composite")
         ),
-        cSharp("""modelBuilder.Entity<Author>().HasKey(
-                |    a => new { a.FirstName, a.LastName});""".stripMargin),
+        cSharp("""modelBuilder.Entity<Author>()
+                |  .HasKey(a => new { a.FirstName, a.LastName});""".stripMargin),
       ),
     ),
 
     headerSlide("Index & Uniqueness",
       cSharp("""public class MyDbContext: DbContext {
-                |  protected override void OnModelCreating(ModelBuilder modelBuilder) {
+                |  protected override void OnModelCreating(ModelBuilder mb) {
                 |    // Alternative key - unique
-                |    modelBuilder.Entity<Book>().HasAlternateKey(b => b.Isbn).HasName("UniqueIsbn");
+                |    mb.Entity<Book>().HasAlternateKey(b => b.Isbn).HasName("UniqueIsbn");
                 |    // Index - not nessesaryly unique
-                |    modelBuilder.Entity<Book>().HasIndex(b => b.Isbn)
+                |    mb.Entity<Book>().HasIndex(b => b.Isbn)
                 |        .HasName("Isbn index").IsUnique(); // Remember isUnique with Index
                 |    // Composite key - also available with HasIndex
-                |    modelBuilder.Entity<Author>().HasKey(a => new { a.FirstName, a.LastName});
+                |    mb.Entity<Author>().HasKey(a => new { a.FirstName, a.LastName});
                 |}}""".stripMargin),
     ),
   )
@@ -175,12 +180,12 @@ object EfCoreIntro {
         Item.stable("[NotMapped] not needed when no public setter"),
         Item.stable("Alternatively in FluentApi"),
       ),
-      cSharp("modelBuilder.Entity<Book>().Ignore(b => b.FullTitle);"),
+      cSharp("mb.Entity<Book>().Ignore(b => b.FullTitle);"),
 
       Enumeration(
         Item.stable("Types"),
       ),
-      cSharp("modelBuilder.Ignore<BookMetadata>();"),
+      cSharp("mb.Ignore<BookMetadata>();"),
   
     ),
 
@@ -190,10 +195,10 @@ object EfCoreIntro {
                |public DateTime Created {get;set;}""".stripMargin),
 
       <.span("In DbContext add"), <.br,
-      cSharp("modelBuilder.Entity<Book>().Property(b => b.Created).HasDefaultValue(DateTime.Now)"),
+      cSharp("mb.Entity<Book>().Property(b => b.Created).HasDefaultValue(DateTime.Now)"),
 
-      <.span("If value should come from SQL Server"), <.br,
-      cSharp("""modelBuilder.Entity<Book>().Property(b => b.Created)
+      <.span("Above is migrations time decided. If value should dynamicly from SQL Server"), <.br,
+      cSharp("""mb.Entity<Book>().Property(b => b.Created)
               |   //SQLite: .HasDefaultValueSql("CURRENT_TIME")
               |   .HasDefaultValueSql("getdate()")""".stripMargin),
 
@@ -215,7 +220,7 @@ object EfCoreIntro {
         Item.stable("In DbContext insert in onModelCreating"),
       ),
       cSharp("""modelBuilder.Entity<Book>().Property<DateTime>("Created")
-              |   .HasDefaultValueSql("getdate()""".stripMargin),
+              |   .HasDefaultValueSql("getdate()");"""".stripMargin),
     ),
   )
   
@@ -232,7 +237,10 @@ object EfCoreIntro {
                 |  public Genre Genre {get; set;}
                 |  public int ClientId {get;set;}
                 |  public Client Client {get;set;}
-                |}""".stripMargin)
+                |}""".stripMargin),
+      fadeInFragment(
+        <.b("Note"), <.span(": Client is a navigational property"),
+      )
     )
     (
       cSharp("""public class Client {
@@ -247,7 +255,11 @@ object EfCoreIntro {
                 |  public string Email {get; set;}
                 |  ...
                 |  public Membership Membership {get; set;}
-                |}""".stripMargin)
+                |}""".stripMargin),
+      fadeInFragment(
+        <.b("Note"), <.span(": Membership is a navigational property"),
+      )
+
     ),
 
     headerSlide("1-1 relationship (2/2)",
@@ -310,7 +322,7 @@ object EfCoreIntro {
     ),
 
     headerSlideLeftAligned("N-N relationship (2/3)",
-      <.span("Navigational property in PersonalLibrary.cs"), <.br,
+      <.span("Navigational properties in PersonalLibraryBook.cs"), <.br,
       cSharp("""public class PersonalLibraryBook {
                 |  public int BookId {get; set;}
                 |  public Book Book {get; set;}
@@ -325,7 +337,8 @@ object EfCoreIntro {
       cSharp("""public class MyDbContext: DbContext {
               |  protected override void OnModelCreating(ModelBuilder modelBuilder) { 
               |    // Book - PersonalLibrary (many to many relationship)
-              |    modelBuilder.Entity<PersonalLibraryBook>().HasKey(p => new {p.BookId, p.PersonalLibraryId});
+              |    modelBuilder.Entity<PersonalLibraryBook>()
+              |        .HasKey(p => new {p.BookId, p.PersonalLibraryId});
               |    modelBuilder.Entity<PersonalLibraryBook>()
               |        .HasOne(       plb => plb.Book)
               |        .WithMany(     b   => b.PersonalLibraryBooks)
@@ -376,7 +389,7 @@ object EfCoreIntro {
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
