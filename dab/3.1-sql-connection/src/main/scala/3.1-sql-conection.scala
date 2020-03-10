@@ -123,7 +123,8 @@ object Modeling {
     ),
 
     headerSlide("Map N-N relations ships (2/2)",
-      sql("""CREATE TABLE Drivers(
+      sql("""-- Or if the driver/car couple should be unique
+            |CREATE TABLE CarDriver(
             |    driver_cpr INT 
             |       FOREIGN KEY REFERENCES Drivers(cpr),
             |    car_reg VARCHAR(20) 
@@ -132,6 +133,7 @@ object Modeling {
             |        UNIQUE (driver_cpr, car_reg)
             |)
             |
+            |-- To create relations insert into CarDriver
             |INSERT INTO CAR VALUES
             |  ('12345', '123145'), ('123145', '21sdaf')
             |INSERT INTO Drivers VALUES
