@@ -15,7 +15,7 @@ object EfCoreQueryManipulation {
       <.h2("EF Core"),
       <.br,
       <.h4("Query and Manipulations"),
-      <.img(VdomAttr("data-src") := "./img/winnie.png", ^.cls := "headerMeme"),
+      <.img(VdomAttr("data-src") := "./img/queries.png", ^.cls := "headerMeme"),
     ),
 
     headerSlide("Agenda",
@@ -45,12 +45,17 @@ object EfCoreQueryManipulation {
       // 1 DbContext property accces
       // 2 A series of LINQ and/or EF core commands
       // 3 An execute command
-      cSharp("_context.Books.Where(p => p.Title.StartsWith(\"Database\").ToList();"),
+      cSharp("_context.Books.Where(b => b.Title.StartsWith(\"Database\").ToList();"),
       <.span("vs"),
       cSharp("""from b in _context.Books
-               |  where b.Title == \"Database\"
+               |  where b.Title == "Database"
                |  select b;""".stripMargin),
-
+      <.b("Note"), <.span(": Requires Linq and EntityFrameworkCore imports in C#"),
+      notes(
+        "1 DbContext property accces",
+        "2 A series of LINQ and/or EF core commands",
+        "3 An execute command",
+      )
     ),
 
     headerSlide("Execute commands",
@@ -60,11 +65,20 @@ object EfCoreQueryManipulation {
         Item.stable(".Count()"),
         Item.stable("..."),
       ),
-
-      // TODO async
     ),
 
-    // TODO introduce round-trip
+    headerSlide("Async execution",
+      Enumeration(
+        Item.stable("Ends with Async()"),
+        Enumeration(
+          Item.stable("E.g. .ToListAsync()"),
+        ),
+        Item.stable("Exists in EntityFrameworkCore namespace - remember use import"),
+        Item.stable("Returns a Task<??>"),
+        Item.stable("Use async and await"),
+        Item.stable("Can not execute queries in parallel")
+      )    
+    )
   )
 
   val chapter3 = chapter(
@@ -102,6 +116,7 @@ object EfCoreQueryManipulation {
         Item.stable("+ Loaded by EF Core efficiently with a minimum of round-trips"),
         Item.stable("% Load all data, even when not needed"),
         Item.stable("If relationship does not exists, EF does not fail"),
+        Item.stable("Since 3.0 this uses JOIN extensively - Be AWARE"),
       ),
     ),
 
@@ -121,7 +136,7 @@ object EfCoreQueryManipulation {
       ),
     ),
 
-    headerSlide("Loading Strategies - Select",
+    headerSlideLeftAligned("Loading Strategies - Select",
       cSharp("""public class AClass {
                 |  public object LoadSelect() {
                 |    return _context.Books
@@ -136,7 +151,7 @@ object EfCoreQueryManipulation {
       Enumeration(
         Item.stable("+Load specifically the data needed, including database calculations"),
         Item.stable("-Have to write each query by hand"),
-      ),
+      ), <.br,
       <.b("Note"), <.span(": Includes are ignored when returning instances which are not an entity type")
     ),
 
@@ -164,9 +179,9 @@ object EfCoreQueryManipulation {
   val chapter4 = chapter(
     headerSlide("Tracking",
       <.span("To track"),
-      cSharp("_context.Books.AsNoTracking().ToList()"),
-      <.span("or to NoTrack"),
       cSharp("_context.Books.ToList()"),
+      <.span("or to NoTrack"),
+      cSharp("_context.Books.AsNoTracking().ToList()"),
 
       Enumeration(
         Item.stable("Better performance in readonly scenarios"),
@@ -278,6 +293,7 @@ object EfCoreQueryManipulation {
 
     headerSlide(
       "References",
+      <.span("Frontpage meme: https://www.thereformedprogrammer.net/building-efficient-database-queries-using-entity-framework-core-and-automapper/"),
     ),
 
 
