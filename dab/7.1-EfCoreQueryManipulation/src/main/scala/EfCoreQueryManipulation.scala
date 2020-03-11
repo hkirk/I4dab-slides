@@ -127,7 +127,7 @@ object EfCoreQueryManipulation {
                 |      .Include(b => b.Author)
                 |      .Include(b => b.Review)
                 |        .ThenInclude(r => r.Voter)
-                |      .ToLisT(); 
+                |      .ToList(); 
                 |    return books;
                 |  }
                 |}""".stripMargin),
