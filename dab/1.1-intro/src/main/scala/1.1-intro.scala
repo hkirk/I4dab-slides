@@ -57,7 +57,7 @@ object Intro {
         Item.stable(colorRedSpan("Summarize", Some(1)), <.span(" methods for selection and modeling of a concrete database technology.")),
         Item.stable(colorRedSpan("Compare",   Some(1)), <.span(" data structures in databases with data structures in an application.")),
         Item.stable(colorRedSpan("Applying",  Some(1)), <.span(" standard network technologies to provide network access to a given database.")),
-        Item.stable(colorRedSpan("Analyze",   Some(1)), <.span(" techniques to ensure cstableorrect data in a database and for sharing the responsibility for correct data between databases and applications.")),
+        Item.stable(colorRedSpan("Analyze",   Some(1)), <.span(" techniques to ensure correct data in a database and for sharing the responsibility for correct data between databases and applications.")),
         Item.stable(colorRedSpan("Applying",  Some(1)), <.span(" different types of databases related to application development with help from development tools and programming methods.")),
         Item.stable(colorRedSpan("Describe",  Some(1)), <.span(" the most common database subject expressions.")),
       )

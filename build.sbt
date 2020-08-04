@@ -34,7 +34,7 @@ lazy val root = project
     dabEfCoreMigrations,
     dabEfCoreQueryManipulation,
     dabEfCoreAdvanced,
-    dabEfCorePatternsDDD
+    dabEfCorePatternsDDD,
     shared
   )
 
