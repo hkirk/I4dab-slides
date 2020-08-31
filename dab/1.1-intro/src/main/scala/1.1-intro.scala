@@ -40,12 +40,13 @@ object Intro {
       ),
     ),
   )
+  
 
   val chapter1 = chapter(
     auHeadlineSlide(
       <.h2("I4DAB"),
       <.br,
-      <.h4("Introduction to databases")
+      <.h4("Introduction to databases Fall 2020- HK and JRT ")
     ),
 
   )
@@ -122,7 +123,7 @@ object Intro {
     ),
 
     headerSlide(
-      "My expectations",
+      "Our expectations",
       Enumeration(
         Item.stable("Read material before class"),
         Item.stable("You solve exercises - and there will be exercises to do out of class"),
