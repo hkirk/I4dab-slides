@@ -35,6 +35,7 @@ lazy val root = project
     dabEfCoreQueryManipulation,
     dabEfCoreAdvanced,
     dabEfCorePatternsDDD,
+    dabScripting,
     shared
   )
 
@@ -140,3 +141,8 @@ lazy val dabEfCorePatternsDDD = project
   .settings(common)
   .dependsOn(shared)
 
+  lazy val dabScripting = project
+  .in(file("dab/9.1-Scripting"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
