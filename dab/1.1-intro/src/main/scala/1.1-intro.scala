@@ -40,12 +40,13 @@ object Intro {
       ),
     ),
   )
+  
 
   val chapter1 = chapter(
     auHeadlineSlide(
       <.h2("I4DAB"),
       <.br,
-      <.h4("Introduction to databases")
+      <.h4("Introduction to databases Fall 2020- HK and JRT ")
     ),
 
   )
@@ -89,7 +90,7 @@ object Intro {
     
     headerSlide(
       "Schedule",
-      <.img(VdomAttr("data-src") := "./img/schedule.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/schedule.png", VdomStyle("max-height") := "1200px"),
     ),
 
     headerSlide(
@@ -122,7 +123,7 @@ object Intro {
     ),
 
     headerSlide(
-      "My expectations",
+      "Our expectations",
       Enumeration(
         Item.stable("Read material before class"),
         Item.stable("You solve exercises - and there will be exercises to do out of class"),
@@ -160,13 +161,16 @@ object Intro {
                     <.span("common operations on data")),
         Item.stable("Database server"),
         Enumeration(
-          Item.stable("Allow multiple simultaneous clients"),
+          Item.stable("Allow multiple simultaneous clients to do"),
+          Item.stable("Create Read Update and Delete operations: AKA CRUD"),
           Item.stable("Access over network"),
           Item.stable("Can be spread on multiple hosts"),
+          Item.stable("And maybe the most important topic: allow data oriented access to the file/files "),
         ),
       ),
       <.img(VdomAttr("data-src") := "./img/database.jpg", ^.cls := "side-image"),
     ),
+
 
     headerSlide(
       "Database server",
@@ -195,15 +199,57 @@ object Intro {
       ),
     ),
 
-    headerSlideWithColumns("Data model")
-      (
+    headerSlide(
+      "Data Model In Our Context 1",
+      Enumeration(
+        Item.stable("Do we already know something?"),
         Enumeration(
+           Item.stable("Yes, because we are doing domain models and class models when doing OO-A and -D"),
+           Item.stable("To construct a database we need a data model looking for entities"),
+           Item.stable("Diffence between object and entity? In short! Object = data + behavior; Entity = data; (a definiton to start with!!) "),
+         ),         
+        ),
+      ),
+    
+  
+  headerSlide(
+      "Data Model In Our Context 2",
+      Enumeration(
+        Item.stable("Automatisation"),
+        Enumeration(
+          Item.stable("For a relational database, this model is very often a Entity Relationship Diagram model (ERD model) "),
+          Enumeration(
+            Item.stable("In a ERD model we identifies entities and their relationships, ie nouns and verbs in user stories/use cases"),
+            Item.stable("For all relationships, AKA associations, we identifies their degree, connectivity and exsistience"),
+          ),          
+        ),
+      ),
+    ),
+
+    headerSlide(
+      "Data Model In Our Context 3",
+      Enumeration(
+        Item.stable("Automatisation"),
+        Enumeration(
+          Item.stable("When we have a ERD model we know exactly how to construct the database with tables and relationships"),
+          Enumeration(
+            Item.stable("Ten design rules transforms the ERD model to a relational database (rdb) schema"),
+            Item.stable("Giving the possibillities to let db-tools convert an ERD to a rdb schema"),
+          ),
+          Item.stable("But as you will se later on, the same goes for an OO class model, it can be converted to a rdb schema"),
+        ),
+      ),
+    ),
+
+    headerSlideWithColumns("Data model")
+    (
+      Enumeration(
           Item.stable("Relational model vs semi-structure model"),
           Item.stable("Values"),
           Item.stable("Objects"),
         ),
         exampleMovieTable,
-      )(
+      )(        
         xml(
         """<Movies>
           |  <Movie title=”Star Wars”>
@@ -223,8 +269,9 @@ object Intro {
           |  </Movie>
           |</Movies>""".stripMargin)
       ),
-  )
+    )
 
+  
   val chapter6 = chapter(
     headerSlide(
       "Relational model",
