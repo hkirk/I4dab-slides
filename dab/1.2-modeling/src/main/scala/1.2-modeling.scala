@@ -73,7 +73,9 @@ object Modeling {
       "How",
       Enumeration(
         Item.stable("Design interaction between application and database"),
-        Item.stable("Optional: Use an Object Relational Mapper"),
+        Item.stable(
+          <.span("Optional: Use an "), <.b("O"), <.span("bject "), <.b("R"), <.span("elational "), <.b("M"), <.span("apper")
+        ),
       ),
     ),
 
@@ -89,7 +91,7 @@ object Modeling {
         Item.stable("Physical design"),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/databaseLifeCycle.png", VdomStyle("max-height") := "700px"),
+      <.img(VdomAttr("data-src") := "./img/databaseLifeCycle.png", VdomStyle("maxHeight") := "700px"),
     ),
 
     headerSlide(
@@ -131,7 +133,7 @@ object Modeling {
           Item.stable("E.g. find synonyms, aggregate and generalize"),
         ),
         Item.stable("Transform to SQL (covered in week 2-3)"),
-        Item.stable("Normalize tables (covered in week 5)"),
+        Item.stable("Normalize tables"),
       ),
     ),
 
@@ -166,7 +168,7 @@ object Modeling {
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erComponents.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/erComponents.png", VdomStyle("maxHeight") := "600px"),
     ),
   
 
@@ -189,7 +191,7 @@ object Modeling {
         Item.stable("Constraints on numbers (cardinality) are possible"),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erRelationshipConnectivity.png", VdomStyle("max-height") := "800px"),
+      <.img(VdomAttr("data-src") := "./img/erRelationshipConnectivity.png", VdomStyle("maxHeight") := "800px"),
     ),
 
   headerSlideWithColumns("Relationship (2/3)")
@@ -210,13 +212,15 @@ object Modeling {
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erRelationshipDegree.png", VdomStyle("max-height") := "800px"),
+      <.img(VdomAttr("data-src") := "./img/erRelationshipDegree.png", VdomStyle("maxHeight") := "800px"),
     ),
 
     headerSlide(
       "Ternary (1/3)",
       Enumeration(
-        Item.stable("Should only be used when binary relationships are not sufficient"),
+        Item.stable(
+          <.span("Should "), <.b("only"), <.span(" be used when binary relationships are not sufficient")
+        ),
         Item.stable("A ‘one’ relationship iff. one instance is associated with one of each of the two other"),     
         Item.stable("else ‘many’"),
       )
@@ -233,13 +237,13 @@ object Modeling {
         Item.stable(<.b("Assertion 2"), <.span(":")),
         Enumeration(
           Item.stable("Employee works on one project in one location. Can be in different locations depending on project"),
-          Item.stable("At a location there can be multiple employee on a given project."),
+          Item.stable("At a location there can be multiple employees on a given project."),
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erTenaryOneOneOne.png", VdomStyle("max-height") := "300px"),
+      <.img(VdomAttr("data-src") := "./img/erTenaryOneOneOne.png", VdomStyle("maxHeight") := "300px"),
       <.br,
-      <.img(VdomAttr("data-src") := "./img/erTenaryOneOneMany.png", VdomStyle("max-height") := "300px"),
+      <.img(VdomAttr("data-src") := "./img/erTenaryOneOneMany.png", VdomStyle("maxHeight") := "300px"),
     ),
 
     headerSlideWithColumns("Ternary relationship (3/3)")
@@ -257,9 +261,9 @@ object Modeling {
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erTenaryOneManyMany.png", VdomStyle("max-height") := "300px"),
+      <.img(VdomAttr("data-src") := "./img/erTenaryOneManyMany.png", VdomStyle("maxHeight") := "300px"),
       <.br,
-      <.img(VdomAttr("data-src") := "./img/erTenaryManyManyMany.png", VdomStyle("max-height") := "300px"),
+      <.img(VdomAttr("data-src") := "./img/erTenaryManyManyMany.png", VdomStyle("maxHeight") := "300px"),
     ),
 
     headerSlideWithColumns("Relationship (3/3)")
@@ -279,7 +283,7 @@ object Modeling {
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erRelationshipExistence.png", VdomStyle("max-height") := "400px"),
+      <.img(VdomAttr("data-src") := "./img/erRelationshipExistence.png", VdomStyle("maxHeight") := "400px"),
     ),
 
     headerSlideWithColumns("Generalization / Inheritence")
@@ -296,7 +300,7 @@ object Modeling {
         ),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erGeneralization.png", VdomStyle("max-height") := "400px"),
+      <.img(VdomAttr("data-src") := "./img/erGeneralization.png", VdomStyle("maxHeight") := "400px"),
     ),
 
     headerSlideWithColumns("Aggregation")
@@ -307,22 +311,24 @@ object Modeling {
         Item.stable("No inherited attributes"),
       ),
     )(
-      <.img(VdomAttr("data-src") := "./img/erAggregation.png", VdomStyle("max-height") := "400px"),
+      <.img(VdomAttr("data-src") := "./img/erAggregation.png", VdomStyle("maxHeight") := "400px"),
     ),
-
-    fullscreenImageSlide("./img/erExampel.jpg"),
-
   )
 
+  val chapter4 = chapter(
+    headerSlide("E/R Example",
+      <.img(VdomAttr("data-src") := "./img/erExampel.jpg", VdomStyle("maxHeight") := "600px"),
+    ),
+  )
 
 
   val chapterEnd = chapter(
     headerSlide("Exercises",
-      <.img(VdomAttr("data-src") := "./img/exercises.jpg", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./img/exercises.jpg", VdomStyle("maxHeight") := "600px"),
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
@@ -337,8 +343,6 @@ object Modeling {
 
 
 
-
-
   val Talk = ScalaComponent
     .builder[Unit]("Presentation")
     .renderStatic(
@@ -349,7 +353,7 @@ object Modeling {
           chapter1,
           chapter2,
           chapter3,
-          // chapter4,
+          chapter4,
           // chapter5,
           // chapter6,
           // chapter7,
