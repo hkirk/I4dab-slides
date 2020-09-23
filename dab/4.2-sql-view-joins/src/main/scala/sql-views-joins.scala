@@ -190,6 +190,7 @@ object Modeling {
           Item.stable("{♠, ♥, ♦, ♣} ")
         ),
       ),
+      <.br,
       <.span("*"), <.a(^.href:="https://en.wikipedia.org/wiki/Cartesian_product", "https://en.wikipedia.org/wiki/Cartesian_product"),
     ),
 
@@ -209,6 +210,8 @@ object Modeling {
       sql("""(SELECT … FROM .. WHERE)
             |  INTERSECT | EXCEPT | UNION
             |(SELECT … FROM .. WHERE)""".stripMargin),
+
+      <.span("*Requires output from tables to have same number and types"),
     ),
   )
 

@@ -67,9 +67,13 @@ object PresentationUtil {
 
   def fullscreenImageSlide(url: String): TagOf[HTMLElement] = cleanSlide(
     <.section(
-      dataBackgroundSize := "contain",
-      dataImageBackground := url, <.span("")
-    )
+      header("", "slide-header"), <.img(VdomAttr("data-src") := url, VdomStyle("height") := "800px"),
+    ),
+    // <.section(
+    //     // dataBackgroundSize := "contain",
+    //     dataImageBackground := url,
+    //     dataBackgroundSize := "100px"
+    //   )
   )
 
   def noHeaderSlide(content: TagOf[HTMLElement]*): TagOf[HTMLElement] = cleanSlide(

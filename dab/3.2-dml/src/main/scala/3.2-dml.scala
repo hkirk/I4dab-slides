@@ -90,7 +90,7 @@ object Modeling {
       ),
     ),
 
-    headerSlide("INSERT documentation",
+    headerSlide("SELECT documentation",
       <.p(^.textAlign := "left", ^.whiteSpace := "pre-wrap",
         <.span("<SELECT statement> ::="), <.br,
         <.span("  [WITH <common_table_expression> [,...n]]"), <.br,
@@ -202,7 +202,7 @@ object Modeling {
     ),
 
     auHeadlineSlide(
-      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("max-height") := "600px"),
+      <.img(VdomAttr("data-src") := "./../../img/ausegl_hvid.png", VdomStyle("maxHeight") := "600px"),
     ),
 
     headerSlide(
