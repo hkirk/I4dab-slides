@@ -213,6 +213,7 @@ object EfCoreIntro {
         Item.stable("To make OO model clean"),
       ),
 
+      <.br,
       <.span("Steps:"), <.br,
 
       OrderedList(

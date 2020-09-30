@@ -127,6 +127,7 @@ object PresentationUtil {
   def cSharp(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("C#", codeStr))
   def xml(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Xml", codeStr))
   def sql(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("Sql", codeStr))
+  def javascript(codeStr: String): TagOf[HTMLElement] = <.pre(rawCode("JavaScript", codeStr))
 
   private def rawCodeFragment(language: String, codeStr: String): TagOf[HTMLElement] =
     <.pre(

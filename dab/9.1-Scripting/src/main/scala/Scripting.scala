@@ -170,15 +170,15 @@ object EfCorePatternsDDD {
       |GO""".stripMargin),
       <.span("From: https://docs.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql?view=sql-server-2017"),
       notes(
-        "This trigger prevents a row from being inserted in the Purchasing.PurchaseOrderHeader
-         table when the credit rating of the specified vendor is set to 5 (below average)"
+        """This trigger prevents a row from being inserted in the Purchasing.PurchaseOrderHeader
+         table when the credit rating of the specified vendor is set to 5 (below average)"""
       )
     ),
   )
 
   val chapter4 = chapter(
     headerSlide("Accessing Sql Server from Powershell",
-      <.span("In PowerShell it could look like this:"), <.br, <.br
+      <.span("In PowerShell it could look like this:"), <.br, <.br,
 
       <.span("$SQLQuery1Output = Invoke-Sqlcmd -query $SQLQuery1 -ServerInstance $SQLInstance -Username $SQLUsername -Password $SQLPassword"), <.br,
       <.span("# Showing count of rows returned"), <.br,
