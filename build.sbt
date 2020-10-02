@@ -37,6 +37,7 @@ lazy val root = project
     dabEfCorePatternsDDD,
     dabScripting,
     dabNoSqlIntro,
+    dabNoSqlMongo,
     shared
   )
 
@@ -150,6 +151,12 @@ lazy val dabScripting = project
 
 lazy val dabNoSqlIntro = project
   .in(file("dab/11.1-NoSqlIntro"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(common)
+  .dependsOn(shared)
+
+lazy val dabNoSqlMongo = project
+  .in(file("dab/11.2-NoSqlMongoDb"))
   .enablePlugins(ScalaJSPlugin)
   .settings(common)
   .dependsOn(shared)
