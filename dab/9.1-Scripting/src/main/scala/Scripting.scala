@@ -85,11 +85,11 @@ object EfCorePatternsDDD {
               |}""".stripMargin)
     ),
 
-    headerSlide("image", 
-      Enumeration(
-        Item.stable("Parameter"),
-      ),
-    ),
+    // headerSlide("image", 
+    //   Enumeration(
+    //     Item.stable("Parameter"),
+    //   ),
+    // ),
 
     headerSlideLeftAligned("Calling SP from EF Core (1/2)",
       <.span("Multiple query methods:"), <.br,
@@ -177,17 +177,17 @@ object EfCorePatternsDDD {
   )
 
   val chapter4 = chapter(
-    headerSlide("Accessing Sql Server from Powershell",
+    headerSlideLeftAligned("Accessing Sql Server from Powershell",
       <.span("In PowerShell it could look like this:"), <.br, <.br,
 
-      <.span("$SQLQuery1Output = Invoke-Sqlcmd -query $SQLQuery1 -ServerInstance $SQLInstance -Username $SQLUsername -Password $SQLPassword"), <.br,
-      <.span("# Showing count of rows returned"), <.br,
-      <.span("$SQLQuery1Output.Count"), <.br,
-      <.span("# Selecting first 100 results"), <.br,
-      <.span("$SQLQuery1OutputTop100List = $SQLQuery1Output | select -first 100"), <.br,
-      <.span("$SQLQuery1OutputTop100List"), <.br,
-      <.span("# Selecting customer by ID"), <.br,
-      <.span("$SQLQuery1OutputCustomer = $SQLQuery1Output | Where-Object {$_.CustomerID -eq \"100\"}"), <.br,
+      bash(s"""$$SQLQuery1Output = Invoke-Sqlcmd -query $$SQLQuery1 -ServerInstance $$SQLInstance -Username $$SQLUsername -Password $$SQLPassword
+      |# Showing count of rows returned
+      |$$SQLQuery1Output.Count
+      |# Selecting first 100 results
+      |$$SQLQuery1OutputTop100List = $$SQLQuery1Output | select -first 100
+      |$$SQLQuery1OutputTop100List
+      |# Selecting customer by ID
+      |$$SQLQuery1OutputCustomer = $$SQLQuery1Output | Where-Object {$$_.CustomerID -eq \"100\"}""".stripMargin)
     ),
   )
 
@@ -216,6 +216,7 @@ object EfCorePatternsDDD {
           ),
         ),
       ),
+      <.br,
       <.span("*Requires a Service Broker"),
     )
 
@@ -232,6 +233,7 @@ object EfCorePatternsDDD {
 
     headerSlide(
       "References",
+      <.span("Query Notifications in SQL Server "), <.a(^.href := "https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/query-notifications-in-sql-server", "Docs")
     ),    
   )
 
