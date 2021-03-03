@@ -1,0 +1,22 @@
+[0m[[0m[0minfo[0m] [0m[0mFast optimizing /Users/au181645/source/ASE/DAB/dab-slides/dab/5.2-EfCoreIntro/target/scala-2.12/dabefcoreintro-fastopt[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Compute reachability: 19020 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Assemble LinkedClasses: 5010 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: 40076 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Batch mode: false[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Incremental part: 4373 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizing 73 methods.[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizer part: 34509 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: 40093 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Compute reachability: 13753 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Assemble LinkedClasses: 1843 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: 17392 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: Calculate Dependency Info: 313 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: Analyze Modules: 90 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: Assemble Modules: 617 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: 1169 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Generate Classes: 27234 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Write trees: 1312 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Class tree cache stats: reused: 732 -- invalidated: 2[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Method tree cache stats: reused: 2288 -- invalidated: 48[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: 33013 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mBasicBackend: Write result: 89010 us[0m

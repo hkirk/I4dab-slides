@@ -1,0 +1,43 @@
+exit
+project dabIntro
+project dabModeling
+project dabmodeling
+project dabModelingPrinciples
+project dabdml
+project dabSqlConnection
+reload
+project dabNormalization
+fastOptJS
+reload
+project dabViewsJoins
+project dabEfCoreIntro
+project dabEfCoreModels
+project dabEfCoreIntro
+reload
+project dabEfCoreQueryManipulation
+reload
+project dabEfCoreAdvanced
+fastOptJS
+project dabEfCoreAdvanced
+project dabEfCoreModels
+project dabEfCoreMigrations
+project s
+project dabSqlConnection
+project dabEfCoreQueryManipulation
+project intro
+project dabIntro
+project dabModeling
+project dabModelingPrinciples
+project
+project dabDdl
+project dabScripting
+project dabEfCorePatternsDDD
+project dabViewsJoins
+project dabEfCoreModels
+project dabScripting
+fastOptJS
+project dabScripting
+exit
+project dabEfCoreIntro
+project dabEfCoreModels
+project dabEfCoreMigrations
