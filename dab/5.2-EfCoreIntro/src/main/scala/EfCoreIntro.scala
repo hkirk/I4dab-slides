@@ -4,7 +4,6 @@ import japgolly.scalajs.react.ScalaComponent
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
 
-import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 
 object EfCoreIntro {
@@ -124,10 +123,13 @@ object EfCoreIntro {
     headerSlideWithColumns("Creating project (`) (1/2)")
     (
       <.div(VdomStyle("lineHeight") := "40px",
-        <.span("First time: dotnet tool install --global dotnet-ef --version <3.1.1>"), <.br,
         OrderedList(
           Item.stable(
-            <.span("Creating a .Net 2.0 Core console Project for Sqlite"), <.br,
+            <.span(<.span("First time: "), <.br, 
+            <.i(VdomStyle("fontSize") := "22px", "$ dotnet tool install --global dotnet-ef --version 5.0.3"))
+          ),   
+          Item.stable(
+            <.span("Creating a .Net 5.0 console Project for SqlServer"), <.br,
             <.i(VdomStyle("fontSize") := "22px", "$ mkdir MyFirstEFCoreProject"), <.br,
             <.i(VdomStyle("fontSize") := "22px", "$ cd MyFirstEFCoreProject"), <.br,
             <.i(VdomStyle("fontSize") := "22px", "$ dotnet new console"), <.br,
@@ -135,7 +137,7 @@ object EfCoreIntro {
           fadeInFragment(
             Item.stable(
               <.span("Install Entity Framework Core"), <.br,
-              <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Sqlite"), <.br,
+              <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.SqlServer"), <.br,
               <.i(VdomStyle("fontSize") := "22px", "$ dotnet add package Microsoft.EntityFrameworkCore.Design"), <.br,
               // TODO One more tools maybe
             ),
@@ -157,8 +159,7 @@ object EfCoreIntro {
                   | protected override void
                   |      OnConfiguring(
                   |        DbContextOptionsBuilder ob) {
-                  |  // For SQLite file, this is 
-                  |  ob.UseSqlite("Data Source=d.db");
+                  |  ob.UseSqlServer("<REPLACE WITH CONN STRING>");
                   |}}""".stripMargin),
         )
       ),
@@ -167,29 +168,31 @@ object EfCoreIntro {
     headerSlide("Creating project (VS studio)",
       OrderedList(
         Item.stable(
-          <.span("Creating a .Net 2.0 Core console Project for Sqlite"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "Create new .NET Core - Console App project in UI")
+          <.span("Creating a .Net 5.0 console project for SqlServer"), <.br,
+          <.i(VdomStyle("fontSize") := "22px", "Create new .NET - Console App project in UI")
         ),
         Item.stable(
           <.span("Install Entity Framework Core"),
           <.div(VdomStyle("fontSize") := "22px",
             <.i("From the Visual Studio menu, select Project > Manage NuGet Packages"), <.br,
-            <.i("Select Microsoft.EntityFrameworkCore.Sqlite"), <.b(" and "), <.i("Microsoft.EntityFrameworkCore.Design"), <.b(" and "), <.i("Microsoft.EntityFrameworkCore.Tools packages"),
+            <.i("Select Microsoft.EntityFrameworkCore.SqlServer"), <.b(" and "), <.i("Microsoft.EntityFrameworkCore.Design"), <.b(" and "), <.i("Microsoft.EntityFrameworkCore.Tools* packages"),
           )
         ),
         Item.stable(
           <.span("Adding a connection string (in .cs file)"), <.br,
-          <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code - see previous slideg")
+          <.i(VdomStyle("fontSize") := "22px", "In class Context inherit from DbContext and add the following code - see previous slide")
           // cSharp("""protected override void OnConfiguring(
           //          |            DbContextOptionsBuilder optionsBuilder) {
-          //          | optionsBuilder.UseSqlite("Data Source=door.db");
+          //          | optionsBuilder.UseSqlServer("<REPLACE WITH CONN STRING>");
           //          |}""".stripMargin),
         ),
         Item.stable(
           <.span("Setup working directory"), <.br,
-          <.a(VdomStyle("fontSize") := "22px", ^.href := "https://docs.microsoft.com/en-us/ef/core/get-started/netcore/new-db-sqlite#run-from-visual-studio", "https://docs.microsoft.com/en-us/ef/core/get-started/netcore/new-db-sqlite#run-from-visual-studio"),
+          <.a(VdomStyle("fontSize") := "22px", ^.href := "https://docs.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=visual-studio", "https://docs.microsoft.com/en-us/ef/core/get-started/overview/first-app?tabs=visual-studio"),
         ),
-      )
+      ),
+      <.br, <.br,
+      <.span("* Can be installed global"),
     ),
 
     headerSlideLeftAligned("Database context",
@@ -202,8 +205,10 @@ object EfCoreIntro {
       <.span("Connection to database is created through:"), <.br,
       OrderedList(
         Item.stable("Override method OnConfiguring and supply connection string"),
-        Item.stable("Add optionsBuilder.UseSqlite(ConnectionString);"),
-      )
+        Item.stable("Add optionsBuilder.UseSqlServer(ConnectionString);*"),
+      ),
+      <.br, <.br,
+      <.span("* Can be Sqlite, MySql, etc"),
     ),
 
     headerSlideLeftAligned("Creating model classes")
@@ -217,7 +222,7 @@ object EfCoreIntro {
       cSharp("""public class Door
                |{
                |  public int DoorId {get;set;}
-               |  public string Location {get;set;}
+               |  public Location Location {get;set;}
                |  public string Type {get;set;}
                |}""".stripMargin),
       Enumeration(
@@ -236,7 +241,7 @@ object EfCoreIntro {
         ),
         Item.stable(
           <.span("If creating an error - undo"), <.br,
-          <.i("Delete door.db file"), <.br,
+          <.i("$ dotnet ef database update 0"), <.br,
           <.i("$ dotnet ef migrations remove"), <.br,
           <.i("Make changes in code"), <.br,
           <.i("Goto 1)"), <.br,
@@ -254,7 +259,7 @@ object EfCoreIntro {
         ),
         Item.stable(
           <.span("If creating an error - undo"), <.br,
-          <.i("Delete door.db file"), <.br,
+          <.i("> Update-Database 0"), <.br,
           <.i("> Remove-Migration (in Package manager console)"), <.br,
           <.i("Make changes in code"), <.br,
           <.i("Goto 1)"), <.br,
@@ -278,14 +283,14 @@ object EfCoreIntro {
     (
       <.span("Read data from EF Core"), <.br,
       <.b("In C#"), <.br,
-      cSharp("""db.Books.AsNoTracking()
-             |    .Include(a => a.Author)""".stripMargin),
+      cSharp("""context.Doors.AsNoTracking()
+             |    .Include(a => a.Location)""".stripMargin),
       fadeInFragment(
         <.span("Is translated into:"), <.br,
-        sql("""SELECT b.BookId, …, a.AuthorId, … 
-              |FROM Books AS B
-              |INNER JOIN Author AS a
-              |  ON b.AuthorId = a.AuthorId""".stripMargin),
+        sql("""SELECT b.DoorId, …, a.LocationId, … 
+              |FROM Door AS B
+              |INNER JOIN Location AS a
+              |  ON b.LocationId = a.LocationId""".stripMargin),
       )
     )(
       fadeInFragment(
@@ -302,13 +307,13 @@ object EfCoreIntro {
     (
       <.span("Update data via EF Core"), <.br,
       <.b("In C#"), <.br,
-      cSharp("""var book = db.Books....;
-               |book.Author.WebUrl = 'newUrl';
+      cSharp("""var door = context.Doors....;
+               |door.Location.Address = 'new address';
                |db.SaveChanges()""".stripMargin),
       fadeInFragment(
         <.span("Is translated into:"), <.br,
-        sql("""UPDATE Authors SET WebUrl = ‘newUrl’
-              |WHERE AuthorId = '...'""".stripMargin),
+        sql("""UPDATE Location SET Address = ‘new address’
+              |WHERE LocationId = '...'""".stripMargin),
       )
     )(
       fadeInFragment(
