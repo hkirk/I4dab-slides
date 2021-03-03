@@ -1,9 +1,11 @@
 # sbt
 target
 project/project
+.bsp/
 
 # ensime
 *.*~
+*.DS_Store
 
 # allow
 !/my-talk/target/scala-2.12/mytalk-fastopt.js
