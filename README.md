@@ -11,3 +11,7 @@ Slides can be found in /slides/lecture/index.html, .md file in same library is t
 * npm start
 * visit http://localhost:9000/slides/ for overview of lectures or e.g. http://localhost:9000/slides/06.1
 
+# Guides
+
+* Markdown: https://www.markdownguide.org/basic-syntax/
+* Revealjs markdown: https://github.com/rstudio/revealjs#slide-backgrounds
