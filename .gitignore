@@ -1,12 +1,12 @@
-# sbt
-target
-project/project
-.bsp/
-
-# ensime
-*.*~
-*.DS_Store
-
-# allow
-!/my-talk/target/scala-2.12/mytalk-fastopt.js
-!/my-talk/target/scala-2.12/mytalk-jsdeps.js
+.idea/
+*.iml
+*.iws
+*.eml
+out/
+.DS_Store
+.svn
+log/*.log
+tmp/**
+node_modules/
+.sass-cache
+dist/*.map
