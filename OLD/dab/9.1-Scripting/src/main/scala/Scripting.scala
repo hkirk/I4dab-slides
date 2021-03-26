@@ -4,7 +4,6 @@ import japgolly.scalajs.react.ScalaComponent
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom
 
-import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
 
 object EfCorePatternsDDD {
@@ -51,7 +50,7 @@ object EfCorePatternsDDD {
       Enumeration(
         Item.stable("To execute procedure:"),
       ),
-      sql("EXEC SelectAllCustomers City = 'London'"),
+      sql("EXEC SelectAllCustomers @City = 'London'"),
     ),
 
     headerSlide("SP with parameters",
@@ -65,7 +64,7 @@ object EfCorePatternsDDD {
       Enumeration(
         Item.stable("To execute procedure:"),
       ),
-      sql("EXEC SelectAllCustomers City = 'London', PostalCode = 'WA1 1DP'"),
+      sql("EXEC SelectAllCustomers @City = 'London', @PostalCode = 'WA1 1DP'"),
     ),
 
     headerSlide("Creating SP in EF Core",
@@ -147,6 +146,14 @@ object EfCorePatternsDDD {
             |  AFTER INSERT, UPDATE
             |  AS RAISERROR ('Notify Customer Relations', 16, 10);
             |GO""".stripMargin),
+      notes(
+        """Raise error:
+RAISERROR ( { msg_str | @local_variable }
+    { ,severity ,state }
+    [ ,argument [ ,...n ] ] )
+    [ WITH option [ ,...n ] ]
+Så 2. og 3. parameter er severity og state"""
+      )
     ),
 
     headerSlide("Trigger example",
