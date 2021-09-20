@@ -1,4 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/au181645/source/ASE/DAB/dab-slides/OLD/dab/6.2-EfCoreMigrations/src/main/scala/EfCoreMigrations.scala:7:8: object JSApp is not a member of package scala.scalajs.js[0m
-[0m[[0m[31merror[0m] [0m[0mimport scala.scalajs.js.JSApp[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m

@@ -8,12 +8,17 @@
 
 ### Agenda
 
-* Existing database
-* Transactions
-* Disconnected Entities
-* Development
-    * Data seeding
-* Testing
+* EfCore extra
+    * Existing database
+    * Transactions
+    * Disconnected Entities
+    * Development
+* Patterns
+    * DDD: Entity + Repository
+    * Unit of Work
+    * QueryObjects
+    * Object Mappers
+
 
 ---
 
@@ -277,6 +282,172 @@ public class AppDbContext : DbContext {
     7. Cleanup
 
 * `SQLite` in-memory database or `InMemory` for General purpose database
+
+
+---
+
+### Patterns
+
+* Build on top of others work
+* Faster development
+* Less repetitive work
+    * -> Fewer bugs
+* Keep EfCore code in DAL
+* Separation of Concerns
+    * Each layer is responsible for one thing - mental model is easier
+    * Having a isolated DAL it is easier to test
+
+----
+
+### DDD
+
+* From Domain-Driven Design by Eric Evans
+    * About putting Business Domain in the center of Software
+* DDD in short
+    * A project consists of one or more bounded context
+    * Within a Bounded context there exists an Ubiquitous Language around an Domain Model
+    * Building Blocks
+        * **Entity**, Value Object, **Aggregate**, **Repostory**, Domain Event, Service, Factory
+
+TODO: Image
+
+----
+
+#### DDD continued
+
+* Entity is an object which is not defined by its attributes but by an ID
+* Aggregates is a collection of entities
+* Root entities is only way to access entities within an Aggregate
+* Repository is exposing a set of methods for accessing domain objects (entities)
+
+TODO: Image
+
+----
+
+#### Repository
+
+* Repository exposes a set of methods that reflects UL
+* Data is changed through methods and not entities - ensure data is updated correctly
+* Repository hides away EF core code from application
+
+```csharp
+// Example repository methods
+public void AddBook(Book book)
+public Book FindBook(int Id)
+public void DeleteBook(Book book)
+public void UpdateBook(Book book)
+public List<book> Books(ICriteria criteria)
+
+// Book not has private setters
+public void AddReview(Review review)
+public void AddAuthor(Author authors)
+...
+```
+
+TODO: which methods
+
+Note:
+https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implemenation-entity-framework-core#implement-custom-repositories-with-entity-framework-core
+
+
+----
+
+#### Considerations
+
+* Use Repository to hide DAL from application
+    * + Interchangeable DAL
+    * - Can't use O/RM as efficient
+
+
+---
+
+## Unit Of Work
+
+“Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems.” - Martin Fowler
+
+* The Unit of Work pattern is made to keep track of all changes made in database
+    * Avoid changes that are not written
+
+----
+
+### UoW in EfCore
+
+* Could see DbContext as Unit of Work
+* Microsoft ‘recommends’ to build a UnitOfWork/Repository pattern around DbContext
+    * Create an abstraction between BLL and DAL
+    * Easier to maintain and test -> Changes from DAL don’t propagate to BLL
+
+```cshap
+public class UnitOfWork : IDisposable {
+    private DbContext context = new DbContext();
+    private GenericRepository<Book> bookRepository;
+    public GenericRepository<Department> DepartmentRepository {
+    // Return Singleton instance
+    }
+    public void Save() { context.SaveChanges(); }
+    // TODO Implement Dispose()
+}
+```
+
+Note: 
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-ef-5-using-mvc-4/implementing-the-repository-and-unit-of-work-patterns-in-an-asp-net-mvc-application
+
+---
+
+## Query Object
+
+* “A Query Object is an interpreter [Gang of Four], that is, a structure of objects that can form itself into a SQL query.”
+* Makes it possible to create queries without knowing SQL and/or database schema.
+
+
+```csharp
+public class BookQuery : IBookQuery {
+    public bool LoadAuthor { get; set; } = false;
+    public int? AuthorId { get; set; } = null;
+    
+    public async Task<IEnumerable<Book>> Execute(AppDBContext context) {
+        if (AuthorId == null) {
+        if (LoadAuthor) return await context.Set<Book>().Include(b=>.Author).ToListAsync();
+        else return await context.Set<Book>().ToListAsync();
+        } else return await context.Set<Book>().Where(b =>b.AuthorId==(int)).ToListAsync();
+        throw new NotImplementedException();
+} }
+```
+
+----
+
+### Query Object cont.
+
+* Another look on Query objects
+    * https://www.rahulpnath.com/blog/query-object-pattern-and-entity-framework-making-readable-queries/
+* Library for implementing Query Objects and/or repository. E.g.
+    * https://github.com/urfnet/URF.NET
+
+---
+
+## Object Mappers
+
+* Transform between Entity classes and DTOs
+    * Typically one DTO per ‘view’
+    * Transformation is done in DI service
+* Manually way to create LINQ transformation manually -> Time consuming
+* ‘Automatic’ use a library that make use of ‘IQueryable’
+    * EF Core in action recommends [https://github.com/Automapper/Automapper](AutoMapper)
+    * AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there navigational property Promotion
+
+```csharp
+var config = new MapperConfiguration(cfg => {
+    cfg.CreateMap<Book, BookDto>();   
+    cfg.CreateMap<Review, ReviewDto>();
+});
+using (var context = new AppDbContext())
+{
+    var result = context.Books.  
+        ProjectTo<BookDto>(config)
+        .ToList();
+}
+```
+
 
 
 ---

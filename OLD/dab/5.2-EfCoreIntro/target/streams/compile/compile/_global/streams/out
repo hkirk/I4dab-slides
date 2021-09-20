@@ -1,7 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/au181645/source/ASE/DAB/dab-slides/dab/5.2-EfCoreIntro/src/main/scala/EfCoreIntro.scala:194:8: ')' expected but '.' found.[0m
-[0m[[0m[31merror[0m] [0m[0m      <.br, <.br,[0m
-[0m[[0m[31merror[0m] [0m[0m       ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/au181645/source/ASE/DAB/dab-slides/dab/5.2-EfCoreIntro/src/main/scala/EfCoreIntro.scala:196:6: ';' expected but ',' found.[0m
-[0m[[0m[31merror[0m] [0m[0m    ),[0m
-[0m[[0m[31merror[0m] [0m[0m     ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
