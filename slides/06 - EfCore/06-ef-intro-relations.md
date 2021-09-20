@@ -66,6 +66,33 @@ Note: EF6/7 is not build to support NoSQL but is extended to do so
 
 <!-- .slide: data-background-image="./img/tutorial.jpg" data-background-size="contain" -->
 
+TODO: start
+----
+
+### Connection string SQL Server
+
+* 'Server Explorer' window in Visual Studio (Menu -> View -> Server Explorer)
+    * Connect to database
+    * From properties menu
+
+----
+
+* Other ways to create connection string
+    * [https://www.connectionstrings.com/sql-server-2019/](https://www.connectionstrings.com/sql-server-2019/)
+    * **Note**: To use SQL Server, install nuget package and `UseSqlServer` method database connection in DbContext.OnConfiguring(..)
+    * Docker:
+
+```csharp
+optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User ID=SA;Password=12345678Aa#;");
+```
+
+----
+
+### Video video video
+
+[Get a connection string](https://www.youtube.com/watch?v=1U0cP2rvr2g)
+
+TODO: end
 
 ----
 
