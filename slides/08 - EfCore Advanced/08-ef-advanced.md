@@ -8,17 +8,16 @@
 
 ### Agenda
 
-* EfCore extra
+* EfCore ntk
     * Existing database
     * Transactions
     * Disconnected Entities
     * Development
-* Patterns
+* Structure EfCore project
     * DDD: Entity + Repository
     * Unit of Work
     * QueryObjects
     * Object Mappers
-
 
 ---
 
@@ -26,9 +25,9 @@
 
 * Reverse engineering a database through EF Core can be done with Scaffold tool
     * Visual Studio: 
-      `> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook' Microsoft.EntityFrameworkCore.SqlServer` <!-- .element style="font-size: 22px;" -->
-    * .Net Core CLI: 
-      `$ dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer` <!-- .element style="font-size: 22px;" -->
+    
+    `> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook' Microsoft.EntityFrameworkCore.SqlServer
+` <!-- .element style="font-size: 22px;" -->
 
 **Note**: Connection string needs to point to the actual database you want to scaffold
 
@@ -37,6 +36,9 @@ Note:
 1. Create project
 2. Install Microsoft.EntityFrameworkCore.SqlServer and Microsoft.EntityFrameworkCore.Design
 3. Run above command with a correct Connection string
+
+.Net Core CLI: 
+`$ dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook" Microsoft.EntityFrameworkCore.SqlServer` <!-- .element style="font-size: 22px;" -->
 
 ----
 
@@ -286,7 +288,7 @@ public class AppDbContext : DbContext {
 
 ---
 
-### Patterns
+### Structuring EfCore apps
 
 * Build on top of others work
 * Faster development
@@ -428,12 +430,17 @@ public class BookQuery : IBookQuery {
 ## Object Mappers
 
 * Transform between Entity classes and DTOs
-    * Typically one DTO per ‘view’
+    * Typically one DTO per 'view'
     * Transformation is done in DI service
 * Manually way to create LINQ transformation manually -> Time consuming
-* ‘Automatic’ use a library that make use of ‘IQueryable’
-    * EF Core in action recommends [https://github.com/Automapper/Automapper](AutoMapper)
-    * AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there navigational property Promotion
+* 'Automatic' use a library that make use of 'IQueryable'
+
+----
+
+## OM Examples
+
+* EF Core in action recommends [https://github.com/Automapper/Automapper](AutoMapper)
+* AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there navigational property Promotion
 
 ```csharp
 var config = new MapperConfiguration(cfg => {
