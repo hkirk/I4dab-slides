@@ -191,7 +191,7 @@ protected override void BuildModel(ModelBuilder mb) {
 
 ---
 
-Querying
+<!-- .slide: data-background-image="./img/linq.jpg" data-background-size="contain" -->
 
 ---
 
