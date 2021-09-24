@@ -18,8 +18,7 @@
 
 ## Entity Framework (Core)
 
-* Entity Framework (Ef)
-    * O/RM - Object relation mapper
+* O/RM - Object relation mapper
 
 | Relational database | Object Oriented langauge    |
 |---------------------|-----------------------------|
@@ -39,8 +38,6 @@
 * or generate OOP model from database
 * Security - we will look into this later
 * Avoid SQL inside code (e.g. C#)
-
-TODO: Eg.
 
 ----
 
@@ -64,9 +61,8 @@ Note: EF6/7 is not build to support NoSQL but is extended to do so
 
 ---
 
-<!-- .slide: data-background-image="./img/tutorial.jpg" data-background-size="contain" -->
+<!-- .slide: data-background-image="./img/tutorial.jpg" data-background-size="contain"  data-visibility="hidden" -->
 
-TODO: start
 ----
 
 ### Connection string SQL Server
@@ -75,7 +71,11 @@ TODO: start
     * Connect to database
     * From properties menu
 
+<!-- .slide: data-visibility="hidden" -->
+
 ----
+
+<!-- .slide: data-visibility="hidden" -->
 
 * Other ways to create connection string
     * [https://www.connectionstrings.com/sql-server-2019/](https://www.connectionstrings.com/sql-server-2019/)
@@ -88,11 +88,11 @@ optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User
 
 ----
 
+<!-- .slide: data-visibility="hidden" -->
+
 ### Video video video
 
 [Get a connection string](https://www.youtube.com/watch?v=1U0cP2rvr2g)
-
-TODO: end
 
 ----
 
@@ -187,9 +187,6 @@ public DbSet<Door> doors { get; set; }
     4. Make changes in code
     5. GOTO 1.1
 ```
-
-TODO Check 
-
 
 Note:
 In CLI
