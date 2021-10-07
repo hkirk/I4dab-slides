@@ -65,13 +65,15 @@ Note: EF6/7 is not build to support NoSQL but is extended to do so
 
 ----
 
-### Connection string SQL Server
+### Connection string LocalDB
 
 * 'Server Explorer' window in Visual Studio (Menu -> View -> Server Explorer)
     * Connect to database
     * From properties menu
 
-<!-- .slide: data-visibility="hidden" -->
+----
+
+![Connection String localDB](./img/connectionstring.png "") <!-- .element: style="height: 600px" -->
 
 ----
 
@@ -708,9 +710,9 @@ modelBuilder.Entity<Blog>()
 
 ### References
 
-Insanity: https://www.brainyquote.com/quotes/unknown_133991
-ERD: https://ermodelexample.com/how-to-draw-erd-diagram/
-XKCD: https://imgs.xkcd.com/comics/magnus.png
+* Insanity: https://www.brainyquote.com/quotes/unknown_133991
+* ERD: https://ermodelexample.com/how-to-draw-erd-diagram/
+* XKCD: https://imgs.xkcd.com/comics/magnus.png
 
 
 
