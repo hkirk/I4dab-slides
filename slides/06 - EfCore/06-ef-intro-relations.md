@@ -26,16 +26,16 @@
 | Column              | Property                    |
 | Unique Row          | Object                      |
 | Rows                | Collection of Objects       |
-| Foreign key         | Refernce                    |
+| Foreign key         | Reference                   |
 | SQL - e.q. WHERE    | .NET LINQ - e.g. WHERE(...) |
 
 ----
 
 ### Object Relation Mapper - Why?
 
-* Avoid writing all database queries in hand. This work is tedious and error prone
-* Can generate a database scheme from you OOP model
-* or generate OOP model from database
+* Avoid writing all database queries by hand. This work is tedious and error prone
+* Help generate a database scheme from you OOP model
+* or generate OOP model from an existing database
 * Security - we will look into this later
 * Avoid SQL inside code (e.g. C#)
 
@@ -51,7 +51,7 @@
 
 #### Entity Framework Core
 
-* Build in C
+* Build in C#
 * Is an O/RM
 * Open source
 * Cross platform
@@ -103,15 +103,17 @@ optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User
 2. Install Entity Framework Core
     * From the Visual Studio menu, select<br/>
       Project -> Manage NuGet Packages
-    * Install 'Microsoft.EntityFrameworkCore.SqlServer' **and** 'Microsoft.EntityFrameworkCore.Design' **and** 'Microsoft.EntityFrameworkCore.Tools' packages
-    * 'Microsoft.EntityFrameworkCore.Tools' can be installed globally
+    * Install 'Microsoft.EntityFrameworkCore.SqlServer' **and** 'Microsoft.EntityFrameworkCore.Design' **and** 'Microsoft.EntityFrameworkCore.Tools'* packages
+
+\* 'Microsoft.EntityFrameworkCore.Tools' can be installed globally <!-- .element: style="font-size:0.6em" -->
 
 ----
 
 ### Starting with EfCore 2
 
-3. Adding a connection string (in .cs file)
-    * In class `MyDbContext` inherit from `DbContext` and add the following code - see previous slide
+3. Create a new class `MyDbContext` which inherits from `DbContext`
+4. Adding a connection string (in .cs file)
+    * In class `MyDbContext` add the following code
 
 ```cs
 protected override void OnConfiguring(
@@ -139,19 +141,19 @@ Create the MyDbContext.cs as on slide and add code
 
 * A class that inherits from EF Cores DbContext
 * Contain information that EF Core needs to configure database mappings
-* Class you use to access data in database
+* The class you use to access data in database
 * Connection to database is created through:
-    * Override method OnConfiguring and supply connection string
-    * Add optionsBuilder.UseSqlServer(ConnectionString);
-* Can also be UseSqlite, UseMySql etc.
+    * Overriding method `OnConfiguring` and supply connection string
+    * E.g. optionsBuilder.UseSqlServer(ConnectionString);
+* Can also be `UseSqlite`, `UseMySql` etc.
 
 ----
 
 ### Creating model classes
 
 * Create class Door
-* Add property with public getter and setter
-* Primary key is by convention named 'Id' or '\<class name\>Id' (case insensitive)
+* Add properties with public getter and setter
+* Primary key is by convention named '`Id`' or '`<class name>Id`' (case insensitive)
 
 ```csharp
 // in Door.cs
@@ -172,20 +174,20 @@ public DbSet<Door> doors { get; set; }
 1. Doing code first - you let Entity Framework create your database. In VS2019 - 
 
 ```
-    1. Open PowerShell (Tools -> Manage Nuget -> Package Manager Console
-    2. > Install-Package Microsoft.EntityFrameworkCore.Tools (first time)
-    3. > Add-Migration InitialCreate
-    4. > Update-Database
+1. Open PowerShell (Tools -> Manage Nuget -> Package Manager Console
+2. > Install-Package Microsoft.EntityFrameworkCore.Tools (first time)
+3. > Add-Migration InitialCreate
+4. > Update-Database
 ```
 
 2. If you want to change database (**only in this lecture**)
 
 ```
-    1. Open PowerShell
-    2. > Update-Database 0
-    3. > Remove-Migration (in Package manager console)
-    4. Make changes in code
-    5. GOTO 1.1
+1. Open PowerShell
+2. > Update-Database 0
+3. > Remove-Migration (in Package manager console)
+4. Make changes in code
+5. GOTO 1.1
 ```
 
 Note:
@@ -203,13 +205,33 @@ Goto top
 
 ----
 
-### DbContext in details
+### Creating model in details
 
-* Looks at all DbSet properties
-* Looks at properties in classes
+* Looks at all `DbSet` properties
+* Looks at properties in these classes
 * Looks at linked classes
-* Runs OnModelCreating
+* Runs `OnModelCreating`
 * -> results in database schema (which can be found in Migrations/AppDbContextModelSnapshot.cs)
+
+Note:
+
+`OnModelCreate` is a method from `DbContext` which we can override.
+
+----
+
+### Creating data
+
+* Write data with EF Core
+* In C#
+
+```csharp
+var door = new Door() {
+  Location = location,
+  Type = "Wood"
+}
+context.Doors.Add(door);
+context.SaveChanges();
+```
 
 ----
 
@@ -217,8 +239,12 @@ Goto top
 
 * Read data from EF Core
 * In C#
-    * `context.Doors.AsNoTracking().Include(a => a.Location)`
-    * Is translated into:
+
+```csharp
+context.Doors.AsNoTracking().Include(a => a.Location)
+```
+
+Is translated into:
 
 ```sql
 SELECT b.DoorId, ..., a.LocationId, ...
@@ -232,15 +258,15 @@ INNER JOIN Location AS a
 #### What Ef Core does
 
 * LINQ is translated into SQL and cached
-* Data is read in one command
-* Data is turned into instances of .NET classes
-* No tracking snapshot is created in this instance
+* Data is read in one command / roundtrip (or few)
+* Data is turned into instances of the .NET class
+* No tracking snapshot is created in this instance - so this is readonly - more on this next time.
 
 ----
 
 ### Update data
 
-* Update data via EF Core
+* Update data using EF Core
     * In C#
 
 ```csharp
@@ -248,10 +274,11 @@ var door = context.Doors....;
 door.Location.Address = 'new address';
 db.SaveChanges()
 ```
-    * Is translated into:
+
+Is translated into:
 
 ```sql
-UPDATE Location SET Address = ‘new address’
+UPDATE Location SET Address = 'new address'
 WHERE LocationId = '...'
 ```
 
@@ -261,9 +288,9 @@ WHERE LocationId = '...'
 
 * LINQ is translated into SQL
 * Tracking snapshopts are created - holding original values
-* DetectChanges stages works out what has changed
+* DetectChanges works out what has changed
 * Transaction is started - all or nothing is saved
-* SQL command is run
+* SQL command is executed
 
 ---
 
@@ -274,9 +301,9 @@ WHERE LocationId = '...'
 ### EfCore tatics
 
 Primary key
-* **Conventions** - Class property with name '\<class-name\>Id' or 'Id'
-* **Data annotations** - Annotate property with \[Key\]
-* **Fluent API** (always in DbContext) - In `DbContext.OnModelCreating`
+* **Conventions** - Class property with name '`<class-name>Id`' or '`Id`'
+* **Data annotations** - Annotate property with `[Key]`
+* **Fluent API** (always in `DbContext`) - In `DbContext.OnModelCreating`
 
 ```csharp
 public class Context : DbContext {
@@ -297,10 +324,14 @@ class MyContext : DbContext {
   protected override void 
         OnModelCreating(ModelBuilder mb) {
       mb.Entity<Client>()
-          .Property(b => b.Email)
-          .IsRequired(); // Not null
-        //.HasMaxLength(500)
+          .Property(b => b.LastName)
+          .IsRequired() // Not null
+          .HasMaxLength(64);
 }}
+
+Note: 
+
+You need to use one of these methods, not all :)
 
 ----
 
@@ -340,18 +371,17 @@ public int Id {get; set;}
 public int <ClassName>Id { get; set;}
 ```
 
-* Annotation
+* or Annotation
 
 ```csharp
 [Key]
 public int Identifier {get; set;}
 ```
 
-* Fluent API
+* or Fluent API
 
 ```csharp
-protected override void 
-          OnModelCreating(ModelBuilder mb) {
+protected override void OnModelCreating(ModelBuilder mb) {
   mb.Entity<Book>().HasKey(b => b.ID);
 }
 ```
@@ -360,13 +390,12 @@ protected override void
 
 #### Keys continued
 
-* Keys that are non-composite numeric and GUID you need to consider [Value Generation](https://docs.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations)
+* When using keys that are non-composite numeric and GUID you need to consider [Value Generation](https://docs.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations)
 * Composite keys
     * Can only be configured by the Fluent API
 
 ```csharp
-protected override void 
-          OnModelCreating(ModelBuilder mb) {
+protected override void OnModelCreating(ModelBuilder mb) {
   mb.Entity<Author>()
       .HasKey(a => new { a.FirstName, a.LastName});
 }
@@ -380,8 +409,7 @@ protected override void
     * This can be changed by
 
 ```csharp
-protected override void 
-          OnModelCreating(ModelBuilder mb) {
+protected override void OnModelCreating(ModelBuilder mb) {
     mb.Entity<Author>()
         .HasKey(a => a.Name)
         .HasName("PrimaryKey_Name");
@@ -412,7 +440,7 @@ public class MyDbContext: DbContext {
 
 ### Properties
 
-![ERD](./img/erd.jpg "ERD")
+![ERD](./img/erd.png "ERD") <!-- .element: style="height: 300px" -->
 
 ----
 
@@ -463,10 +491,10 @@ public class MyDbContext: DbContext {
 #### Shadow properties
 
 * Hidden from Model
-* To make OO model clean
+* To make OOP model clean
 * Steps:
-    1. Remove `CreatedAt` in Books.cs
-    2. In MyDbContext insert in `OnModelCreating`<br/>
+    1. Remove the `Created` property from `Books.cs`
+    2. In `MyDbContext` add in `OnModelCreating`<br/>
     ```csharp
     mb.Entity<Book>().Property<DateTime>("Created")
        .HasDefaultValueSql("getdate()");
@@ -482,7 +510,7 @@ public class MyDbContext: DbContext {
 
 #### 1-1 relationship (1/2)
 
-```csharp
+```csharp [4-5|13]
 public class Membership {
   [Required] public int ID {get; set;}
   [Required] public Genre Genre {get; set;}
@@ -513,7 +541,7 @@ Note:
 
 * The same in Fluent API
 
-```csharp
+```csharp [4|5|6]
 public class MyDbContext: DbContext {
   protected override void OnModelCreating(ModelBuilder mb) {
     mb.Entity<Client>()
@@ -527,7 +555,7 @@ public class MyDbContext: DbContext {
 
 #### 1-N relationship (1/2)
 
-```csharp
+```csharp [4-5|13]
 public class Book {    
   public int ID { get; set;}
   [MaxLength(32)] public string Title {get; set;}
@@ -550,7 +578,7 @@ public class Author {
 
 * Or with Fluent API
 
-```csharp
+```csharp [4|5|6]
 public class MyDbContext: DbContext {
   protected override void OnModelCreating(ModelBuilder mb) { 
     mb.Entity<Book>()
@@ -564,7 +592,7 @@ public class MyDbContext: DbContext {
 
 #### N-M relationship (1/3)
 
-```csharp
+```csharp [4|10]
 public class Book {
     public int BookId
     ...
@@ -586,7 +614,7 @@ public class PersonalLibrary {
 #### N-M Relationship (2/3)
 
 * Create shadow class
-```csharp
+```csharp [2-3|4-5]
 public class PersonalLibraryBook {
   public int BookId {get; set;}
   public Book Book {get; set;}
@@ -606,7 +634,7 @@ public List<PersonalLibraryBook> PersonalLibraryBooks
 
 * In `OnModelCreating`
 
-```csharp
+```csharp [4-5|6-9|10-13]
 public class MyDbContext: DbContext {
   protected override void OnModelCreating(ModelBuilder mb) { 
     // Book - PersonalLibrary (many to many relationship)
@@ -672,9 +700,9 @@ modelBuilder.Entity<Blog>()
 
 ---
 
-### Exercises
+<!-- .slide: data-background-image="./img/exercises.jpg" data-background-size="contain" -->
 
-![Exercses](.img/exercises.jpg 'Exercises);
+### Exercises <!-- .element: style="background-color: white" -->
 
 ----
 
