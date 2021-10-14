@@ -274,7 +274,7 @@ INNER JOIN Location AS a
 ```csharp
 var door = context.Doors....;
 door.Location.Address = 'new address';
-db.SaveChanges()
+context.SaveChanges()
 ```
 
 Is translated into:
@@ -330,6 +330,7 @@ class MyContext : DbContext {
           .IsRequired() // Not null
           .HasMaxLength(64);
 }}
+```
 
 Note: 
 
