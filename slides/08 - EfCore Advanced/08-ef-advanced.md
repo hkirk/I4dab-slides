@@ -8,7 +8,7 @@
 
 ### Agenda
 
-* EfCore ntk
+* EfCore Advanced
     * Existing database
     * Transactions
     * Disconnected Entities
@@ -104,7 +104,7 @@ public class AClass {
        // when disposed if either commands fails
        transaction.Commit();
      }
-     catch (Exception) { // TODO: Handle failure
+     catch (Exception) { // TODO Handle failure
 } } } } }
 ```
 <!-- .element style="font-size: 16px;" -->
@@ -122,30 +122,46 @@ public class AClass {
 
 Problem: Obvious <!-- .element: class="fragment" -->
 
+```csharp
+public void OneMethodToRuleThemAll(MyContext context) {
+    // Add
+    // Update
+    // Delete
+    context.SaveChanges();
+}
+```
+
+Note: 
+Breaks SRP
+
+Hard to reuse
+
 ----
 
-### 2. Smaller methods which are call from overreaching method
+### 2. Smaller methods which are called from overreaching method
 
 ```csharp
 public void SaveAll() {
     SaveA();
     SaveB();
     SaveC();
+    // Or call context.SaveChanges() instead
+    // of each method
 }
 
 public void SaveA() {
     context.Add(new A() { ...});
-    context.SaveChanges(); // Or call context.SaveChanges in SaveAll?
+    context.SaveChanges();
 }
 ```
 
-Problem: If later parts relies on earlier parts being written, forget to call SaveChanges <!-- .element: class="fragment" -->
+Problem: If later parts relies on earlier parts being written orm we forget to call `SaveChanges` <!-- .element: class="fragment" -->
 
 ----
 
 ### 3. Smaller methods and use transaction to run them as one
 
-* Be aware that transactions locks tables for writes (or reads in some cases) - so use with care
+* Be aware that transactions can lock tables for writes (or reads) in some cases - so use with care
 
 ---
 
@@ -153,20 +169,22 @@ Problem: If later parts relies on earlier parts being written, forget to call Sa
 
 * Scenario: Changes are made in a different database context instance
 
+![Disconnected entities](./img/disconnected.jpg "Disconnected") <!-- .element: style="height:200px" -->
+
 ----
 
 ### Update Disconnected Entities
 * Determine if the entity exists in DB or not.
     * Auto-keys: use `context.Update(entity) // In Core 2.0+`
-    * else: `use context.Find(entity.Id) == null`
+    * else: `context.Find(entity.Id) == null`
         * Use `context.Update(entity)`
         * Or `context.Add(newEntity)`
+* Same for Graphs
 
 ----
 
 ### Delete Disconnected Entities
 
-* Same for Graphs
 * Handling deletes
     * Harder since objects do not exists, so need check which do not exists in incoming
     * Can be handled with 'soft-deletes'
@@ -190,9 +208,9 @@ public class Context: DbContext {
    //     new Review() { Id = 2, BookIsbn = 2, Votername = "V2", NumStars = 2}
    // );
    modelBuilder.Entity<Review>().HasData(
-   new Review() { Id = 2, BookIsbn = 2, Votername = "V2", NumStars = 2});
+       new Review() { Id = 2, BookIsbn = 2, Votername = "V2", NumStars = 2});
    modelBuilder.Entity<Review>().HasData(
-   new { Id = 1, BookIsbn = 1, Votername = "V1", NumStars = 1});
+       new { Id = 1, BookIsbn = 1, Votername = "V1", NumStars = 1});
 } }
 ```
 <!-- .element style="font-size: 16px;" -->
@@ -201,8 +219,8 @@ public class Context: DbContext {
 
 ### Other solutions
 
-* `InsertData()`, `UpdateData()`, `DeleteData()` on `MigraionBuilder`
-[See Custom Migrations operations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/operations)
+* `InsertData()`, `UpdateData()`, `DeleteData()` on `MigrationBuilder`
+    * [See Custom Migrations operations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/operations)
 
 ----
 
@@ -294,10 +312,10 @@ public class AppDbContext : DbContext {
 * Faster development
 * Less repetitive work
     * -> Fewer bugs
-* Keep EfCore code in DAL
+* Keep access to EfCore code in DAL
 * Separation of Concerns
     * Each layer is responsible for one thing - mental model is easier
-    * Having a isolated DAL it is easier to test
+    * Having a isolated DAL is easier to test
 
 ----
 
@@ -311,7 +329,9 @@ public class AppDbContext : DbContext {
     * Building Blocks
         * **Entity**, Value Object, **Aggregate**, **Repostory**, Domain Event, Service, Factory
 
-TODO: Image
+----
+
+![DDD](./img/ddd.jpg "DDD")
 
 ----
 
@@ -322,13 +342,15 @@ TODO: Image
 * Root entities is only way to access entities within an Aggregate
 * Repository is exposing a set of methods for accessing domain objects (entities)
 
-TODO: Image
+----
+
+![DDD concepts](./img/ddd-content.png "DDD Concepts")
 
 ----
 
 #### Repository
 
-* Repository exposes a set of methods that reflects UL
+* Repository exposes a set of methods that reflects UIL
 * Data is changed through methods and not entities - ensure data is updated correctly
 * Repository hides away EF core code from application
 
@@ -339,33 +361,33 @@ public Book FindBook(int Id)
 public void DeleteBook(Book book)
 public void UpdateBook(Book book)
 public List<book> Books(ICriteria criteria)
-
 // Book not has private setters
 public void AddReview(Review review)
 public void AddAuthor(Author authors)
 ...
 ```
 
-TODO: which methods
-
 Note:
 https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-implemenation-entity-framework-core#implement-custom-repositories-with-entity-framework-core
 
+----
+
+![Repository](./img/repository.png "Repository")
 
 ----
 
 #### Considerations
 
 * Use Repository to hide DAL from application
-    * + Interchangeable DAL
-    * - Can't use O/RM as efficient
+    * \+ Interchangeable DAL
+    * % Can't use O/RM as efficient
 
 
 ---
 
 ## Unit Of Work
 
-“Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems.” - Martin Fowler
+"Maintains a list of objects affected by a business transaction and coordinates the writing out of changes and the resolution of concurrency problems." - Martin Fowler
 
 * The Unit of Work pattern is made to keep track of all changes made in database
     * Avoid changes that are not written
@@ -375,9 +397,9 @@ https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/micr
 ### UoW in EfCore
 
 * Could see DbContext as Unit of Work
-* Microsoft ‘recommends’ to build a UnitOfWork/Repository pattern around DbContext
+* Microsoft 'recommends' to build a UnitOfWork/Repository pattern around DbContext
     * Create an abstraction between BLL and DAL
-    * Easier to maintain and test -> Changes from DAL don’t propagate to BLL
+    * Easier to maintain and test -> Changes from DAL don't propagate to BLL
 
 ```cshap
 public class UnitOfWork : IDisposable {
@@ -398,21 +420,25 @@ https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-star
 
 ## Query Object
 
-* “A Query Object is an interpreter [Gang of Four], that is, a structure of objects that can form itself into a SQL query.”
+* "A Query Object is an interpreter [Gang of Four], that is, a structure of objects that can form itself into a SQL query."
 * Makes it possible to create queries without knowing SQL and/or database schema.
 
+----
+
+### Example 
 
 ```csharp
 public class BookQuery : IBookQuery {
     public bool LoadAuthor { get; set; } = false;
     public int? AuthorId { get; set; } = null;
-    
-    public async Task<IEnumerable<Book>> Execute(AppDBContext context) {
+    public async Task<IEnumerable<Book>> Execute(
+            AppDBContext context) {
         if (AuthorId == null) {
-        if (LoadAuthor) return await context.Set<Book>().Include(b=>.Author).ToListAsync();
+        if (LoadAuthor) return await context.Set<Book>()
+                    .Include(b=>.Author).ToListAsync();
         else return await context.Set<Book>().ToListAsync();
-        } else return await context.Set<Book>().Where(b =>b.AuthorId==(int)).ToListAsync();
-        throw new NotImplementedException();
+        } else return await context.Set<Book>()
+            .Where(b =>b.AuthorId==(int)).ToListAsync();
 } }
 ```
 
@@ -440,7 +466,7 @@ public class BookQuery : IBookQuery {
 ## OM Examples
 
 * EF Core in action recommends [https://github.com/Automapper/Automapper](AutoMapper)
-* AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there navigational property Promotion
+* AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there are a navigational property Promotion
 
 ```csharp
 var config = new MapperConfiguration(cfg => {
