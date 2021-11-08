@@ -11,20 +11,25 @@
 * Polymorphism
 * Working with NoSQL
 
-----
+---
 
-### MongoDb / Document databases
+### Document databases
 
 * Breaks 1st normal form:
     * each row contains one value
-* Specific for MongoDB - it uses
-    * Stores an array of values
-    * JSON types, BSON types, Arrays of values, object, null
-    * Allows documents to be up to 16 MB
 * Designed to make it easier (and faster) to scala horizontally on different computers
     * No JOIN operation
     * Sharding
 * No longer a given way of designing a database
+
+----
+
+### MongoDB
+
+* Specific for MongoDB
+    * Stores an array of values
+    * JSON types, BSON types, Arrays of values, object, null
+    * Allows documents to be up to 16 MB
 
 ----
 
@@ -34,6 +39,10 @@
     * Embedding all related data into a single document (Json in MongoDB)
     * Retrieving or writing data in single operation
     * Fewer queries
+
+----
+
+### Example data
 
 ```javascript
 {   "id": "1",
@@ -77,15 +86,14 @@
 
 ### 1-N - Solution 1
 
-* Publishers
 ```javascript
+// In publisher collection
 { "id": "1",
-    "name": "O’Reilly",
+    "name": "O'Reilly",
     "books": [1, 2, 3, 12, 15, 19, 25, 26, 27, 49, 50 ...],
     ...}
-```
-* Books
-```javascript
+
+// In Books collection
 {   "id": "1", "name": "Learning python" } 
 {   "id": "2", "name": "Jenkins 2 - up & running" } 
 {   "id": "3", "name": "Head First Kotlin" } 
@@ -98,17 +106,18 @@
 
 ### 1-N - Solution 2
 
-* Publishers
 ```javascript
-{ "id": "1", "name": "O’Reilly", }
-```
-* Books
-```javascript
-{  "id": "1", "name": "Learning python", "publiser_id": 1 } 
-{ "id": "2", "name": "Jenkins 2 - up & running", "publiser_id": 1}  
-{ "id": "3", "name": "Head First Kotlin", "publiser_id": 1 } 
+// In publisher collection
+{ "id": "1", "name": "O'Reilly", }
+
+// In Books collection
+{  "id": "1", "name": "Learning python", "publisher_id": 1 } 
+{ "id": "2", "name": "Jenkins 2 - up & running",
+    "publisher_id": 1}  
+{ "id": "3", "name": "Head First Kotlin", "publisher_id": 1 } 
 ...
-{ "id": "50", "name": "Mastering Ethereum", "publiser_id": 1 } 
+{ "id": "50", "name": "Mastering Ethereum", "publisher_id": 1
+   } 
 ... 
 ```
 
@@ -117,21 +126,37 @@
 ### N-N
 
 * Putting joining ids in both collections
-* Authors
+
 ```javascript
-{ "id": "a1", "name": "J.K. Rowling", "books": ["b1", "b7", "b8", "b9" ]}
-{ "id": "a2", "name": "Amanda Berlin", "books": ["b10", "b14" ]}
-{ "id": "a3", "name": "Lee Brotherston", "books": ["b10", "b11" ]}
-```
-* Books
-```javascript
-{ "id": "b1", "name": "Harry Potter and the Philosophers Stone", "authors": ["a1"] }
-{ "id": "b7", "name": "Harry Potter and the Goblet of Fire", "authors": ["a1"] }
-{ "id": "b10", "name": "Defensive Security Handbook", "authors": ["a3", "a2"] }
+// Im Author collection
+{ "id": "a1", "name": "J.K. Rowling",
+     "books": ["b1", "b7", "b8", "b9" ]}
+{ "id": "a2", "name": "Amanda Berlin",
+     "books": ["b10", "b14" ]}
+{ "id": "a3", "name": "Lee Brotherston",
+     "books": ["b10", "b11" ]}
+// In Book collection
+{ "id": "b1", "name": "Harry Potter and the Philosophers Stone",
+     "authors": ["a1"] }
+{ "id": "b7", "name": "Harry Potter and the Goblet of Fire",
+     "authors": ["a1"] }
+{ "id": "b10", "name": "Defensive Security Handbook",
+     "authors": ["a3", "a2"] }
 ```
 
+----
+
+### N-N Alternatives
+
 * Alternatively merging some data together based on application usage
-    * E.g. author name with book - since author name don’t change to often
+    * E.g. author name with book - since author name don't change to often
+
+```javascript
+{ "id": "b1",
+  "name": "Harry Potter and the Philosophers Stone",
+  "author_name": "J.K. Rowling",
+  "authors": ["a1"] }
+```
 
 ---
 
@@ -139,12 +164,12 @@
 
 * Can be necessary to mix different documents type in same collection
     * E.g. to keep them in same partition
-    * Problem: Which document is of which type
-    * Solution: Then put type on the entities in collection
+    * **Problem**: Which document is of which type
+    * **Solution**: Then put type on the entities in collection
 
 ```javascript
 {   "id": "1",
-    "name": "O’Reilly",
+    "name": "O'Reilly",
     "type": "publisher"
 },
 {   "id": "2",
@@ -157,11 +182,16 @@
 
 ### Polymorphism
 
-* n document database you can store different types in same collection
+* In document database you can store different types in same collection
     * Performing queries on shared fields on different types
     * Performing queries on specific type
 * Avoid `ALTER TABLE` statements while preserving ability to evolve schema
     * `ALTER TABLE` can be time consuming
+
+----
+
+### Updating entities
+
 * Handling schema evolution in NoSQL is often done in application
     * Updating/altering entities when read
     * Algorithm
@@ -176,61 +206,65 @@
 * Storage inefficiency
     * No rules for which data is present
     * Small values vs long property names
-* Difficulties creating indexes
-    * Some of this can be handled by using array and index this instead of using object
-
-----
 
 ```javascript
 {
-...
+    "some_long_name": 1,
+    "another_longer_name", 2.2,
+    ...
+}
+```
+
+----
+
+### Drawbacks cont.
+
+* Difficulties creating indexes
+    * Some of this can be handled by using array and index this instead of using object
+
+```javascript
+{...
     properties : {
     'Seek Time' : '5ms',
     'Rotational Speed' : '15k RPM',
     'Transfer Rate' : '...'
-    ... }
-}
-```
-
-----
-
-```javascript
-{
-...
+    ... }}
+// vs 
+{...
 properties: [
     ['Seek Time', '5ms' ],
     ['Rotational Speed', '15k RPM'],
     ['Transfer Rate', '...'],
-    ... ]
-
-}
+    ... ]}
 ```
 
-----
+---
 
-### Document database
+### MongoDB
 
 * Record in MongoDb is a document
 * Database consists of one or more collections
 * Records are stored in collections (tables)
 * Consists of key:value pairs
     * Values can be: other documents, arrays, and simple types
-* Benefits:
-    * Similar to types in most programing language
-    * No expensive joins
-    * Dynamic schema
-
-TODO: Really?
 
 ----
+
+### Benefits of model
+
+* Similar to types in most programing language
+* No expensive joins
+* Dynamic schema
+
+----
+
 #### MongoDB Features
 
 * Performance
     * Fewer queries
     * Keys (sub documents)
 * Query Language
-    * CRUD
-    * Data searches
+    * CRUD and Data searches
 * Availability
     * Via Replica set
     * Automatic failover
@@ -242,8 +276,6 @@ TODO: Really?
 
 #### Database and Collections
 
-TODO table
-
 * `use myNewDB`
     * use existing database / creates new
 * `db.myNewCollection1.insertOne( { x: 1 } )`
@@ -253,8 +285,9 @@ TODO table
 
 ### MongoDB shell
 
-* Whenever we are in the shell ‘`db`’ references the current database
+* Whenever we are in the shell `db` references the current database
 * Inserting into database
+
 ```javascript
 db.inventory.insertMany([
    { item: "journal", qty: 25, status: "A", size: { h: 14, w: 21, uom: "cm" }, tags: [ "blank", "red" ] },
@@ -265,19 +298,21 @@ db.inventory.insertMany([
    { item: "postcard", qty: 45, status: "A", size: { h: 10, w: 15.25, uom: "cm" }, tags: [ "blue" ] }
 ]);
 ```
+
 * MongoDB adds an `_id` field with an ObjectId value if the field is not present in the document
 
 ----
 
 #### Selection
 
-* `db.inventory.find({}).pretty() - pretty()` is optional
+* `db.inventory.find({}).pretty()` 
+    * `pretty()` is optional
 * ```javascript
 db.inventory.find(
-    status: "D" or
-    qty: 0, status: "D" or  
-    tags: "red" or
-    size: { h: 14, w: 21, uom: "cm"}
+    {status: "D"} // or
+    {qty: 0, status: "D"} // or  
+    {tags: "red"} // or
+    {size: { h: 14, w: 21, uom: "cm"}}
 )
 ```
 * What to return
@@ -296,7 +331,7 @@ db.inventory.find({})
 db.inventory.find({})
     .limit(20)
     .skip(page * 20)
-db.inventory.find({“item”: /book$/})
+db.inventory.find({"item": /book$/})
 
 // create index
 db.inventory.createIndex("tags": 1)
@@ -306,15 +341,15 @@ db.inventory.createIndex("tags": 1)
 
 #### Alternative selection methods
 
-* (db.collection.find())[https://docs.mongodb.com/manual/reference/method/db.collection.find/#db.collection.find]
-* (db.collection.findOne())[https://docs.mongodb.com/manual/reference/method/db.collection.findOne/#db.collection.findOne]
-* (db.collection.aggregate())[https://docs.mongodb.com/manual/reference/method/db.collection.aggregate/#db.collection.aggregate]
-* (db.collection.countDocuments())[https://docs.mongodb.com/manual/reference/method/db.collection.countDocuments/#db.collection.countDocuments]
-* (db.collection.estimatedDocumentCount())[https://docs.mongodb.com/manual/reference/method/db.collection.estimatedDocumentCount/#db.collection.estimatedDocumentCount]
-* (db.collection.count())[https://docs.mongodb.com/manual/reference/method/db.collection.count/#db.collection.count]
-* (db.collection.distinct())[https://docs.mongodb.com/manual/reference/method/db.collection.distinct/#db.collection.distinct]
+* [db.collection.find()](https://docs.mongodb.com/manual/reference/method/db.collection.find/#db.collection.find)
+* [db.collection.findOne()](https://docs.mongodb.com/manual/reference/method/db.collection.findOne/#db.collection.findOne)
+* [db.collection.aggregate()](https://docs.mongodb.com/manual/reference/method/db.collection.aggregate/#db.collection.aggregate)
+* [db.collection.countDocuments()](https://docs.mongodb.com/manual/reference/method/db.collection.countDocuments/#db.collection.countDocuments)
+* [db.collection.estimatedDocumentCount()](https://docs.mongodb.com/manual/reference/method/db.collection.estimatedDocumentCount/#db.collection.estimatedDocumentCount)
+* [db.collection.count()](https://docs.mongodb.com/manual/reference/method/db.collection.count/#db.collection.count)
+* [db.collection.distinct()](https://docs.mongodb.com/manual/reference/method/db.collection.distinct/#db.collection.distinct)
 
-More at: (https://docs.mongodb.com/manual/reference/method/js-collection/)[https://docs.mongodb.com/manual/reference/method/js-collection/]
+More at: [https://docs.mongodb.com/manual/reference/method/js-collection/](https://docs.mongodb.com/manual/reference/method/js-collection/)
 
 ----
 
@@ -324,7 +359,7 @@ More at: (https://docs.mongodb.com/manual/reference/method/js-collection/)[https
 
 ----
 
-#### BSON
+#### Identifier _id
 
 * All documents in a collection must have an unique `_id`
 * If omittied _id is generated - by following rules
@@ -339,8 +374,7 @@ More at: (https://docs.mongodb.com/manual/reference/method/js-collection/)[https
     birth: new Date('Jun 23, 1912'),
     death: new Date('Jun 07, 1954'),
     contribs: [ "Turing machine", "Turing test", "Turingery" ],
-    views : NumberLong(1250000)
-}
+    views : NumberLong(1250000)}
 ```
 
 ----
@@ -368,7 +402,11 @@ contain this key
     * - Complexity
     * - Infrastructure
 
-!(Sharding)[./img/shard.svg]
+----
+
+#### Sharding
+
+![Sharding](./img/sharded.svg)
 
 ---
 
