@@ -205,14 +205,14 @@ Considder space consumptions? Easy of query
   * Should distribute data evenly
 
 * % date / time
-* + region
-* + composed key
+* \+ region
+* \+ composed key
 
 ----
 
 #### Collections types
 
-* Capped colleciton
+* Capped collection
 * TTL collection
 * Normal collection
   * move data/change collection
@@ -220,12 +220,6 @@ Considder space consumptions? Easy of query
 ---
 
 ## Other types
-
-* Key/Value stores
-* Column base
-* Graph
-
-----
 
 ![NoSQL types](./img/types.png "NoSQL Types")
 
@@ -245,11 +239,20 @@ Considder space consumptions? Easy of query
   * Also handles semistructured data
 * Flexible data
 * Move work to application
-* Some not all dont support
+
+----
+
+#### ACID vs Base
+
+* Some, not all dont support
   * Atomicity
   * Consistency
   * Isolation
   * Durability
+* Instead often
+  * Basic Availability
+  * Soft State
+  * Eventually Consistency
 
 ----
 
