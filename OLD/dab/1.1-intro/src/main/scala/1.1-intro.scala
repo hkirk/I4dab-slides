@@ -127,6 +127,7 @@ object Intro {
       Enumeration(
         Item.stable("Read material before class"),
         Item.stable("You solve exercises - and there will be exercises to do out of class"),
+      
         Item.stable("Help each other"),
         Item.stable("Ask if we should talk about previous exercises"),
       ),

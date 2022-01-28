@@ -14,7 +14,7 @@ object Modeling {
     <.thead(
       <.tr(
         <.th("title"),
-        <.th("year"),
+        <.th("year") ,
         <.th("length"),
         <.th("genre"),
       ),
