@@ -9,7 +9,7 @@ Slides can be found in /slides/lecture/index.html, .md file in same library is t
 ### To start
 
 * npm start
-* visit http://localhost:9000/slides/ for overview of lectures or e.g. http://localhost:9000/slides/06.1
+* visit http://localhost:9000/ for overview of lectures
 
 # Guides
 
