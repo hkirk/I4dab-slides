@@ -45,7 +45,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Schedule
 
-TODO Insert:
+![Schedule](./img/schedule.png "Schedule")
 
 ----
 
@@ -289,8 +289,6 @@ Movies (
 SELECT title FROM Movies ORDER BY year
 ```
 
-TODO: Check sql server syntax
-
 ----
 
 ### Relations in SQL
@@ -316,14 +314,13 @@ logic can be stupid and robust." - Eric Raymond
 
 ### Data types
 
-TODO: SQL SERver data types
-
-* Strings: CHAR(n) and VARCHAR(n)
-* Bit: BIT(n) and BIT VARYING(n)
-* BOOLEAN
-* Numbers: INT, SHORT INT
-* Floating point numbers: FLOAT, REAL and DOUBLE
-* Time: DATE and TIME
+* Strings: char(n) and varchar(n)
+* Unicode: nchar(n) and nvarchar(n)
+* Bit: bit(n)
+* Boolean: bit(1)
+* Numbers: int, bitint, smallint
+* Floating point numbers: float, real
+* Time: date, datetime2, datetimeoffset
 
 **Note**: Differs from SQL engine to engine.
 
@@ -334,21 +331,20 @@ CREATE TABLE Movies (
     title CHAR(100), year INT, length INT, genre CHAR(20)
 )
 SELECT title FROM Movies ORDER BY year
-ALTER TABLE Movies ADD studioName CHAR(30))
+ALTER TABLE Movies ADD studioName CHAR(30)
 DROP TABLE Movies
 CREATE TABLE Movies (
   title CHAR(100), year INT, length INT, genre CHAR(20),
-  UNIQUE KEY (title, year)
+  CONSTRAINT key_title_year_uniquey UNIQUE (title, year)
 )
+DROP TABLE Movies
 CREATE TABLE Movies (
   title CHAR(100), year INT, length INT,
-  genre CHAR(20) DEFAULT ‘UNKNOWN’,
+  genre CHAR(20) DEFAULT 'UNKNOWN',
 )
+DROP TABLE Movies
 ```
 <!-- .element: style="font-size: 12px" -->
-
-TODO: Syntax
-
 
 ---
 
