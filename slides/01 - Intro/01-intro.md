@@ -368,7 +368,7 @@ DROP TABLE Movies
 
 * Domain rules and business rules
 * Data structures and object structures
-* Not procresses
+* Not processes
 
 ----
 
@@ -452,12 +452,12 @@ DROP TABLE Movies
 ### Relationship (1/3)
 
 * No standard for connectivity
-* One 2one
+* One 2 one
     * Mapped with attributes
 * One 2 many
     * Mapped with attributes
 * Many 2 many
-    * relationship table/connection entity – can have attributes associated
+    * relationship table/connection entity - can have attributes associated
 * Constraints on numbers (cardinality) are possible
 
 ----
@@ -496,7 +496,7 @@ DROP TABLE Movies
 
 * **Assertion 1**:
     * Relationship is one to one to one
-    * Technician can work on multiple project – having different notebooks for each
+    * Technician can work on multiple project - having different notebooks for each
 ![Tenary 1-1-1](./img/erTenaryOneOneOne.png "1-1-1")
 
 ----
