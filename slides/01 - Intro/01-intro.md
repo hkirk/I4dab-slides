@@ -31,7 +31,7 @@
     * 1: Passed with comments
     * 0: Failed - resubmit
 * Review, BB score 1 approved, 0 not approved.
-* Assignment should be handed in before deadline to be graded
+* Assignments should be handed in before deadline to be graded
 
 ----
 
@@ -94,16 +94,16 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 * SQL (more in week 2, 3, and 4)
 * Modeling
 * Process
-* Entity Relationship Diagrams (ER/D)
+* Entity Relationship Diagrams (ERD)
 
 ---
 
 ### Database
 
-* Database is an abstractions on a filesystem, which allow common operations on data
+* Database is an abstraction on a filesystem, which allow common operations on data
 * Database server
-    * Allow multiple simultaneous clients to do
-    * Create Read Update and Delete operations: AKA CRUD
+    * Allows multiple simultaneous clients to do:
+        * **C**reate **R**ead **U**pdate and **D**elete operations: AKA **CRUD**
     * Access over network
     * Can be spread on multiple hosts
     * And maybe the most important topic: allow data oriented access to the file/files
@@ -149,7 +149,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 * Automatization
     * For a relational database, this model is very often a Entity Relationship Diagram model (ERD model)
     * In a ERD model we identifies entities and their relationships, ie nouns and verbs in user stories/use cases
-    * For all relationships, AKA associations, we identifies their degree, connectivity and exsistience
+    * For all relationships, AKA associations, we identify their degree, connectivity and exsistience
 
 
 ----
@@ -166,7 +166,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Data model
 
-* Relational model vs semi-structure model
+* Relational model vs semi-structured model
 * Values
 * Objects
 
@@ -233,7 +233,7 @@ programming." - Rob Pike in 1989
 ----
 
 ### Representation of Relations
-* Relations are Set<Tuple>
+* Relations are Set\<Tuple\>
     * Order of rows and columns are not significant
 * Relations are not static
     * Addition, modifications, deletion
@@ -318,7 +318,7 @@ logic can be stupid and robust." - Eric Raymond
 * Unicode: nchar(n) and nvarchar(n)
 * Bit: bit(n)
 * Boolean: bit(1)
-* Numbers: int, bitint, smallint
+* Numbers: int, bigint, smallint
 * Floating point numbers: float, real
 * Time: date, datetime2, datetimeoffset
 
