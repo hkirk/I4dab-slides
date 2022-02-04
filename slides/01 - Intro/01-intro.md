@@ -1,6 +1,6 @@
 <!-- .slide: data-background="#003d73" -->
 
-## I4DAB
+## SW4DAB
 
 ### Introduction 
 
@@ -31,7 +31,7 @@
     * 1: Passed with comments
     * 0: Failed - resubmit
 * Review, BB score 1 approved, 0 not approved.
-* Assignment should be handed in before deadline to be graded
+* Assignments should be handed in before deadline to be graded
 
 ----
 
@@ -45,7 +45,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Schedule
 
-TODO Insert:
+![Schedule](./img/schedule.png "Schedule")
 
 ----
 
@@ -94,16 +94,16 @@ TODO Insert:
 * SQL (more in week 2, 3, and 4)
 * Modeling
 * Process
-* Entity Relationship Diagrams (ER/D)
+* Entity Relationship Diagrams (ERD)
 
 ---
 
 ### Database
 
-* Database is an abstractions on a filesystem, which allow common operations on data
+* Database is an abstraction on a filesystem, which allow common operations on data
 * Database server
-    * Allow multiple simultaneous clients to do
-    * Create Read Update and Delete operations: AKA CRUD
+    * Allows multiple simultaneous clients to do:
+        * **C**reate **R**ead **U**pdate and **D**elete operations: AKA **CRUD**
     * Access over network
     * Can be spread on multiple hosts
     * And maybe the most important topic: allow data oriented access to the file/files
@@ -149,7 +149,7 @@ TODO Insert:
 * Automatization
     * For a relational database, this model is very often a Entity Relationship Diagram model (ERD model)
     * In a ERD model we identifies entities and their relationships, ie nouns and verbs in user stories/use cases
-    * For all relationships, AKA associations, we identifies their degree, connectivity and exsistience
+    * For all relationships, AKA associations, we identify their degree, connectivity and exsistience
 
 
 ----
@@ -166,7 +166,7 @@ TODO Insert:
 
 ### Data model
 
-* Relational model vs semi-structure model
+* Relational model vs semi-structured model
 * Values
 * Objects
 
@@ -233,7 +233,7 @@ programming." - Rob Pike in 1989
 ----
 
 ### Representation of Relations
-* Relations are Set<Tuple>
+* Relations are Set\<Tuple\>
     * Order of rows and columns are not significant
 * Relations are not static
     * Addition, modifications, deletion
@@ -266,7 +266,7 @@ Studio (
 )
 ```
 
------
+----
 
 ### Sql
 
@@ -288,8 +288,6 @@ Movies (
 ---
 SELECT title FROM Movies ORDER BY year
 ```
-
-TODO: Check sql server syntax
 
 ----
 
@@ -316,14 +314,13 @@ logic can be stupid and robust." - Eric Raymond
 
 ### Data types
 
-TODO: SQL SERver data types
-
-* Strings: CHAR(n) and VARCHAR(n)
-* Bit: BIT(n) and BIT VARYING(n)
-* BOOLEAN
-* Numbers: INT, SHORT INT
-* Floating point numbers: FLOAT, REAL and DOUBLE
-* Time: DATE and TIME
+* Strings: char(n) and varchar(n)
+* Unicode: nchar(n) and nvarchar(n)
+* Bit: bit(n)
+* Boolean: bit(1)
+* Numbers: int, bigint, smallint
+* Floating point numbers: float, real
+* Time: date, datetime2, datetimeoffset
 
 **Note**: Differs from SQL engine to engine.
 
@@ -334,21 +331,20 @@ CREATE TABLE Movies (
     title CHAR(100), year INT, length INT, genre CHAR(20)
 )
 SELECT title FROM Movies ORDER BY year
-ALTER TABLE Movies ADD studioName CHAR(30))
+ALTER TABLE Movies ADD studioName CHAR(30)
 DROP TABLE Movies
 CREATE TABLE Movies (
   title CHAR(100), year INT, length INT, genre CHAR(20),
-  UNIQUE KEY (title, year)
+  CONSTRAINT key_title_year_uniquey UNIQUE (title, year)
 )
+DROP TABLE Movies
 CREATE TABLE Movies (
   title CHAR(100), year INT, length INT,
-  genre CHAR(20) DEFAULT ‘UNKNOWN’,
+  genre CHAR(20) DEFAULT 'UNKNOWN',
 )
+DROP TABLE Movies
 ```
 <!-- .element: style="font-size: 12px" -->
-
-TODO: Syntax
-
 
 ---
 
@@ -372,7 +368,7 @@ TODO: Syntax
 
 * Domain rules and business rules
 * Data structures and object structures
-* Not procresses
+* Not processes
 
 ----
 
@@ -456,12 +452,12 @@ TODO: Syntax
 ### Relationship (1/3)
 
 * No standard for connectivity
-* One 2one
+* One 2 one
     * Mapped with attributes
 * One 2 many
     * Mapped with attributes
 * Many 2 many
-    * relationship table/connection entity – can have attributes associated
+    * relationship table/connection entity - can have attributes associated
 * Constraints on numbers (cardinality) are possible
 
 ----
@@ -500,7 +496,7 @@ TODO: Syntax
 
 * **Assertion 1**:
     * Relationship is one to one to one
-    * Technician can work on multiple project – having different notebooks for each
+    * Technician can work on multiple project - having different notebooks for each
 ![Tenary 1-1-1](./img/erTenaryOneOneOne.png "1-1-1")
 
 ----
