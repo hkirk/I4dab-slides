@@ -41,7 +41,7 @@ Anyone over 21 who has a valid driver's license can rent a car. Customers under 
 
 Before renting a car, a customer usually makes a reservation for a car. A customer specifies the dates when the car will be rented, the pick-up location, the drop-off location, and the category of car he wants to rent. A customer may specify, that he wants some extra equipment in the car, for example a GPS, a car seat for a child, etc.
 
-When a customer rents a car, he declares the pick-up and drop-off location, and the drop-off date. The customer can buy various types of insurance. He can also decide that he doesn’t need insurance because the insurance is covered otherwise, for example by his credit card company. The customer can choose additional options such as the possibility of an early drop-off, various refueling options, etc.
+When a customer rents a car, he declares the pick-up and drop-off location, and the drop-off date. The customer can buy various types of insurance. He can also decide that he doesn't need insurance because the insurance is covered otherwise, for example by his credit card company. The customer can choose additional options such as the possibility of an early drop-off, various refueling options, etc.
 
 The customer pays the charges when he returns the car.
 
@@ -74,6 +74,7 @@ The **company** has many **locations** where you can rent a **car**. The rental 
 
 Anyone over 21 who has a valid **driver's license** can rent a **car**. **Customers** under 25 or over 75 years pay different (higher) **charges** then other **customers**.
 
+Before renting a car, a customer usually makes a **reservation** for a car. 
 ....
 
 ----
@@ -85,10 +86,22 @@ Anyone over 21 who has a valid **driver's license** can rent a **car**. **Custom
 
 ----
 
-### 2. Generalization Hierarchies
+### 2. Test/Improve (Evaluate)
 
-* Put identifier and generic descriptors in supertype
-* Subtype should have same identifier
+<!-- .slide: style="font-size: 28px; text-align: left" -->
+### Nouns
+
+
+A **car** rental **company** rents **cars** to **customers**. The **company** owns several **cars**. Each **car** has a **brand**, **model name**, **production year**, **mileage**, **color**, and so on. **Cars** are divided into different **categories**: small, mid-size, large, limousines.
+
+The **company** has many **locations** where you can rent a **car**. The rental **locations** are located in different **cities** throughout the **country**. There can be more than one **company** **location** in a **city**.
+
+Anyone over 21 who has a valid **driver's license** can rent a **car**. **Customers** under 25 or over 75 years pay different (higher) **charges** then other **customers**.
+
+Before renting a car, a customer usually makes a **reservation** for a car. 
+....
+
+
 
 
 ----
@@ -111,6 +124,24 @@ Anyone over 21 who has a valid **driver's license** can rent a **car**. **Custom
 * More relationship can exists between entities
 
 ----
+
+<!-- .slide: style="font-size: 28px; text-align: left" -->
+### Relationships elicitation
+
+
+1. Each car belongs to a category,
+2. Each reservation is for a category of cars,
+3. Each location is in a city,
+4. Each reservation has a pick up and a drop off location,
+5. Each reservation is made by a customer,
+6. Each rental is made by a customer,
+7. Each rental is for a certain car,
+8. Each rental has a pick up and a drop off location.
+9. Each rental is connected to some insurance...
+
+
+----
+
 
 ### Relationship example
 
@@ -179,9 +210,9 @@ Anyone over 21 who has a valid **driver's license** can rent a **car**. **Custom
 ### CREATE DATABASE
 
 * Create a database
-    * `CREATE DATABASE I4DAB`
+    * `CREATE DATABASE SW4DAB`
 * Select a database
-    * `USE I4DAB`
+    * `USE SW4DAB`
 * Show databases on server
 ```sql
 SELECT name FROM sys.Databases
@@ -190,7 +221,7 @@ master
 tempdb
 model
 msdb
-I4DAB
+SW4DAB
 ```
 * **Note**: SQL Server is not case sensitive
 
@@ -206,7 +237,7 @@ CREATE TABLE Persons (Id INT, FirstName NVARCHAR(50),
 * Show tables in selected database
 ```sql
 SELECT TABLE_NAME
-FROM I4DAB.INFORMATION_SCHEMA.TABLES
+FROM SW4DAB.INFORMATION_SCHEMA.TABLES
 WHERE TABLE_TYPE = 'BASE TABLE'
 ```
 * **Note**: Strings are case-sensitive
@@ -360,13 +391,17 @@ DROP COLUMN Age
 
 ----
 
-* Delete tables
+### Deleting
+ 
+#### Delete tables   
+
 ```sql
 DROP TABLE Teachers
 ```
-* Delete database
+#### Delete database
+
 ```sql
-DROP DATABASE I4DAB
+DROP DATABASE SW4DAB
 ```
 
 ---
