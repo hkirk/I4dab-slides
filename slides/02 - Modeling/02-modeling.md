@@ -304,10 +304,10 @@ CREATE TABLE Orders (
 * Foreign key constraint
 ```sql
 CREATE TABLE Assignments (
-    Id INT PRIMARY KEY
+    Id INT PRIMARY KEY,
     Name VARCHAR(20),
     Body TEXT,
-    StudentId INT FOREIGN KEY REFERENCES Student(id)
+    StudentId INT FOREIGN KEY REFERENCES Students(id)
 )
 ```
 * **Note**: Inline foregn key above, also possible to declare constraints after attributes
