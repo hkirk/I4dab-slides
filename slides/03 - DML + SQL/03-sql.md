@@ -164,7 +164,7 @@ VALUES (3, 9, 'full', 30, 'bread'),
 ```bash
 $ mkdir SqlConnectionExample; cd SqlConnectionExample
 $ dotnet new console
-$ dotnet add package Microsoft.Data.SqlClient --version 4.1.1
+$ dotnet add package Microsoft.Data.SqlClient --version 4.1.0
 ## Or via package manager PM> Install-Package Microsoft.Data.SqlClient -Version 4.1.0
 $ dotnet run
 ```
