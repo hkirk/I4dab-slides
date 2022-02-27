@@ -25,11 +25,15 @@
 SELECT * FROM movies 
   ORDER BY title [DESC|ASC]
 --
-SELECT count(title) FROM movies
-  GROUP BY category
+SELECT studioName,count(title) FROM movies
+  GROUP BY studioName
 ```
 
 * HAVING  can be used for search condition when using **GROUP BY**
+
+```sql
+HAVING count(title) >= 2
+```
 
 ----
 
@@ -60,9 +64,9 @@ CREATE TABLE dbo.Employee (
 
 ```sql
 SELECT TOP 10 * FROM movies
-  ORDER BY rating
+  ORDER BY length
 -- or
-SELECT TOP 10 PERCENT * FROM movies
+SELECT TOP 50 PERCENT * FROM movies
 ```
 
 ----
@@ -70,7 +74,13 @@ SELECT TOP 10 PERCENT * FROM movies
 ### Pagination
 
 ```sql
-SELECT * FROM categories ORDER BY categoryid 
+SELECT * FROM Sales.SalesOrderDetail 
+  ORDER BY ModifiedDate, SalesOrderDetailID
+```
+
+```sql
+SELECT * FROM Sales.SalesOrderDetail 
+  ORDER BY ModifiedDate, SalesOrderDetailID
   OFFSET 3 ROWS
   FETCH NEXT 3 ROWS ONLY
 ```
@@ -91,7 +101,7 @@ SELECT * FROM movies
 
 ```sql
 SELECT * FROM movies
-  WHERE title LIKE ('Star{%|_}')
+  WHERE title LIKE ('Star %')
 ```
 
 ----
@@ -101,8 +111,8 @@ SELECT * FROM movies
 * IN
 
 ```sql
-SELECT * FROM movies WHERE category
-  IN ('action', 'drama', 'scifi')
+SELECT * FROM movies WHERE genre
+  IN ('Comedy')
 ```
 
 * BETWEEN
@@ -250,7 +260,8 @@ try {
 
 ## Joins
 
-![Joins](./img/joins.jpg "Joins")
+![Joins](./img/joins.png "Joins")
+<!-- .element style="width: 800px; " -->
 
 ----
 
@@ -396,33 +407,26 @@ FULL JOIN customer AS c ON o.customer_id = c.id
 
 ----
 
-### Examples
 
-TODO: Make some real smart example
-
-----
 
 ### Views
 
 * Create a View
 
 ```sql
-CREATE VIEW RecordSongs AS
-  SELECT r.name, r.year, s.text, s.length
-  FROM Records AS r LEFT JOIN song AS s 
-  ON r.id = s.albumId
+CREATE VIEW CostumerOrders AS
+SELECT o.id, c.name, o.order_date 
+FROM order_table AS o
+LEFT JOIN customer AS c ON o.customer_id = c.id
 ```
 * Using a view - like a table
 ```sql
-SELECT * FROM RecordSongs
+SELECT * FROM CostumerOrders
 ```
 * **Note**: Computed on every query
 
 ----
 
-### Azure data studio
-
-TODO: how it looks
 
 ---
 
