@@ -20,8 +20,8 @@
 
 ## Anomalies
 
-* **Redundancy**</br> Information may be repeated unnecessarily in several tubles
-* **Update anomalies**</br>We change information in one tuble, but the same information is left in another tuble
+* **Redundancy**</br> Information may be repeated unnecessarily in several tuples
+* **Update anomalies**</br>We change information in one tuple, but the same information is left in another tuple
 * **Deletion anomalies**</br>If we delete data we may lose information as a side effect
 
 ----
@@ -80,7 +80,7 @@ Attributes: `(title, year, starName)` forms a key for `Movies1`
       
 
 note: 
-1) Two distinct tubles can’t agree on { a1 a2, ..., an}.
+1) Two distinct tuples can’t agree on { a1 a2, ..., an}.
 2) Key must be minimal.
 Ex: Determines all other attributes, key is minimal.
 Title, year - not a key.
@@ -283,7 +283,7 @@ Is a nontrival MVD, {$ a_1, a_2, \ldots a_n $} is a super
 
 $ a_1, a_2, \ldots a_n \twoheadrightarrow b_1, b_2, \ldots b_n $
 
-holds for a relation R if when we restrict ourselves to tubles of R that have particular values for each attribute in ($ a_1, a_2, \ldots, a_n $) then there is a set of values we find among the ($ b_1, b_2, \ldots, b_m $) is independent of the set of values we find among the attributes of R that is not in those sets.
+holds for a relation R if when we restrict ourselves to tuples of R that have particular values for each attribute in ($ a_1, a_2, \ldots, a_n $) then there is a set of values we find among the ($ b_1, b_2, \ldots, b_m $) is independent of the set of values we find among the attributes of R that is not in those sets.
 
 
 ----
