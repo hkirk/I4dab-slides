@@ -41,13 +41,13 @@
 
 ## Functional dependency
 
-If two tuples of R agree on all attributes $ a_1, a_2, \ldots a_n $ , then they must also agree on another list of attributes $ b_1, b_2, \ldots b_n $
+If two tuples of R agree on all attributes $ a_1, a_2, \ldots a_n $ , then they must also agree on another list of attributes $ b_1, b_2, \ldots b_m $
 
 Formally 
 
-$$ a_1, a_2, \ldots a_n \rightarrow b_1, b_2, \ldots b_n $$
+$$ a_1, a_2, \ldots a_n \rightarrow b_1, b_2, \ldots b_m $$
 
-Reads: $ a_1, a_2, \ldots a_n $  functional determines $ b_1, b_2, \ldots b_n $ <!-- .element: class="fragment" -->
+Reads: $ a_1, a_2, \ldots a_n $  functional determines $ b_1, b_2, \ldots b_m $ <!-- .element: class="fragment" -->
 
 
 ----
