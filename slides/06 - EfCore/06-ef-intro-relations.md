@@ -18,16 +18,7 @@
 
 ## Entity Framework (Core)
 
-* O/RM - Object relation mapper
-
-| Relational database | Object Oriented langauge    |
-|---------------------|-----------------------------|
-| Table               | Class                       |
-| Column              | Property                    |
-| Unique Row          | Object                      |
-| Rows                | Collection of Objects       |
-| Foreign key         | Reference                   |
-| SQL - e.q. WHERE    | .NET LINQ - e.g. WHERE(...) |
+TODO: image
 
 ----
 
@@ -43,9 +34,25 @@
 
 #### Downsides
 
-* Different paradigms in OOP and Relational database
+* Different paradigms in OOP and RD
 * Pollution of OOP classes with annotations etc.
 * 'Forget' that data is saved in database, meaning you write code that works in test, but not in production
+
+----
+
+#### 
+
+* O/RM - Object relation mapper
+
+| Relational database | Object Oriented langauge    |
+|---------------------|-----------------------------|
+| Table               | Class                       |
+| Column              | Property                    |
+| Unique Row          | Object                      |
+| Rows                | Collection of Objects       |
+| Foreign key         | Reference                   |
+| SQL - e.q. WHERE    | .NET LINQ - e.g. WHERE(...) |
+
 
 ----
 
@@ -65,6 +72,9 @@ Note: EF6/7 is not build to support NoSQL but is extended to do so
 
 ----
 
+TODO: Move to week 3
+
+<!-- .slide: data-visibility="hidden" -->
 ### Connection string LocalDB
 
 * 'Server Explorer' window in Visual Studio (Menu -> View -> Server Explorer)
@@ -72,6 +82,8 @@ Note: EF6/7 is not build to support NoSQL but is extended to do so
     * From properties menu
 
 ----
+
+<!-- .slide: data-visibility="hidden" -->
 
 ![Connection String localDB](./img/connectionstring.png "") <!-- .element: style="height: 600px" -->
 
@@ -100,12 +112,12 @@ optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User
 
 ### Starting with EfCore 1
 
-1. Create a .Net 5.0 console project for SqlServer
-    * Create new .NET - Console App project in UI
-2. Install Entity Framework Core
-    * From the Visual Studio menu, select<br/>
-      Project -> Manage NuGet Packages
-    * Install 'Microsoft.EntityFrameworkCore.SqlServer' **and** 'Microsoft.EntityFrameworkCore.Design' **and** 'Microsoft.EntityFrameworkCore.Tools'* packages
+1. Create a .Net 6.0 console project for SqlServer
+2. Add Entity Framework Core to project
+    * Install NuGet packages
+      * Microsoft.EntityFrameworkCore.SqlServer
+      * Microsoft.EntityFrameworkCore.Design
+      * Microsoft.EntityFrameworkCore.Tools\* 
 
 \* 'Microsoft.EntityFrameworkCore.Tools' can be installed globally <!-- .element: style="font-size:0.6em" -->
 
@@ -127,7 +139,7 @@ protected override void OnConfiguring(
 Note:
 
 ```
-$ dotnet tool install --global dotnet-ef --version 5.0.3
+$ dotnet tool install --global dotnet-ef --version 6.0.2
 $ mkdir MyFirstEFCoreProject
 $ cd MyFirstEFCoreProject
 $ dotnet new console
@@ -135,27 +147,27 @@ $ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 $ dotnet add package Microsoft.EntityFrameworkCore.Design
 ```
 
-Create the MyDbContext.cs as on slide and add code
+Create the `MyDbContext.cs` as on slide and add code
 
 ----
 
 ### Database Context
 
-* A class that inherits from EF Cores DbContext
+* A class that inherits from EF Cores `DbContext`
 * Contain information that EF Core needs to configure database mappings
 * The class you use to access data in database
 * Connection to database is created through:
     * Overriding method `OnConfiguring` and supply connection string
     * E.g. optionsBuilder.UseSqlServer(ConnectionString);
-* Can also be `UseSqlite`, `UseMySql` etc.
+  * Can also be `UseSqlite`, `UseMySql` etc.
 
 ----
 
 ### Creating model classes
 
-* Create class Door
-* Add properties with public getter and setter
-* Primary key is by convention named '`Id`' or '`<class name>Id`' (case insensitive)
+1. Create class Door
+1. Add properties with public getter and setter
+1. Primary key is by convention named '`Id`' or '`<class name>Id`' (case insensitive)
 
 ```csharp
 // in Door.cs
@@ -209,11 +221,11 @@ Goto top
 
 ### Creating model in details
 
-* Looks at all `DbSet` properties
-* Looks at properties in these classes
-* Looks at linked classes
-* Runs `OnModelCreating`
-* -> results in database schema (which can be found in Migrations/AppDbContextModelSnapshot.cs)
+1. Looks at all `DbSet` properties
+1. Looks at properties in these classes
+1. Looks at linked classes
+1. Runs `OnModelCreating`
+1. -> results in database schema (which can be found in Migrations/AppDbContextModelSnapshot.cs)
 
 Note:
 
@@ -227,12 +239,14 @@ Note:
 * In C#
 
 ```csharp
-var door = new Door() {
-  Location = location,
-  Type = "Wood"
+using (var context = new MyDbContext()) {
+  var door = new Door() {
+    Location = location,
+    Type = "Wood"
+  }
+  context.Doors.Add(door);
+  context.SaveChanges();
 }
-context.Doors.Add(door);
-context.SaveChanges();
 ```
 
 ----
@@ -309,10 +323,10 @@ Primary key
 
 ```csharp
 public class Context : DbContext {
-  public void protected override void 
-          OnModelCreating(ModelBuilder mb) {
+  protected override void OnModelCreating(ModelBuilder mb) {
     mb.Entity<Car>().HasKey(c => c.LicensePlate);
-} }
+  }
+}
 ```
 
 ----
@@ -323,8 +337,7 @@ public class Context : DbContext {
 class MyContext : DbContext {
   ...
   DbSet<Client> clients {get; set;}
-  protected override void 
-        OnModelCreating(ModelBuilder mb) {
+  protected override void OnModelCreating(ModelBuilder mb) {
       mb.Entity<Client>()
           .Property(b => b.LastName)
           .IsRequired() // Not null
@@ -357,6 +370,8 @@ namespace MyApp.Models {
 }}
 ```
 
+* [Data Annotations](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/data-annotations)
+
 ---
 
 ### Keys
@@ -385,7 +400,7 @@ public int Identifier {get; set;}
 
 ```csharp
 protected override void OnModelCreating(ModelBuilder mb) {
-  mb.Entity<Book>().HasKey(b => b.ID);
+  mb.Entity<Book>().HasKey(b => b.Id);
 }
 ```
 
@@ -393,16 +408,15 @@ protected override void OnModelCreating(ModelBuilder mb) {
 
 #### Keys continued
 
-* When using keys that are non-composite numeric and GUID you need to consider [Value Generation](https://docs.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations)
 * Composite keys
     * Can only be configured by the Fluent API
-
 ```csharp
 protected override void OnModelCreating(ModelBuilder mb) {
   mb.Entity<Author>()
       .HasKey(a => new { a.FirstName, a.LastName});
 }
 ```
+* When using keys that are non-composite, numeric or GUID you need to consider [Value Generation](https://docs.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations)
 
 ----
 
@@ -451,11 +465,11 @@ public class MyDbContext: DbContext {
 
 * Annotations
 ```csharp
-public class Person {
+public class Book {
   ...
   [NotMapped]
-  public string FullName {
-    get => $"{FirstName} {MiddleName} {LastName}";
+  public string FullTitle {
+    get => $"{Title} by {AuthorFirstName} {AuthorLastName}";
 }}
 ```
 * Alternatively in Fluent Api
@@ -470,16 +484,16 @@ public class Person {
 #### Database generated values
 
 ```csharp
-public class Books {
+public class Book {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime Created {get;set;}
 }
 
 public class MyDbContext: DbContext {
-  protected override void OnModelCreating(ModelBuilder mb) {  
-    mb.Entity<Book>().Property(b => b.Created)
-        .HasDefaultValue(DateTime.Now)
-  }
+    protected override void OnModelCreating(ModelBuilder mb) {  
+        mb.Entity<Book>().Property(b => b.Created)
+            .HasDefaultValue(DateTime.Now)
+    }
 }
 ```
 
@@ -566,12 +580,12 @@ public class Book {
   public int AuthorId {get; set;}
 }
 public class Author {
-    [Key] public int ID {get; set;}
-    public string FirstName {get; set;}
-    public DateTime DoB {get; set;}
-    public string Nationality {get;set; }
-    ...
-    public List<Book> Books {get; set;}
+  [Key] public int ID {get; set;}
+  public string FirstName {get; set;}
+  public DateTime DoB {get; set;}
+  public string Nationality {get;set; }
+  ...
+  public List<Book> Books {get; set;}
 }
 ```
 
@@ -616,20 +630,22 @@ public class PersonalLibrary {
 
 #### N-M Relationship (2/3)
 
-* Create shadow class
+* Manually create shadow class
 ```csharp [2-3|4-5]
 public class PersonalLibraryBook {
-  public int BookId {get; set;}
-  public Book Book {get; set;}
-  public int PersonalLibraryId {get; set;}
-  public PersonalLibrary PersonalLibrary {get; set;}
+    public int BookId {get; set;}
+    public Book Book {get; set;}
+    public int PersonalLibraryId {get; set;}
+    public PersonalLibrary PersonalLibrary {get; set;}
 }
 ```
 * Add navigational properties in classes `Book` and `PersonalLibrary`
 ```csharp
-public List<PersonalLibraryBook> PersonalLibraryBooks
-                                         {get; set;}
+public List<PersonalLibraryBook> PersonalLibraryBooks {get; set;}
 ```
+
+note:
+E.g. if Shadow class has attributes 
 
 ----
 
@@ -662,7 +678,7 @@ public class MyDbContext: DbContext {
     * `.IsRequired()` og `.IsRequired(false)`
 * Deletion
     * `.OnDelete(DeleteBehavior.Cascade)`
-    * Other behaviour (as in SQL) are available
+    * [Other behaviour (as in SQL) are available](https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.deletebehavior?view=efcore-6.0)
 * References non-primary key
     * `.HasPrincipalKey(c => c.BookISBN32)`
 * Like primary key, constraint name can be changed
@@ -670,7 +686,7 @@ public class MyDbContext: DbContext {
 
 ----
 
-### Inheritance (1/3)
+### Inheritance (1/4)
 
 * By convention derived class are managed in a TPH (table-per-hierarchy) pattern
 * A discriminator column to identify type.
@@ -682,13 +698,13 @@ modelBuilder.Entity<RssBlog>().HasBaseType<Blog>();
 
 ----
 
-### Inheritance (2/3)
+### Inheritance (2/4)
 
 ![TBH](./img/inheritance-tph-data.png "TBH")
 
 ----
 
-### Inheritance (3/3)
+### Inheritance (3/4)
 
 * Discriminator is a database attribute and can be manipulated
     * Used to tell about type
@@ -699,6 +715,18 @@ modelBuilder.Entity<Blog>()
   .HasDiscriminator<string>("blog_type")
   .HasValue<Blog>("blog_base")
   .HasValue<RssBlog>("blog_rss");
+```
+
+----
+
+### Inheritance (4/4)
+
+* Table per type is possible 
+
+```csharp
+// in OnModelCreateting
+modelBuilder.Entity<Blog>().ToTable("Blogs");
+modelBuilder.Entity<RssBlog>().ToTable("RssBlogs");
 ```
 
 ---
