@@ -18,6 +18,7 @@
 
 ## Entity Framework (Core)
 
+TODO: Mention 'code-first'
 TODO: image
 
 ----
@@ -243,7 +244,7 @@ using (var context = new MyDbContext()) {
   var door = new Door() {
     Location = location,
     Type = "Wood"
-  }
+  };
   context.Doors.Add(door);
   context.SaveChanges();
 }
