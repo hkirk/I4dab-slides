@@ -5,6 +5,8 @@
 
 ----
 
+TODO: Create a starter project - and replace slide code snippets with those, so students have a whole project to look at.
+
 ### Agenda
 
 * Entity Framework Core
@@ -18,6 +20,7 @@
 
 ## Entity Framework (Core)
 
+TODO: Mention 'code-first'
 TODO: image
 
 ----
@@ -243,11 +246,13 @@ using (var context = new MyDbContext()) {
   var door = new Door() {
     Location = location,
     Type = "Wood"
-  }
+  };
   context.Doors.Add(door);
   context.SaveChanges();
 }
 ```
+
+
 
 ----
 
@@ -257,7 +262,7 @@ using (var context = new MyDbContext()) {
 * In C#
 
 ```csharp
-context.Doors.AsNoTracking().Include(a => a.Location)
+context.Doors.AsNoTracking().Include(a => a.Location).ToList();
 ```
 
 Is translated into:
@@ -286,10 +291,12 @@ INNER JOIN Location AS a
     * In C#
 
 ```csharp
-var door = context.Doors....;
+var door = context.Doors.First();
 door.Location.Address = 'new address';
 context.SaveChanges()
 ```
+
+TODO: Check if this compiles
 
 Is translated into:
 
