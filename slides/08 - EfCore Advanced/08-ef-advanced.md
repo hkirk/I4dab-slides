@@ -42,16 +42,6 @@ Note:
 
 ----
 
-### Scaffold options
-
-* Skip tables with `-Tables` / `--tables`
-* Preserving names from database `-UseDatabaseNames` / `--use-database-names`
-* Fluent API is used by default to change to annotations `-DataAnnotations` / `--data-annotations`
-* More configuration to be found in documentations
-
-
-----
-
 ### When scaffold don't work
 
 * Columns types not supported with EF Core
@@ -80,6 +70,16 @@ private class UserValidation {
   public string Email { get; set; }       
 }
 ```
+
+----
+
+### Scaffold options
+
+* Skip tables with `-Tables` / `--tables`
+* Preserving names from database `-UseDatabaseNames` / `--use-database-names`
+* Fluent API is used by default to change to annotations `-DataAnnotations` / `--data-annotations`
+* More configuration to be found in documentations
+
 
 ---
 
@@ -116,11 +116,9 @@ public class AClass {
 * Business logic gets complex
 * Solutions:
 
----
+----
 
 ### 1. One big methods with all the logic
-
-Problem: Obvious <!-- .element: class="fragment" -->
 
 ```csharp
 public void OneMethodToRuleThemAll(MyContext context) {
@@ -130,6 +128,8 @@ public void OneMethodToRuleThemAll(MyContext context) {
     context.SaveChanges();
 }
 ```
+
+Problem: Obvious <!-- .element: class="fragment" -->
 
 Note: 
 Breaks SRP
@@ -155,7 +155,7 @@ public void SaveA() {
 }
 ```
 
-Problem: If later parts relies on earlier parts being written orm we forget to call `SaveChanges` <!-- .element: class="fragment" -->
+Problem: If later parts relies on earlier parts being written orm we forget to call SaveChanges <!-- .element: class="fragment" -->
 
 ----
 
@@ -346,13 +346,14 @@ public class AppDbContext : DbContext {
 
 ![DDD concepts](./img/ddd-content.png "DDD Concepts")
 
-----
+---
 
-#### Repository
+## Repository
 
-* Repository exposes a set of methods that reflects UIL
-* Data is changed through methods and not entities - ensure data is updated correctly
-* Repository hides away EF core code from application
+* Exposes a set of methods that reflects UIL
+* Data is changed through methods and not entities
+    * ensures data is updated correctly
+* Hides EF(Core) code  from application
 
 ```csharp
 // Example repository methods
@@ -396,10 +397,11 @@ https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/micr
 
 ### UoW in EfCore
 
-* Could see DbContext as Unit of Work
-* Microsoft 'recommends' to build a UnitOfWork/Repository pattern around DbContext
-    * Create an abstraction between BLL and DAL
-    * Easier to maintain and test -> Changes from DAL don't propagate to BLL
+* Could see `DbContext` as Unit of Work
+* but Microsoft 'recommends' to build a UnitOfWork + Repository pattern around `DbContext`
+    * An abstraction between BLL and DAL
+    * Easier to maintain and test
+        * Changes from DAL effect BLL less
 
 ```cshap
 public class UnitOfWork : IDisposable {
@@ -463,9 +465,9 @@ public class BookQuery : IBookQuery {
 
 ----
 
-## OM Examples
+## Mapper Examples
 
-* EF Core in action recommends [https://github.com/Automapper/Automapper](AutoMapper)
+* 'EF Core in action' recommends [https://github.com/Automapper/Automapper](AutoMapper)
 * AutoMapper work with convention eg. convert PromotionNewPrice to Promotion.NewPrice since there are a navigational property Promotion
 
 ```csharp
