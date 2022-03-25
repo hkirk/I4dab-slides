@@ -26,7 +26,7 @@
 * Reverse engineering a database through EF Core can be done with Scaffold tool
     * Visual Studio: 
     
-    `> Scaffold-DbContext 'Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Chinook' Microsoft.EntityFrameworkCore.SqlServer
+    `> Scaffold-DbContext 'Data Source=127.0.0.1,1433; Database=Education;User ID=SA;Password=Password1;' Microsoft.EntityFrameworkCore.SqlServer
 ` <!-- .element style="font-size: 22px;" -->
 
 **Note**: Connection string needs to point to the actual database you want to scaffold
@@ -34,7 +34,7 @@
 Note:
 
 1. Create project
-2. Install Microsoft.EntityFrameworkCore.SqlServer and Microsoft.EntityFrameworkCore.Design
+2. Install Microsoft.EntityFrameworkCore.SqlServer and Microsoft.EntityFrameworkCore.Tools
 3. Run above command with a correct Connection string
 
 .Net Core CLI: 
