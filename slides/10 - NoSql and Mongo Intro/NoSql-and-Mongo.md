@@ -17,17 +17,18 @@
 
 * Breaks 1st normal form:
     * each row contains one value
-* Designed to make it easier (and faster) to scala horizontally on different computers
-    * No JOIN operation
-    * Sharding
+* Designed to make it easier (and faster) to scale horizontally on different nodes
+    * Possible because
+        * No JOIN operation
+        * Sharding
 * No longer a given way of designing a database
 
 ----
 
-### MongoDB
+### Mongo DB
 
 * Specific for MongoDB
-    * Stores an array of values
+    * Stores an list of values
     * JSON types, BSON types, Arrays of values, object, null
     * Allows documents to be up to 16 MB
 
@@ -36,8 +37,8 @@
 ### Document databases
 
 * Denormalizing data
-    * Embedding all related data into a single document (Json in MongoDB)
-    * Retrieving or writing data in single operation
+    * Embedding all related data into a single document (JSON in MongoDB)
+    * Retrieving or writing document(s) in single operation
     * Fewer queries
 
 ----
@@ -45,7 +46,7 @@
 ### Example data
 
 ```javascript
-{   "id": "1",
+{   "_id": ObjectId("624d83ab9225bfaa18640a1f"),
     "firstName": "Thomas",
     "lastName": "Andersen",
     "addresses": [
@@ -53,10 +54,14 @@
             "line2": "Unit 1",
             "city": "Seattle",
             "state": "WA",
-            "zip": 98012 } ],
+            "zip": 98012
+        }
+    ],
     "contactDetails": [
-        {"email": "thomas@andersen.com"},
-        {"phone": "+1 555 555-5555", "extension": 5555} ] }
+        { "email": "thomas@andersen.com" },
+        { "phone": "+1 555 555-5555", "extension": 5555 }
+    ]
+}
 ```
 
 ---
@@ -80,11 +85,34 @@
     * One-to-many relationships
     * Many-to-many relationships
     * Related data changes frequently
-    * Data could be unbounded
+    * Data can be unbounded
 
 ----
 
 ### 1-N - Solution 1
+
+```javascript
+// Books embedded in Publisher
+{ "id": "1",
+    "name": "O'Reilly",
+    "books": [
+        {   "name": "Learning python" } 
+        {   "name": "Jenkins 2 - up & running" } 
+        {   "name": "Head First Kotlin" } 
+        ...
+        {   "name": "Mastering Ethereum" } 
+        ...
+    ],
+...}
+```
+
+note:
+
+Not smart if books changes often or there are many books.
+
+----
+
+### 1-N - Solution 2
 
 ```javascript
 // In publisher collection
@@ -104,20 +132,18 @@
 
 ----
 
-### 1-N - Solution 2
+### 1-N - Solution 3
 
 ```javascript
 // In publisher collection
 { "id": "1", "name": "O'Reilly", }
 
 // In Books collection
-{  "id": "1", "name": "Learning python", "publisher_id": 1 } 
-{ "id": "2", "name": "Jenkins 2 - up & running",
-    "publisher_id": 1}  
+{ "id": "1", "name": "Learning python", "publisher_id": 1 } 
+{ "id": "2", "name": "Jenkins 2 - up & running", "publisher_id": 1 }  
 { "id": "3", "name": "Head First Kotlin", "publisher_id": 1 } 
 ...
-{ "id": "50", "name": "Mastering Ethereum", "publisher_id": 1
-   } 
+{ "id": "50", "name": "Mastering Ethereum", "publisher_id": 1 } 
 ... 
 ```
 
@@ -129,33 +155,30 @@
 
 ```javascript
 // Im Author collection
-{ "id": "a1", "name": "J.K. Rowling",
-     "books": ["b1", "b7", "b8", "b9" ]}
-{ "id": "a2", "name": "Amanda Berlin",
-     "books": ["b10", "b14" ]}
-{ "id": "a3", "name": "Lee Brotherston",
-     "books": ["b10", "b11" ]}
+{ "id": "a1", "name": "J.K. Rowling", "books": ["b1", "b7", "b8", "b9" ]}
+{ "id": "a2", "name": "Amanda Berlin", "books": ["b10", "b14" ]}
+{ "id": "a3", "name": "Lee Brotherston", "books": ["b10", "b11" ]}
 // In Book collection
-{ "id": "b1", "name": "Harry Potter and the Philosophers Stone",
-     "authors": ["a1"] }
-{ "id": "b7", "name": "Harry Potter and the Goblet of Fire",
-     "authors": ["a1"] }
-{ "id": "b10", "name": "Defensive Security Handbook",
-     "authors": ["a3", "a2"] }
+{ "id": "b1", "name": "Harry Potter and the Philosophers Stone", "authors": ["a1"] }
+{ "id": "b7", "name": "Harry Potter and the Goblet of Fire", "authors": ["a1"] }
+{ "id": "b10", "name": "Defensive Security Handbook", "authors": ["a3", "a2"] }
 ```
 
 ----
 
 ### N-N Alternatives
 
-* Alternatively merging some data together based on application usage
-    * E.g. author name with book - since author name don't change to often
+* Alternatively merging data together based on application usage
+    * e.g. author name with book - since author name don't change to often
 
 ```javascript
+// In Books collection
 { "id": "b1",
   "name": "Harry Potter and the Philosophers Stone",
   "author_name": "J.K. Rowling",
   "authors": ["a1"] }
+// In Author collection
+{ "id": "a1", "name": "J.K. Rowling", "books": ["b1", "b7", "b8", "b9" ]}
 ```
 
 ---
@@ -163,9 +186,9 @@
 ### Mixing different documents
 
 * Can be necessary to mix different documents type in same collection
-    * E.g. to keep them in same partition
+    * e.g. to keep them in same partition
     * **Problem**: Which document is of which type
-    * **Solution**: Then put type on the entities in collection
+    * **A solution**: Then put type on the entities in collection
 
 ```javascript
 {   "id": "1",
@@ -184,7 +207,7 @@
 
 * In document database you can store different types in same collection
     * Performing queries on shared fields on different types
-    * Performing queries on specific type
+    * Performing queries on specific types
 * Avoid `ALTER TABLE` statements while preserving ability to evolve schema
     * `ALTER TABLE` can be time consuming
 
@@ -201,7 +224,7 @@
 
 ---
 
-### Drawbacks
+### Document DB Drawbacks
 
 * Storage inefficiency
     * No rules for which data is present
@@ -306,7 +329,7 @@ db.inventory.insertMany([
 #### Selection
 
 * `db.inventory.find({}).pretty()` 
-    * `pretty()` is optional
+    * `.pretty()` is optional
 * ```javascript
 db.inventory.find(
     {status: "D"} // or
@@ -319,6 +342,14 @@ db.inventory.find(
 `db.inventory.find( { }, { item: 1, status: 1 } );`
     * `1`: include, `0`: exclude
     * `_id` is special
+
+note:
+
+db.inventory.find({}) -> SELECT * FROM inventory
+
+db.inventory.find({status: "D"}) -> SELECT * FROM inventory WHERE status = "D"
+
+db.inventory.find( { }, { item: 1, status: 1 } ) - > SELECT _id, item, status FROM inventory
 
 ----
 
@@ -362,7 +393,7 @@ More at: [https://docs.mongodb.com/manual/reference/method/js-collection/](https
 #### Identifier _id
 
 * All documents in a collection must have an unique `_id`
-* If omittied _id is generated - by following rules
+* If omitted _id is generated - by following rules
     * a 4-byte value representing the seconds since the Unix epoch,
     * a 5-byte random value, and
     * a 3-byte counter, starting with a random value
