@@ -1,1 +1,0 @@
-{"origin":{"configuration":"compile","moduleName":"dabNoSqlMongo"},"libDeps":[{"minifiedResourceName":"react-with-addons.min.js","resourceName":"react-with-addons.js","commonJSName":"React"},{"minifiedResourceName":"react-dom.min.js","resourceName":"react-dom.js","commonJSName":"ReactDOM","dependencies":["react-with-addons.js"]}]}
