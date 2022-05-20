@@ -26,7 +26,7 @@
 
 In a distributed system (multiple DB Servers)
 
-1. Each search prepares to execute a transaction (locking documents or collections)
+1. Each server prepares to execute a transaction (locking documents or collections)
 1. All servers apply the changes
 1. All servers acknowlegde the changes
 1. Lock is removed
@@ -73,7 +73,7 @@ db.orders.update(
 
 1. Update each document with `db.collection.update()`
     * What if something trows and exception?
-1. Emulate trations in data model
+1. Emulate transactions in data model
     * Create a transaction collection
         * Document can be in *new*, *committed* or *rollback* state.
         * Clean up accordingly

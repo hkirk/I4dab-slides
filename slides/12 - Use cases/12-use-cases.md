@@ -156,7 +156,7 @@ Inheritance in
 vs
 * Multiple tables
 
-Considder space consumptions? Easy of query
+Consider space consumptions? Easy of query
 
 ----
 
@@ -235,16 +235,16 @@ Considder space consumptions? Easy of query
 
 * Typically designed for availability
 * Eventually consistent
-* No Only normalized data
+* Not only normalized data
   * Also handles semistructured data
 * Flexible data
 * Move work to application
 
 ----
 
-#### ACID vs Base
+#### ACID vs BaSE
 
-* Some, not all dont support
+* Some, not all do not support
   * Atomicity
   * Consistency
   * Isolation
@@ -360,9 +360,9 @@ Examples: Neo4j, ArangeDB, OrientDB
 * Schemaless
 * Highlighting relations between data
 * Vocabulary
-  * Entity→Node
+  * Entity -> Node
   * Property
-  * Edge→Relationsship
+  * Edge -> Relationsship
     * Directional
     * Undirection
 * Make some operations much simpler
@@ -376,3 +376,4 @@ Examples: Neo4j, ArangeDB, OrientDB
 ## References
 
 * NoSql Type https://en.wikipedia.org/wiki/NoSQL
+* https://www.researchgate.net/publication/267039442_A_linear_algebra_approach_to_OLAP
