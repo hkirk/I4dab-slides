@@ -45,7 +45,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Schedule
 
-![Schedule](./img/schedule.png "Schedule")
+![Schedule](./img/schedule.png "Schedule")<!-- .element: style="height:600px" -->
 
 ----
 
@@ -71,7 +71,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Our expectations
 
-* Read material before class
+* Read material before class (Preparation section on brightspace)
 * You solve exercises - and there will be exercises to do out of class
 * Help each other
 * Ask if we should talk about previous exercises
@@ -81,7 +81,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Intro
 
-#### Relational Model
+#### Relational Databases
 
 ![The Moment](./img/theMoment.jpg "The Moment")
 
@@ -89,8 +89,8 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ### Agenda
 
-* Database
-* Relational model
+* Database Concepts
+* Relational Database Model
 * SQL (more in week 2, 3, and 4)
 * Modeling
 * Process
@@ -98,10 +98,20 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ---
 
-### Database
+### Data and Databases
 
-* Database is an abstraction on a filesystem, which allow common operations on data
-* Database server
+* Data, information, knowledge and wisdom ...
+    * Data is a given/fact/signal/symbol (observed)
+    * Information is (the meaning) infered from the data
+    * Knowledge and Wisdom - increasily ambiguous, thus not covered in this course!
+* Database - Definition by the book: data stored/organized in a computer (system) and a description of the data designed to meet the information needs of an organization
+
+---
+
+### Database Systems
+
+* A database is an abstraction on a filesystem, which allow common operations on data
+* Database server/Database Management System (DBMS)
     * Allows multiple simultaneous clients to do:
         * **C**reate **R**ead **U**pdate and **D**elete operations: AKA **CRUD**
     * Access over network
@@ -110,7 +120,7 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ----
 
-### Database server
+### Database server (DBMS)
 
 * Where and when is it running
 * SQL Server:
@@ -126,12 +136,25 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 ----
 
+
+### Structured data
+
+
+| Title     | Year | Length | Genre  |
+|-----------|------|--------|--------|
+| Star Wars | 1977 | 124    | SciFy  |
+| Ghost     | 1990 | 127    | Drama  |
+| Skyfall   | 2012 | 143    | Action |
+
+----
+
+
 ### Data model 
 
-* Structure of the data
-    * Operations on the data
-    * Queries and modifications
-* Constraints on the data
+* The structure of the data
+    * Used when performing operations on the data
+    * Affects queries and modifications
+    * Prescribes constraints on the data
 
 ----
 
@@ -146,9 +169,9 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 #### Data Model In Our Context 2
 
-* Automatization
+* Process
     * For a relational database, this model is very often a Entity Relationship Diagram model (ERD model)
-    * In a ERD model we identifies entities and their relationships, ie nouns and verbs in user stories/use cases
+    * In a ERD model we identify entities and their relationships, ie nouns and verbs in user stories/use cases
     * For all relationships, AKA associations, we identify their degree, connectivity and exsistience
 
 
@@ -156,49 +179,10 @@ Read more: [https://library.au.dk/studerende/plagiering/](https://library.au.dk/
 
 #### Data Model In Our Context 3
 
-* Automatization
+* Process
     * When we have a ERD model we know exactly how to construct the database with tables and relationships
-    * Ten design rules transforms the ERD model to a relational database (rdb) schema
-    * Giving the possibillities to let db-tools convert an ERD to a rdb schema
+    * Apply design rules transforms the ERD model to a relational database (RDB) schema (Chapter 5 of DMaD)
     * But as you will se later on, the same goes for an OO class model, it can be converted to a rdb schema
-
-----
-
-### Data model
-
-* Relational model vs semi-structured model
-* Values
-* Objects
-
-```xml
-<Movies>
-  <Movie title="Star Wars"><Year>1977</Year><Length>124</Length><Genre>SciFi</Genre></Movie>
-  <Movie title="Ghost"><Year>1990</Year><Length>127</Length><Genre>Drama</Genre></Movie>
-  <Movie title="Skyfall"><Year>2012</Year><Length>143</Length><Genre>Action</Genre></Movie>
-</Movies>
-```
-<!-- .element: style="font-size: 12px" -->
-
-```javascript
-[
-    { title: "Star Wars", year: 1977, length: 124, genre: "SciFy"}, 
-    { title: "Ghost", year: 1990, length: 127, genre: "Drama"}, 
-    { title: "Skyfall", year: 2012, length: 143, genre: "Action"}, 
-]
-```
-<!-- .element: style="font-size: 12px" -->
-
-----
-
-### Structured data
-
-
-| Title     | Year | Length | Genre  |
-|-----------|------|--------|--------|
-| Star Wars | 1977 | 124    | SciFy  |
-| Ghost     | 1990 | 127    | Drama  |
-| Skyfall   | 2012 | 143    | Action |
-
 
 ---
 
@@ -255,16 +239,54 @@ programming." - Rob Pike in 1989
 ### Schema
 
 ```sql
-Movies (
-  title: string, year: integer, length: integer, genre: string, studioName: string
-)
-MovieStar (
-  name: string, address: string, gender: char
-)
-Studio (
-  name: string, address: string, pressC: integer
-)
+Movies (title: string, year: integer, length: integer, genre: string, studioName: string)
+
+MovieStar (name: string, address: string, gender: char)
+
+Studio (name: string, address: string, pressC: integer)
 ```
+<!-- .element: style="width:800px" .element: style="font-size: 16px" -->
+
+----
+
+
+[Exercise Until 1.3, 2 and 3]::
+
+### Data model 
+Relational model vs semi-structured model <!-- .element: style="font-size: 22px" -->
+
+* Examples:  <!-- .element: style="font-size: 20px" -->
+    * XML (eXtensible Markup Language ) <!-- .element: style="font-size: 12px" --> 
+```xml
+<Movies>
+  <Movie title="Star Wars"><Year>1977</Year><Length>124</Length><Genre>SciFi</Genre>
+  </Movie>
+  <Movie title="Ghost"><Year>1990</Year><Length>127</Length><Genre>Drama</Genre>
+  </Movie>
+  <Movie title="Skyfall"><Year>2012</Year><Length>143</Length><Genre>Action</Genre>
+  </Movie>
+</Movies>
+```
+<!-- .element: style="font-size: 10px" -->
+
+    * JSON (JavaScript Object Notation) <!-- .element: style="font-size: 12px" -->
+```javascript
+[
+    { title: "Star Wars", year: 1977, length: 124, genre: "SciFy"}, 
+    { title: "Ghost", year: 1990, length: 127, genre: "Drama"}, 
+    { title: "Skyfall", year: 2012, length: 143, genre: "Action"}, 
+]
+```
+<!-- .element: style="font-size: 10px" -->
+
+* Main features: <!-- .element: style="font-size: 20px" -->
+    * schema-less/self-descriptive both data and its schema are directly set <!-- .element: style="font-size: 12px" -->
+    * fast path-based queries, but slow on multiple data searches <!-- .element: style="font-size: 12px" -->
+
+<!-- .element: style="width: 800px" -->
+
+
+
 
 ----
 
