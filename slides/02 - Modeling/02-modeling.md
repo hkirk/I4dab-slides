@@ -203,7 +203,7 @@ Before renting a car, a customer usually makes a **reservation** for a car.
 
 ---
 
-### DML
+### DDL
 
 ----
 
@@ -391,14 +391,14 @@ DROP COLUMN Age
 
 ----
 
-### Deleting
+### Erasing
  
-#### Delete tables   
+#### Erase tables   
 
 ```sql
 DROP TABLE Teachers
 ```
-#### Delete database
+#### Erase database
 
 ```sql
 DROP DATABASE SW4DAB
@@ -406,7 +406,7 @@ DROP DATABASE SW4DAB
 
 ---
 
-## Quick intro to DDL
+## Quick intro to DML
 
 ----
 
