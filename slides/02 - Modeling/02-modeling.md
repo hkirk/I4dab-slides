@@ -203,7 +203,7 @@ Before renting a car, a customer usually makes a **reservation** for a car.
 
 ---
 
-### DML
+### DDL
 
 ----
 
@@ -285,7 +285,7 @@ CREATE TABLE Students (
 CREATE TABLE Teachers(
     Id INT PRIMARY KEY,
     Name NVARCHAR(128),
-    Age Int, CHECK(Age >= 18)
+    Age Int CHECK(Age >= 18)
 )
 ```
 
@@ -310,7 +310,7 @@ CREATE TABLE Assignments (
     StudentId INT FOREIGN KEY REFERENCES Students(id)
 )
 ```
-* **Note**: Inline foregn key above, also possible to declare constraints after attributes
+* **Note**: Inline foreign key above, also possible to declare constraints after attributes
 
 ----
 
@@ -391,14 +391,14 @@ DROP COLUMN Age
 
 ----
 
-### Deleting
+### Erasing
  
-#### Delete tables   
+#### Erase tables   
 
 ```sql
 DROP TABLE Teachers
 ```
-#### Delete database
+#### Erase database
 
 ```sql
 DROP DATABASE SW4DAB
@@ -406,7 +406,7 @@ DROP DATABASE SW4DAB
 
 ---
 
-## Quick intro to DDL
+## Quick intro to DML
 
 ----
 
