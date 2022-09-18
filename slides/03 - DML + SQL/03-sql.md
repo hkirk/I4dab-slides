@@ -17,6 +17,12 @@
 
 ---
 
+### DDL
+
+?
+
+----
+
 ### Primary keys
 
 * Primary key inline or as constraint
