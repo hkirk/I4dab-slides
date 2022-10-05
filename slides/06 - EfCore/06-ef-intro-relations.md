@@ -120,9 +120,7 @@ optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User
     * Install NuGet packages
       * Microsoft.EntityFrameworkCore.SqlServer
       * Microsoft.EntityFrameworkCore.Design
-      * Microsoft.EntityFrameworkCore.Tools\* 
-
-\* 'Microsoft.EntityFrameworkCore.Tools' can be installed globally <!-- .element: style="font-size:0.6em" -->
+      * Microsoft.EntityFrameworkCore.Tools
 
 ----
 
@@ -191,7 +189,7 @@ public DbSet<Door> doors { get; set; }
 1. Doing code first - you let Entity Framework create your database. In VS2019 - 
 
 ```
-1. Open PowerShell (Tools -> Manage Nuget -> Package Manager Console
+1. Open Package Manager Console (Tools -> Manage Nuget -> Package Manager Console
 2. > Install-Package Microsoft.EntityFrameworkCore.Tools (first time)
 3. > Add-Migration InitialCreate
 4. > Update-Database
@@ -200,14 +198,16 @@ public DbSet<Door> doors { get; set; }
 2. If you want to change database (**only in this lecture**)
 
 ```
-1. Open PowerShell
+1. Open Package Manager Console
 2. > Update-Database 0
-3. > Remove-Migration (in Package manager console)
+3. > Remove-Migration
 4. Make changes in code
 5. GOTO 1.1
 ```
 
 Note:
+
+
 In CLI
 
 ```
@@ -456,7 +456,7 @@ public class MyDbContext: DbContext {
         .HasName("Isbn index").IsUnique();
     // Composite key - also available with HasIndex
     mb.Entity<Author>()
-        .HasKey(a => new { a.FirstName, a.LastName});
+        .HasIndex(a => new { a.FirstName, a.LastName});
 }}
 ```
 
@@ -538,7 +538,7 @@ public class MyDbContext: DbContext {
 public class Membership {
   [Required] public int ID {get; set;}
   [Required] public Genre Genre {get; set;}
-  public int ClientId {get;set;}
+  public int ClientId {get;set;} // Foreign key
   public Client Client {get;set;} // Navigational Property
 }
 public class Client {
@@ -547,7 +547,7 @@ public class Client {
   [Required] public string LastName {get; set;}
   public string Email {get; set;}
   ...
-  public Membership Membership {get; set;}
+  public Membership Membership {get; set;} // Navigational Property
 }
 ```
 
@@ -723,6 +723,7 @@ modelBuilder.Entity<Blog>()
   .HasValue<Blog>("blog_base")
   .HasValue<RssBlog>("blog_rss");
 ```
+![TBH](./img/inheritance-tph-data.png "TBH")
 
 ----
 
