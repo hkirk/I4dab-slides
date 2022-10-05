@@ -285,7 +285,7 @@ CREATE TABLE Students (
 CREATE TABLE Teachers(
     Id INT PRIMARY KEY,
     Name NVARCHAR(128),
-    Age Int, CHECK(Age >= 18)
+    Age Int CHECK(Age >= 18)
 )
 ```
 
@@ -310,7 +310,7 @@ CREATE TABLE Assignments (
     StudentId INT FOREIGN KEY REFERENCES Students(id)
 )
 ```
-* **Note**: Inline foregn key above, also possible to declare constraints after attributes
+* **Note**: Inline foreign key above, also possible to declare constraints after attributes
 
 ----
 

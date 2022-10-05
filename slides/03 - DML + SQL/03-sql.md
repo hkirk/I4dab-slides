@@ -17,6 +17,12 @@
 
 ---
 
+### DDL
+
+?
+
+----
+
 ### Primary keys
 
 * Primary key inline or as constraint
@@ -67,7 +73,7 @@ CREATE TABLE ParkingSpot (
 
 ### Map 1-N relations ships
 
-* Set the foreign key constraint in many entity
+* Set the foreign key constraint in _the_ many entity
 
 ```sql
 CREATE TABLE Car (
@@ -85,10 +91,10 @@ CREATE TABLE Wheels(
 
 ----
 
-### Map N-N relations ships (1/2)
+### Map N-N relations cars (1/2)
 
-* In CarDriver driver_cpr/car_reg pair
-* Optional define pair as unique if ??
+* In CarDriver `driver_cpr`/`car_reg` pair
+* Optional: define pair as unique if ??
 
 ```sql
 CREATE TABLE Car (
@@ -110,7 +116,7 @@ CREATE TABLE CarDriver(
 
 ----
 
-### Map N-N relations ships (2/2)
+### Map N-N relations cars (2/2)
 
 ```sql
 -- Or if the driver/car couple should be unique
@@ -134,11 +140,11 @@ INSERT INTO CarDriver VALUES (123456,'12345'), (43535, '123145'),
 
 ### Map inheritance
 
-* Either in single table
+* Either in a single table
 * or as a 1-1 relation with required existence
 
 ```sql
-CREATE TABLEProducts (
+CREATE TABLE Products (
     id INT PRIMARY KEY,
     price INT, soup_type VARCHAR(10),
     expiration DATE, bakedOn VARCHAR(120),
@@ -164,8 +170,8 @@ VALUES (3, 9, 'full', 30, 'bread'),
 ```bash
 $ mkdir SqlConnectionExample; cd SqlConnectionExample
 $ dotnet new console
-$ dotnet add package Microsoft.Data.SqlClient --version 4.1.0
-## Or via package manager PM> Install-Package Microsoft.Data.SqlClient -Version 4.1.0
+$ dotnet add package Microsoft.Data.SqlClient
+## Or via package manager PM> Install-Package Microsoft.Data.SqlClient
 $ dotnet run
 ```
 
