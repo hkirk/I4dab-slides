@@ -5,7 +5,6 @@
 
 ----
 
-TODO: Create a starter project - and replace slide code snippets with those, so students have a whole project to look at.
 
 ### Agenda
 
@@ -19,9 +18,7 @@ TODO: Create a starter project - and replace slide code snippets with those, so 
 ---
 
 ## Entity Framework (Core)
-
-TODO: Mention 'code-first'
-TODO: image
+![EFC](./img/EFCore.png "EFC")
 
 ----
 
@@ -32,6 +29,8 @@ TODO: image
 * or generate OOP model from an existing database
 * Security - we will look into this later
 * Avoid SQL inside code (e.g. C#)
+
+Note: Mention 'code-first'
 
 ----
 
@@ -124,6 +123,12 @@ optionsBuilder.UseSqlServer("Data Source=127.0.0.1,1433;Database=BookStore2;User
 
 ----
 
+### Visual Studio
+![NuGet](./img/NuGetInstallation.jpg "NuGet") 
+
+----
+
+
 ### Starting with EfCore 2
 
 3. Create a new class `MyDbContext` which inherits from `DbContext`
@@ -138,7 +143,7 @@ protected override void OnConfiguring(
 ```
 
 Note:
-
+In the example you'll see the class is called BloggingContext
 ```
 $ dotnet tool install --global dotnet-ef --version 6.0.2
 $ mkdir MyFirstEFCoreProject
@@ -161,25 +166,27 @@ Create the `MyDbContext.cs` as on slide and add code
     * Overriding method `OnConfiguring` and supply connection string
     * E.g. optionsBuilder.UseSqlServer(ConnectionString);
   * Can also be `UseSqlite`, `UseMySql` etc.
-
+note: If you have followed the tutorial (Your first EF Core App) in the EF Core 
+Documentation during your prepation to this class, the DB is a SQLite
 ----
 
 ### Creating model classes
 
-1. Create class Door
+1. Create class Blog
 1. Add properties with public getter and setter
 1. Primary key is by convention named '`Id`' or '`<class name>Id`' (case insensitive)
 
 ```csharp
-// in Door.cs
-public class Door {
-  public int DoorId {get;set;}
-  public Location Location {get;set;}
-  public string Type {get;set;}
+// Add class Blog to project
+public class Blog
+{
+    public int BlogId { get; set; }
+    public string Url { get; set; }
+    public List<Post> Posts { get; } = new();
 }
 
-// In MyDbContext.cs add
-public DbSet<Door> doors { get; set; }
+// In class MyDbContext add
+public DbSet<Blog> Blogs { get; set; }
 ```
 
 ----
@@ -205,8 +212,9 @@ public DbSet<Door> doors { get; set; }
 5. GOTO 1.1
 ```
 
-Note:
-
+Note: 2. If the model classes are changed, a new migration is needed
+2.2 deletes the DB
+2.3 deletes the migration
 
 In CLI
 
@@ -242,13 +250,12 @@ Note:
 * In C#
 
 ```csharp
-using (var context = new MyDbContext()) {
-  var door = new Door() {
-    Location = location,
-    Type = "Wood"
+using (var db = new BloggingContext()) {
+  var blog = new Blog() {
+    Url = "http://blogs.msdn.com/adonet"
   };
-  context.Doors.Add(door);
-  context.SaveChanges();
+  db.Blogs.Add(blog);
+  db.SaveChanges();
 }
 ```
 
@@ -262,18 +269,17 @@ using (var context = new MyDbContext()) {
 * In C#
 
 ```csharp
-context.Doors.AsNoTracking().Include(a => a.Location).ToList();
+var blog = db.Blogs.OrderBy(b => b.BlogId).First();
 ```
 
 Is translated into:
 
 ```sql
-SELECT b.DoorId, ..., a.LocationId, ...
-FROM Door AS B
-INNER JOIN Location AS a
-  ON b.LocationId = a.LocationId
+SELECT TOP (1) b.blogId, b.Url
+FROM Blogs AS b
+ORDER BY b.BlogId
 ```
-
+note: The DB keeps a copy of the read
 ----
 
 #### What Ef Core does
@@ -281,7 +287,7 @@ INNER JOIN Location AS a
 * LINQ is translated into SQL and cached
 * Data is read in one command / roundtrip (or few)
 * Data is turned into instances of the .NET class
-* No tracking snapshot is created in this instance - so this is readonly - more on this next time.
+* Tracking snapshopts are created - holding original values
 
 ----
 
@@ -291,18 +297,16 @@ INNER JOIN Location AS a
     * In C#
 
 ```csharp
-var door = context.Doors.First();
-door.Location.Address = 'new address';
-context.SaveChanges()
+var blog = db.Blogs.AsNoTracking().First();
+blog.Url = "https://devblogs.microsoft.com/dotnet";
+db.SaveChanges();
 ```
-
-TODO: Check if this compiles
 
 Is translated into:
 
 ```sql
-UPDATE Location SET Address = 'new address'
-WHERE LocationId = '...'
+UPDATE Blogs SET Blogs.Url = 'https://devblogs.microsoft.com/dotnet'
+WHERE blogId = '...'
 ```
 
 ----
@@ -310,10 +314,11 @@ WHERE LocationId = '...'
 #### What Ef Core does
 
 * LINQ is translated into SQL
-* Tracking snapshopts are created - holding original values
-* DetectChanges works out what has changed
+*  DetectChanges works out what has changed
 * Transaction is started - all or nothing is saved
 * SQL command is executed
+* No tracking snapshot is created in this instance - so this is readonly - more on this next time.
+
 
 ---
 
@@ -321,7 +326,7 @@ WHERE LocationId = '...'
 
 ----
 
-### EfCore tatics
+### EfCore tactics
 
 Primary key
 * **Conventions** - Class property with name '`<class-name>Id`' or '`Id`'
@@ -335,7 +340,7 @@ public class Context : DbContext {
   }
 }
 ```
-
+note: Three ways to define the primary key
 ----
 
 #### Constraints - Fluent API
@@ -378,7 +383,7 @@ namespace MyApp.Models {
 ```
 
 * [Data Annotations](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/data-annotations)
-
+note: There are examples by the link
 ---
 
 ### Keys
@@ -425,11 +430,12 @@ protected override void OnModelCreating(ModelBuilder mb) {
 ```
 * When using keys that are non-composite, numeric or GUID you need to consider [Value Generation](https://docs.microsoft.com/en-us/ef/core/modeling/generated-properties?tabs=data-annotations)
 
+note: Value Generation, when id can't be generated automaticly
 ----
 
 #### Key name
 
-* EfCore naming of key is by convention `PK_<type_name>`
+* EFCore naming of key is by convention `PK_<type_name>`
     * This can be changed by
 
 ```csharp
@@ -464,7 +470,7 @@ public class MyDbContext: DbContext {
 
 ### Properties
 
-![ERD](./img/erd.png "ERD") <!-- .element: style="height: 300px" -->
+![LH_ERD](./img/LH_ERD.jpg "LH_ERD") <!-- .element: style="height: 300px" -->
 
 ----
 
@@ -509,7 +515,7 @@ public class MyDbContext: DbContext {
     mb.Entity<Book>().Property(b => b.Created)
         .HasDefaultValueSql("getdate()");
 ```
-
+note: getdata() is a DB function, DateTime.Now is C#
 ----
 
 #### Shadow properties
@@ -523,7 +529,7 @@ public class MyDbContext: DbContext {
     mb.Entity<Book>().Property<DateTime>("Created")
        .HasDefaultValueSql("getdate()");
     ```
-
+note: DB not OO-model
 ---
 
 ### Relationships
@@ -552,8 +558,10 @@ public class Client {
 ```
 
 Note:
+A Client has a membership, and each membership belongs to a client
 
 `ClientId` determines in which table the foreign key is placed
+For a 1-1 relationship it can either one
 
 * Navigational properties and foreign keys should be on the form
     * `public <ClassType> <ClassType> {get;set;}`<br/>
@@ -569,8 +577,8 @@ Note:
 public class MyDbContext: DbContext {
   protected override void OnModelCreating(ModelBuilder mb) {
     mb.Entity<Client>()
-         .HasOne(s => s.Membership)
-         .WithOne(l => l.Client)
+         .HasOne(c => c.Membership)
+         .WithOne(m => m.Client)
          .HasForeignKey<Membership>();
 }}
 ```
@@ -583,8 +591,8 @@ public class MyDbContext: DbContext {
 public class Book {    
   public int ID { get; set;}
   [MaxLength(32)] public string Title {get; set;}
-  public Author Author {get; set;}
-  public int AuthorId {get; set;}
+  public Author Author {get; set;} // Navigational Property
+  public int AuthorId {get; set;} // Foreign key
 }
 public class Author {
   [Key] public int ID {get; set;}
@@ -592,10 +600,10 @@ public class Author {
   public DateTime DoB {get; set;}
   public string Nationality {get;set; }
   ...
-  public List<Book> Books {get; set;}
+  public List<Book> Books {get; set;} // Navigational Property
 }
 ```
-
+note: A book has one Author, but an Author has written more books
 ----
 
 #### 1-N relationship (2/2)
@@ -648,7 +656,7 @@ public class PersonalLibraryBook {
 ```
 * Add navigational properties in classes `Book` and `PersonalLibrary`
 ```csharp
-public List<PersonalLibraryBook> PersonalLibraryBooks {get; set;}
+public List<PersonalLibraryBook> PersonalLibraryBooks {get; set; }
 ```
 
 note:
@@ -691,18 +699,19 @@ public class MyDbContext: DbContext {
 * Like primary key, constraint name can be changed
     * `.HasConstraintName("FKey_Book_Library")`
 
+note: Cascade means that dependencies/references also is deleted 
 ----
 
 ### Inheritance (1/4)
 
 * By convention derived class are managed in a TPH (table-per-hierarchy) pattern
-* A discriminator column to identify type.
+* A discriminator column to identify type
 * Types should be **explicitly** added as `DbSet` to `MyDbContext` or in Fluent API
 
 ```csharp
 modelBuilder.Entity<RssBlog>().HasBaseType<Blog>();
 ```
-
+![Blog](./img/inheritance.png "Blog")
 ----
 
 ### Inheritance (2/4)
