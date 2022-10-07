@@ -340,7 +340,9 @@ public class Context : DbContext {
   }
 }
 ```
+
 note: Three ways to define the primary key
+
 ----
 
 #### Constraints - Fluent API
