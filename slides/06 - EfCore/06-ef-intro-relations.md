@@ -269,7 +269,7 @@ using (var db = new BloggingContext()) {
 * In C#
 
 ```csharp
-var blog = db.Blogs.OrderBy(b => b.BlogId).First();
+var blog = db.Blogs.AsNoTracking().OrderBy(b => b.BlogId).First();
 ```
 
 Is translated into:
@@ -287,7 +287,8 @@ note: The DB keeps a copy of the read
 * LINQ is translated into SQL and cached
 * Data is read in one command / roundtrip (or few)
 * Data is turned into instances of the .NET class
-* Tracking snapshopts are created - holding original values
+* No tracking snapshot is created in this instance - so this is readonly - more on this next time.
+
 
 ----
 
@@ -297,7 +298,7 @@ note: The DB keeps a copy of the read
     * In C#
 
 ```csharp
-var blog = db.Blogs.AsNoTracking().First();
+var blog = db.Blogs.First();
 blog.Url = "https://devblogs.microsoft.com/dotnet";
 db.SaveChanges();
 ```
@@ -317,8 +318,7 @@ WHERE blogId = '...'
 *  DetectChanges works out what has changed
 * Transaction is started - all or nothing is saved
 * SQL command is executed
-* No tracking snapshot is created in this instance - so this is readonly - more on this next time.
-
+* Tracking snapshopts are created - holding original values
 
 ---
 
