@@ -6,20 +6,20 @@ public class Book
 {
     public int BookId { get; set; }
     
-    public string Isbn { get; set; }
-    public string Title { get; set; }
-    public Author Author { get; set; }
-    public List<Review> Reviews { get; set; }
+    public string? Isbn { get; set; }
+    public string? Title { get; set; }
+    public Author? Author { get; set; }
+    public List<Review> Reviews { get; set; } = new List<Review>();
 }
 
 public class Author
 {
     public int AuthorId { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
     
     public int BookId { get; set; }
-    public Book Book { get; set; }
+    public Book? Book { get; set; }
 }
 
 public class Review
@@ -28,13 +28,14 @@ public class Review
     public int Rating { get; set; }
     
     public int BookId { get; set; }
-    public Book Book { get; set; }
+    public Book? Book { get; set; }
 
-    public Voter Voter { get; set; }
+    public int? VoterId { get; set; }
+    public Voter? Voter { get; set; }
 }
 
 public class Voter
 {
     public int VoterId { get; set; }
-    public string Username { get; set; }
+    public string? Username { get; set; }
 }
