@@ -687,6 +687,9 @@ public class MyDbContext: DbContext {
 }}
 ```
 
+TODO: N-N relationship can in 5.0+ be done without the shadowtable - but then you need to take care when using HasData (basicly doing it manually)
+
+
 ----
 
 #### Relationships configurations in Fluent API
