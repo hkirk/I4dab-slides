@@ -139,6 +139,9 @@ contain this key
 
 #### Guidelines
 
+* Start with an E/R digram
+    * Follow with an actual design
+    * Examplify
 * Posibilities
     * Embed data
     * Links between data
