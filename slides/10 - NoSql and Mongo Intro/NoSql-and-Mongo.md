@@ -8,10 +8,19 @@
 ## Agenda
 
 * Modeling / Normalization
-* Polymorphism
-* Working with NoSQL
+* Mongo
+* Working with Mongo
 
 ---
+
+## `NoSQL`
+
+* Different types of database that **N**ot **O**nly support **SQL**
+* Each with different data model
+* Each with different performance characteristic
+* We start by look at one type *Document Database*
+
+----
 
 ### Document databases
 
@@ -35,7 +44,7 @@
 
 ----
 
-### Mongo DB
+### `MongoDB`
 
 * Specific for MongoDB
     * Stores an list of documents
@@ -68,7 +77,7 @@
 
 ----
 
-### MongoDB terminology
+### `MongoDB` terminology
 
 * Database consists of one or more collections (tables)
 * Documents are stored in collections 
@@ -137,11 +146,16 @@ contain this key
 
 ----
 
-#### Guidelines
+#### Guideline
 
-* Start with an E/R digram
-    * Follow with an actual design
-    * Examplify
+1. Start with an E/R digram
+2. Follow with an actual design
+3. Examplify
+
+----
+
+#### Acutal design 
+
 * Posibilities
     * Embed data
     * Links between data
@@ -152,8 +166,10 @@ contain this key
 
 ----
 
-#### Embedding
+#### Embedded data
 
+* Is:
+    * Data nested in other object
 * So when to embed?
     * There are a contained relationship
     * There are a one-to-few relationship
@@ -206,7 +222,9 @@ Not smart if books changes often or there are many books.
     "name": "O'Reilly",
     "books": [1, 2, 3, 12, 15, 19, 25, 26, 27, 49, 50 ...],
     ...}
+```
 
+```javascript
 // In Books collection
 {   "id": "1", "name": "Learning python" } 
 {   "id": "2", "name": "Jenkins 2 - up & running" } 
@@ -222,14 +240,20 @@ Not smart if books changes often or there are many books.
 
 ```javascript
 // In publisher collection
-{ "id": "1", "name": "O'Reilly", }
+{ "id": "1", "name": "O'Reilly" }
+```
 
+```javascript
 // In Books collection
-{ "id": "1", "name": "Learning python", "publisher_id": 1 } 
-{ "id": "2", "name": "Jenkins 2 - up & running", "publisher_id": 1 }  
-{ "id": "3", "name": "Head First Kotlin", "publisher_id": 1 } 
+{ "id": "1", "name": "Learning python",
+    "publisher": "O'Reilly" } 
+{ "id": "2", "name": "Jenkins 2 - up & running",
+    "publisher": "O'Reilly" }  
+{ "id": "3", "name": "Head First Kotlin",
+     "publisher": "O'Reilly" } 
 ...
-{ "id": "50", "name": "Mastering Ethereum", "publisher_id": 1 } 
+{ "id": "50", "name": "Mastering Ethereum",
+     "publisher": "O'Reilly" } 
 ... 
 ```
 
@@ -282,6 +306,8 @@ Not smart if books changes often or there are many books.
 
 ----
 
+<!-- .slide: data-visibility="hidden" -->
+
 ### Polymorphism
 
 * Can be necessary to mix different documents types in same collection
@@ -301,6 +327,9 @@ Not smart if books changes often or there are many books.
 
 ----
 
+<!-- .slide: data-visibility="hidden" -->
+
+
 ### Why Polymorphism
 
 * Keep them close together
@@ -310,6 +339,8 @@ Not smart if books changes often or there are many books.
     * can be time consuming (like on RD)
 
 ----
+
+<!-- .slide: data-visibility="hidden" -->
 
 ### So how to tacke schema changes
 
