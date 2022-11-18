@@ -23,8 +23,8 @@
 ### Selection
 
 
+```csharp[4-10|12]
 
-```csharp
 _books = database.GetCollection<Book>(collection);
 // ...
 var Books = new List<Book>();
@@ -42,13 +42,13 @@ _books.Find(book => true).ToList();
 
 ### Projection
 
-```csharp
+```csharp [3-4|5-6|7]
 public IEnumerable<string> GetFormats(string id)
 {
     var projection = Builders<Book>.Projection
             .Include(b => b.Formats);
     var bson = _books.Find<Book>(book => book.Id == id)
-        .Project(projection).FirstOrDefault();
+            .Project(projection).FirstOrDefault();
     var array = bson.GetElement("Formats").Value.AsBsonArray;
     return array.Select(str => str.AsString);
 }
@@ -72,10 +72,23 @@ var results = db.GetCollection<ZipEntry>.Aggregate()
 
 ----
 
+
+### So how to tacke schema changes
+
+* In NoSQL this often done in application
+    * Updating/altering entities when read
+    * Algorithm:
+        1. Read data
+        2. If data is of old version
+            1. update data
+            2. save data
+
+----
+
 ### Update schema
 
 
-```csharp
+```csharp [1|4-5|6-8|10-18]
 [BsonIgnoreExtraElements]
 class Model : ISupportInitialize {
     ...
