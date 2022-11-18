@@ -304,54 +304,6 @@ Not smart if books changes often or there are many books.
          "books": ["b1", "b7", "b8", "b9" ]}
 ```
 
-----
-
-<!-- .slide: data-visibility="hidden" -->
-
-### Polymorphism
-
-* Can be necessary to mix different documents types in same collection
-    * **Problem**: Which document is of which type
-    * **A solution**: Wrap them in document with meta information
-
-```javascript
-{   "id": "1",
-    "name": "O'Reilly",
-    "type": "publisher"
-},
-{   "id": "2",
-    "name": "Mark Hamill",
-    "type": "actor"
-}
-```
-
-----
-
-<!-- .slide: data-visibility="hidden" -->
-
-
-### Why Polymorphism
-
-* Keep them close together
-* Performing queries on shared fields on different types
-    * Still able to perform queries on specific types
-* Avoid `ALTER TABLE` statements while preserving ability to evolve schema
-    * can be time consuming (like on RD)
-
-----
-
-<!-- .slide: data-visibility="hidden" -->
-
-### So how to tacke schema changes
-
-* In NoSQL this often done in application
-    * Updating/altering entities when read
-    * Algorithm:
-        1. Read data
-        2. If data is of old version
-            1. update data
-            2. save data
-
 ---
 
 ### Document DB Drawbacks
