@@ -25,6 +25,36 @@
 
 ----
 
+### Polymorphism
+
+* Can be necessary to mix different documents types in same collection
+    * **Problem**: Which document is of which type
+    * **A solution**: Wrap them in document with meta information
+
+```javascript
+{   "id": "1",
+    "name": "O'Reilly",
+    "type": "publisher"
+},
+{   "id": "2",
+    "name": "Mark Hamill",
+    "type": "actor"
+}
+```
+
+----
+
+### Why Polymorphism
+
+* Keep them close together
+* Performing queries on shared fields on different types
+    * Still able to perform queries on specific types
+* Avoid `ALTER TABLE` statements while preserving ability to evolve schema
+    * can be time consuming (like on RD)
+
+
+----
+
 #### What to query
 
 * What data should be nested?
