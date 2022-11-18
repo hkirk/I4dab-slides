@@ -1,14 +1,16 @@
 <!-- .slide: data-background="#003d73" -->
-## Mongo transaction and query
+## Mongo queries and consitency
 
 ![AU Logo](./../img/aulogo_uk_var2_white.png "AU Logo") <!-- .element style="width: 200px; position: fixed; bottom: 50px; left: 50px" -->
+
+![Eventually consistency](./img/eventual_consistency.png) <!-- .element: style="height: 200px" -->
 
 ----
 
 ## Agenda
 
 * Querying
-* Transactions
+* Consistency
     * Two phase-commit
     * Multiple documents
 
@@ -144,14 +146,13 @@ This is potential a **really slow** operation. So we need something different
 
 ### Problems with Embedding
 
-* Changing `qty` in memeory - race conditions
+* Changing `qty` in application memeory can cause race conditions
 ```javascript
 { _id: '11223',
   total: 500.94, ...
   items: [
     { sku: '123', price: 55.11, qty: 2 },
-    { sku: '...', ... },...
- ] }
+    { sku: '...', ... },... ] }
 ```
 * Using db.collection.update - here we still need to check if document has changed
 ```javascript
@@ -159,8 +160,7 @@ db.orders.update(
   { '_id': order_id, 'items.sku': sku },
   { '$inc': {
     'total': total_update,
-    'items.$.qty': qty }
-  })
+    'items.$.qty': qty } })
 ```
 
 ----
