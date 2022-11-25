@@ -106,7 +106,7 @@ class Model : ISupportInitialize {
         return;
       }
     
-      var value = (string) olderValue;
+      var value = (string) oldValue;
       ExtraElements.Remove("OldField");
       // Set new values
     }
