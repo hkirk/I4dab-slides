@@ -28,29 +28,33 @@
 ### Polymorphism
 
 * Can be necessary to mix different documents types in same collection
-    * **Problem**: Which document is of which type
-    * **A solution**: Wrap them in document with meta information
+  * Keep them close together
+  * Performing queries on shared fields on different types
+    * Still able to perform queries on specific types
+  * Avoid `ALTER TABLE` statements while preserving ability to evolve schema
+    * can be time consuming (like on RD)
+  * **Problem**: Which document is of which type
 
-```javascript
-{   "id": "1",
-    "name": "O'Reilly",
-    "type": "publisher"
-},
-{   "id": "2",
-    "name": "Mark Hamill",
-    "type": "actor"
-}
-```
 
 ----
 
-### Why Polymorphism
+### Solutions
 
-* Keep them close together
-* Performing queries on shared fields on different types
-    * Still able to perform queries on specific types
-* Avoid `ALTER TABLE` statements while preserving ability to evolve schema
-    * can be time consuming (like on RD)
+* Add `type` to your models
+```javascript
+{ "id": "1",
+    "name": "O'Reilly",
+    "type": "publisher"
+}
+```
+* Wrap them in document with meta information
+```javascript
+{ "id": "2",
+    "version": 1,
+    "type": "actor",
+    "data": { "name": "Mark Hamill" }
+}
+```
 
 
 ----
@@ -72,9 +76,9 @@ db.inventory.insert(
 )
 ```
 
-* w: number of acknowledgements
-* j: should be written on disc
-* wtimeout: should always be set when j=true
+* `w`: number of acknowledgements
+* `j`: should be written on disc
+* `wtimeout`: should always be set when `j=true`
 
 ----
 
@@ -207,7 +211,7 @@ Consider space consumptions? Easy of query
 
 * Easy to see/read
 * Easy to query
-* Hard to update
+* Hard to update hierachy
 
 ----
 
