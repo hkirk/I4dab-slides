@@ -1,5 +1,5 @@
 <!-- .slide: data-background="#003d73" -->
-## Use cases
+## Security
 
 ![meme](./img/sql-injection-kitteh-is-injecting-drop-table-user.jpeg "drop table user") <!-- element: style="float:right" -->
 
@@ -58,7 +58,7 @@ SqlConnection conn = new SqlConnection(@"Data Source=...;");
 SqlCommand cmd =
    new SqlCommand("Select * from GridViewDynamicData " +
     "where Field1= @Text", conn);
-sqlCmd.Parameters.AddWithValue("@Text",Text);  
+cmd.Parameters.AddWithValue("@Text",Text);  
 conn.Open();
 cmd.Dispose()
 SqlDataAdapter ad = new SqlDataAdapter(cmd);  
